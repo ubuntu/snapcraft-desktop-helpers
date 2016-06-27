@@ -6,6 +6,7 @@
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
 export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
 
+# TODO: add strategy on upgrade
 if [ ! -e $GDK_PIXBUF_MODULE_FILE ]; then
   $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
 fi
@@ -13,6 +14,7 @@ fi
 # Gio modules and cache
 export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
 
+# TODO: add strategy on upgrade
 if [ ! -d $GIO_MODULE_DIR ]; then
   mkdir -p $GIO_MODULE_DIR
   ln -s $SNAP/usr/lib/$ARCH/gio/modules/*.so $GIO_MODULE_DIR
@@ -22,6 +24,7 @@ fi
 # Gtk
 export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
 
+# TODO: add strategy on upgrade
 if [ ! -d $GTK_IM_MODULE_DIR ]; then
   mkdir -p $GTK_IM_MODULE_DIR
   if [ -f $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 ]; then
@@ -33,16 +36,13 @@ if [ ! -d $GTK_IM_MODULE_DIR ]; then
   fi
 fi
 
-if [ ! -e $GDK_PIXBUF_MODULE_FILE ]; then
-  $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
-fi
-
 # Keep an array of data dirs, for looping through them
 IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Setup compiled gsettings schema
 GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
 
+# TODO: add strategy on upgrade
 if [ ! -d $GS_SCHEMA_DIR ]; then
   mkdir -p $GS_SCHEMA_DIR
   for d in "${data_dirs_array[@]}"; do
