@@ -26,12 +26,10 @@ export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/dri:$LD_LIBRARY_PATH
 export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/pulseaudio:$LD_LIBRARY_PATH
 
 # XDG Config
-export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$XDG_CONFIG_DIRS
-export XDG_CONFIG_DIRS=$SNAP/usr/xdg:$XDG_CONFIG_DIRS
+export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS
 
 # Define snaps' own data dir
-export XDG_DATA_DIRS=$SNAP_USER_DATA:$XDG_DATA_DIRS
-export XDG_DATA_DIRS=$SNAP/usr/share:$XDG_DATA_DIRS
+export XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
 
 # Font Config
 export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
