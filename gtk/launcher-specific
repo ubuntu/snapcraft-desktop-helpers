@@ -96,5 +96,4 @@ if [ ! -d $XDG_DATA_HOME/icons ]; then
   done
 fi
 
-cd $SNAP
 exec "$@"
