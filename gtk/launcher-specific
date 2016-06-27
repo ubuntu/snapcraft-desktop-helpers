@@ -9,6 +9,24 @@ export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
 # TODO: add strategy on upgrade
 if [ ! -e $GDK_PIXBUF_MODULE_FILE ]; then
   $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+fia
+
+# ibus and fcitx integration
+# with those defintions fcitx works unconfined out of the box, ibus requires
+# user config to be copied though, https://launchpad.net/bugs/1580463
+GTK_IM_MODULE_DIR=$XDG_CACHE_HOME/immodules
+export GTK_IM_MODULE_FILE=$XDG_CACHE_HOME/immodules/immodules.cache
+
+# TODO: add strategy on upgrade
+if [ ! -d $GTK_IM_MODULE_DIR ]; then
+  mkdir -p $GTK_IM_MODULE_DIR
+  if [ -f $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 ]; then
+    ln -s $SNAP/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
+  elif [ -f $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 ]; then
+    ln -s $SNAP/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
+  fi
 fi
 
 # Gio modules and cache
