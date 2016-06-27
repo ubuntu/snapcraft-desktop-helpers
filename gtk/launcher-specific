@@ -1,0 +1,82 @@
+##############################
+# GTK launcher specific part #
+##############################
+
+# Gdk-pixbuf loaders
+export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
+export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
+
+if [ ! -e $GDK_PIXBUF_MODULE_FILE ]; then
+  $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+fi
+
+# Gio modules and cache
+export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
+
+if [ ! -d $GIO_MODULE_DIR ]; then
+  mkdir -p $GIO_MODULE_DIR
+  ln -s $SNAP/usr/lib/$ARCH/gio/modules/*.so $GIO_MODULE_DIR
+  $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
+fi
+
+# Gtk
+export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
+
+if [ ! -d $GTK_IM_MODULE_DIR ]; then
+  mkdir -p $GTK_IM_MODULE_DIR
+  if [ -f $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 ]; then
+    ln -s $SNAP/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
+  elif [ -f $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 ]; then
+    ln -s $SNAP/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
+  fi
+fi
+
+if [ ! -e $GDK_PIXBUF_MODULE_FILE ]; then
+  $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+fi
+
+# Keep an array of data dirs, for looping through them
+IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
+
+# Setup compiled gsettings schema
+GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
+
+if [ ! -d $GS_SCHEMA_DIR ]; then
+  mkdir -p $GS_SCHEMA_DIR
+  for d in "${data_dirs_array[@]}"; do
+    if [ -d "$d/glib-2.0/schemas" ]; then
+      # hack for empty system schemas dir
+      if [ "$d" != "/usr/share/" ]; then
+        ln -s $d/glib-2.0/schemas/*.xml $GS_SCHEMA_DIR
+      fi
+    fi
+  done
+
+  $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas $GS_SCHEMA_DIR
+fi
+
+# Icon themes cache
+if [ ! -d $XDG_DATA_HOME/icons ]; then
+  mkdir -p $XDG_DATA_HOME/icons
+  for d in "${data_dirs_array[@]}"; do
+    for i in $d/icons/*; do
+      if [ -d "$i" ]; then
+        theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
+        if [ ! -d "$theme_dir" ]; then
+          mkdir -p "$theme_dir"
+          ln -s $i/* "$theme_dir"
+          if [ -f $SNAP/usr/sbin/update-icon-caches ]; then
+            $SNAP/usr/sbin/update-icon-caches "$theme_dir"
+          elif [ -f $SNAP/usr/sbin/update-icon-cache.gtk2 ]; then
+            $SNAP/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
+          fi
+        fi
+      fi
+    done
+  done
+fi
+
+cd $SNAP
+exec "$@"
