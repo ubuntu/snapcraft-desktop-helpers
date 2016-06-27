@@ -1,0 +1,12 @@
+name: gtk
+version: 0.1
+summary: This is meant to be consumed by other projects
+description: |
+  This sets up the GTK environment for GTK-based projects and its dependencies
+confinement: strict
+
+parts:
+  gtk:
+    source: .
+    plugin: make
+    make-parameters: ["SRC_DIR=../src"]
