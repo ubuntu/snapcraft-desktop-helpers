@@ -1,0 +1,53 @@
+# Launcher common exports for any desktop app
+
+if [ "$SNAP_ARCH" == "amd64" ]; then
+  ARCH="x86_64-linux-gnu"
+elif [ "$SNAP_ARCH" == "armhf" ]; then
+  ARCH="arm-linux-gnueabihf"
+else
+  ARCH="$SNAP_ARCH-linux-gnu"
+fi
+
+export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH
+
+# XKB config
+export XKB_CONFIG_ROOT=$SNAP/usr/share/X11/xkb
+
+# Mesa Libs
+export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/mesa:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
+
+# XDG Config
+export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$XDG_CONFIG_DIRS
+export XDG_CONFIG_DIRS=$SNAP/usr/xdg:$XDG_CONFIG_DIRS
+
+# Define snaps' own data dir
+export XDG_DATA_DIRS=$SNAP_USER_DATA:$XDG_DATA_DIRS
+export XDG_DATA_DIRS=$SNAP/usr/share:$XDG_DATA_DIRS
+
+# Font Config
+export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
+export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
+
+# Set XDG_DATA_HOME to local path
+export XDG_DATA_HOME=$SNAP_USER_DATA/.local/share
+export XDG_DATA_DIRS=$XDG_DATA_HOME:$XDG_DATA_DIRS
+mkdir -p $XDG_DATA_HOME
+
+# Set cache folder to local path
+export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
+mkdir -p $XDG_CACHE_HOME
+
+# FIXME: Not good, needed for fontconfig and themes
+# TODO: do that only on snap update (wipe otherwise)
+ln -sf $SNAP/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+
+# Tell libGL where to find the drivers
+export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/$ARCH/dri
+
+# Build mime.cache
+# TODO: do that only on snap update (wipe otherwise)
+if [ ! -d $XDG_DATA_HOME/mime ]; then
+  cp --preserve=timestamps -dR $SNAP/usr/share/mime $XDG_DATA_HOME
+  update-mime-database $XDG_DATA_HOME/mime
+fi
