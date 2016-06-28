@@ -41,10 +41,6 @@ export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS
 # Define snaps' own data dir
 export XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
 
-# Font Config
-export FONTCONFIG_PATH=$SNAP/etc/fonts/config.d
-export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
-
 # Set XDG_DATA_HOME to local path
 export XDG_DATA_HOME=$SNAP_USER_DATA/.local/share
 export XDG_DATA_DIRS=$XDG_DATA_HOME:$XDG_DATA_DIRS
@@ -54,6 +50,9 @@ mkdir -p $XDG_DATA_HOME
 export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
 mkdir -p $XDG_CACHE_HOME
 
+# Font Config and themes
+export FONTCONFIG_PATH=$SNAP/etc/fonts/conf.d
+export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 # FIXME: Not good, needed for fontconfig and themes
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes}
