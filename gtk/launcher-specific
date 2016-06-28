@@ -54,16 +54,13 @@ IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Setup compiled gsettings schema
 GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
-
 if [ $needs-update = true ]; then
   rm -rf $GS_SCHEMA_DIR
   mkdir -p $GS_SCHEMA_DIR
   for d in "${data_dirs_array[@]}"; do
-    if [ -d "$d/glib-2.0/schemas" ]; then
-      # hack for empty system schemas dir
-      if [ "$d" != "/usr/share/" ]; then
-        ln -s $d/glib-2.0/schemas/*.xml $GS_SCHEMA_DIR
-      fi
+    schema_dir=$d/glib-2.0/schemas
+    if [ "$(ls -A $schema_dir/*.xml)" ]; then
+      ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
     fi
   done
 
