@@ -69,9 +69,10 @@ fi
 
 # Enable gsettings user changes
 # symlink the dconf file if home plug is connected for read
-DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf/user
-if [ ! -f $DCONF_DEST_USER_DIR ]; then
+DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf
+if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
   if [ -f /home/$USER/.config/dconf/user ]; then
+    mkdir -p $DCONF_DEST_USER_DIR
     ln -s /home/$USER/.config/dconf/user $DCONF_DEST_USER_DIR
   fi
 fi
