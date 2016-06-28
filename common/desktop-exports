@@ -50,13 +50,14 @@ mkdir -p $XDG_CACHE_HOME
 # Font Config and themes
 export FONTCONFIG_PATH=$SNAP/etc/fonts/conf.d
 export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
-# FIXME: Not good, needed for fontconfig and themes
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes}
   ln -sf $SNAP/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+  ln -sf $SNAP/usr/share/themes $SNAP_USER_DATA/.themes
 fi
 
 # Build mime.cache
+# needed for gtk icon
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/mime
   cp --preserve=timestamps -dR $SNAP/usr/share/mime $XDG_DATA_HOME
