@@ -1,0 +1,32 @@
+name: gtk2-demo-2
+version: "0"
+summary: Gtk2 launcher demo
+description: This is using the gtk2 demo
+confinement: strict
+
+apps:
+  gtk2-demo:
+    command: gtk-launch gtk-demo
+    plugs: [unity7, x11]
+
+parts:
+  gtk2-demo:
+    plugin: nil
+    stage-packages: [gtk2.0-examples]
+  # this is the cloud part
+  gtk2-launcher:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    build-packages:
+      - libgtk2.0-dev
+    stage-packages: 
+      - shared-mime-info
+      - dmz-cursor-theme
+      - light-themes
+      - ttf-ubuntu-font-family
+      - libgtk2.0-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk2.0-bin
+      - unity-gtk2-module
