@@ -7,9 +7,10 @@ confinement: strict
 apps:
   gtk2-demo:
     command: gtk-launch gtk-demo
-    plugs: [unity7, x11]
+    plugs: [unity7, x11, gsettings, home]
   gsettings:
     command: gtk-launch gsettings
+    plugs: [gsettings, home]
 
 parts:
   gtk2-demo:
