@@ -8,11 +8,13 @@ apps:
   gtk2-demo:
     command: gtk-launch gtk-demo
     plugs: [unity7, x11]
+  gsettings:
+    command: gtk-launch gsettings
 
 parts:
   gtk2-demo:
     plugin: nil
-    stage-packages: [gtk2.0-examples]
+    stage-packages: [gtk2.0-examples, libglib2.0-bin]
   # this is the cloud part
   gtk2-launcher:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
@@ -20,11 +22,12 @@ parts:
     plugin: make
     build-packages:
       - libgtk2.0-dev
-    stage-packages: 
-      - shared-mime-info
+    stage-packages:
+      - libxkbcommon0  # XKB_CONFIG_ROOT
+      - ttf-ubuntu-font-family
       - dmz-cursor-theme
       - light-themes
-      - ttf-ubuntu-font-family
+      - shared-mime-info
       - libgtk2.0-0
       - libgdk-pixbuf2.0-0
       - libglib2.0-bin
