@@ -20,8 +20,17 @@ if [ $needs_update = true ]; then
   $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
 fi
 
-# Gtk
-export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
+# test for GTK2 or GTK3
+use_gtk3=true
+if [ -f /usr/lib/x86_64-linux-gnu/libgtk-x11-2.0.so.0 ]; then
+  use_gtk3=false
+fi
+
+if [ $use_gtk3 = true ]; then
+  export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
+else
+  export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
+fi
 
 # ibus and fcitx integration
 # with those defintions fcitx works unconfined out of the box, ibus requires
@@ -31,10 +40,10 @@ export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache
 if [ $needs_update = true ]; then
   rm -rf $GTK_IM_MODULE_DIR
   mkdir -p $GTK_IM_MODULE_DIR
-  if [ -f $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 ]; then
+  if [ $use_gtk3 = true ]; then
     ln -s $SNAP/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
     $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
-  elif [ -f $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 ]; then
+  else
     ln -s $SNAP/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
     $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
   fi
