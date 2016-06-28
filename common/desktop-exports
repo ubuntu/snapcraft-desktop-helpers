@@ -2,6 +2,14 @@
 # Launcher common exports for any desktop app #
 ###############################################
 
+needs_update=true
+
+. .last_revision 2>/dev/null || true
+if [ "$SNAP_DESKTOP_LAST_REVISION" = "$SNAP_REVISION" ]; then
+  needs_update=false
+fi
+[ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > .last_revision
+
 if [ "$SNAP_ARCH" == "amd64" ]; then
   ARCH="x86_64-linux-gnu"
 elif [ "$SNAP_ARCH" == "armhf" ]; then
@@ -47,12 +55,14 @@ export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
 mkdir -p $XDG_CACHE_HOME
 
 # FIXME: Not good, needed for fontconfig and themes
-# TODO: do that only on snap update (wipe otherwise)
-ln -sf $SNAP/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+if [ $needs_update = true ]; then
+  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes}
+  ln -sf $SNAP/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+fi
 
 # Build mime.cache
-# TODO: do that only on snap update (wipe otherwise)
-if [ ! -d $XDG_DATA_HOME/mime ]; then
+if [ $needs_update = true ]; then
+  rm -rf $XDG_DATA_HOME/mime
   cp --preserve=timestamps -dR $SNAP/usr/share/mime $XDG_DATA_HOME
   update-mime-database $XDG_DATA_HOME/mime
 fi
