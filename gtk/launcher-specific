@@ -67,6 +67,15 @@ if [ $needs-update = true ]; then
   $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas $GS_SCHEMA_DIR
 fi
 
+# Enable gsettings user changes
+# symlink the dconf file if home plug is connected for read
+DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf/user
+if [ ! -f $DCONF_DEST_USER_DIR ]; then
+  if [ -f /home/$USER/.config/dconf/user ]; then
+    ln -s /home/$USER/.config/dconf/user $DCONF_DEST_USER_DIR
+  fi
+fi
+
 # Icon themes cache
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/icons
