@@ -59,7 +59,7 @@ if [ $needs_update = true ]; then
   mkdir -p $GS_SCHEMA_DIR
   for d in "${data_dirs_array[@]}"; do
     schema_dir=$d/glib-2.0/schemas
-    if [ "$(ls -A $schema_dir/*.xml)" ]; then
+    if [ "$(ls -A $schema_dir/*.xml 2>/dev/null)" ]; then
       ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
     fi
   done
