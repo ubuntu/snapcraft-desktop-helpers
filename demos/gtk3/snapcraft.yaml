@@ -1,0 +1,36 @@
+name: gtk3-demo
+version: "0"
+summary: Gtk3 launcher demo
+description: This is using the gtk3 demo
+confinement: strict
+
+apps:
+  gtk3-demo:
+    command: gtk-launch gtk-demo
+    plugs: [unity7, x11, gsettings, home]
+  gsettings:
+    command: gtk-launch gsettings
+    plugs: [x11, gsettings, home]
+
+parts:
+  gtk3-demo:
+    plugin: nil
+    stage-packages: [gtk-3-examples, libglib2.0-bin]
+  # this is the cloud part
+  gtk3:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    build-packages:
+      - libgtk-3-dev
+    stage-packages:
+      - libxkbcommon0  # XKB_CONFIG_ROOT
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - shared-mime-info
+      - libgtk-3-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk-3-bin
+      - unity-gtk3-module
