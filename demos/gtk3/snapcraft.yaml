@@ -16,4 +16,4 @@ parts:
   gtk3-demo:
     plugin: nil
     stage-packages: [gtk-3-examples, libglib2.0-bin]
-    after: [gtk3]
+    after: [desktop.gtk3]

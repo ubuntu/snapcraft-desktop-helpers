@@ -16,4 +16,4 @@ parts:
   gtk2-demo:
     plugin: nil
     stage-packages: [gtk2.0-examples, libglib2.0-bin]
-    after: [gtk2]
+    after: [desktop.gtk2]
