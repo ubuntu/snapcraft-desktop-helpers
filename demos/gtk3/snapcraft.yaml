@@ -16,7 +16,7 @@ parts:
   gtk3-demo:
     plugin: nil
     stage-packages: [gtk-3-examples, libglib2.0-bin]
-  # this is the cloud part
+    after: [gtk3]
   gtk3:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
