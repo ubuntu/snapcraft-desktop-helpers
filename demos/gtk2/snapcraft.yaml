@@ -10,7 +10,7 @@ apps:
     plugs: [unity7, x11, gsettings, home]
   gsettings:
     command: gtk-launch gsettings
-    plugs: [gsettings, home]
+    plugs: [x11, gsettings, home]
 
 parts:
   gtk2-demo:
