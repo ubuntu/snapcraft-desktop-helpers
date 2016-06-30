@@ -1,6 +1,6 @@
 #!/usr/bin/make -f
 
-DEST_LAUNCHER = gtk-launch
+DEST_LAUNCHER = desktop-launch
 
 SRC_DIR ?= .
 

@@ -6,10 +6,10 @@ confinement: strict
 
 apps:
   gtk3-demo:
-    command: gtk-launch gtk-demo
+    command: desktop-launch gtk-demo
     plugs: [unity7, x11, gsettings, home]
   gsettings:
-    command: gtk-launch gsettings
+    command: desktop-launch gsettings
     plugs: [x11, gsettings, home]
 
 parts:
