@@ -1,0 +1,32 @@
+name: application
+version: 1
+summary: Qt Application Example
+description: A simple text editor
+confinement: devmode
+
+apps:
+  application:
+    command: desktop-launch application
+    plugs: [unity7, home]
+
+parts:
+  application:
+    source: src/
+    plugin: qmake
+    qt-version: qt5
+    after: [qt5]
+  qt5:
+    source: .
+    plugin: make
+    build-packages:
+      - qtbase5-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - shared-mime-info
+      - libqt5gui5
+      - appmenu-qt5
+
