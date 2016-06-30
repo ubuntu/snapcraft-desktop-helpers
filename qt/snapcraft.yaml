@@ -18,6 +18,7 @@ parts:
   qt5:
     source: .
     plugin: make
+    make-parameters: ["SRC_DIR=../src"]
     build-packages:
       - qtbase5-dev
       - dpkg-dev
