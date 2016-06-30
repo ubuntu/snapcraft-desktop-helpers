@@ -1,0 +1,52 @@
+#############################
+# QT launcher specific part #
+#############################
+
+# test for qt4 or qt5
+use_qt5=true
+if [ -f $SNAP/usr/lib/$ARCH/libQtCore.so.4 ]; then
+  use_qt5=false
+fi
+
+
+# Qt Platform to Mir
+export QTCHOOSER_NO_GLOBAL_DIR=1
+if [ $use_qt5 = true ]; then
+  export QT_SELECT=snappy-qt5
+else
+  export QT_SELECT=snappy-qt4
+fi
+
+# Qt Libs and Modules
+if [ $use_qt5 = true ]; then
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
+  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt5/qml
+  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/lib/$ARCH
+else
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
+  export QML_IMPORT_PATH=$QML_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt4/qml
+  export QML_IMPORT_PATH=$QML_IMPORT_PATH:$SNAP/lib/$ARCH
+fi
+
+# Necessary for the SDK to find the translations directory
+export APP_DIR=$SNAP
+
+# Removes Qt warning: Could not find a location
+# of the system Compose files
+export QTCOMPOSE=$SNAP/usr/share/X11/locale
+
+# Use GTK styling for running under Unity 7
+# TODO: find out what needs to be done for Unity 8
+#export QT_STYLE_OVERRIDE=gtk
+#export DESKTOP_SESSION=ubuntu
+#export XDG_SESSION_DESKTOP=ubuntu
+#export XDG_CURRENT_DESKTOP=Unity
+#export GTK2_MODULES=overlay-scrollbar
+#export GTK_MODULES=gail:atk-bridge:unity-gtk-module
+#export QT_QPA_PLATFORMTHEME=appmenu-qt5
+export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
+#export GIO_MODULE_DIR=$SNAP/usr/lib/$ARCH/gio/modules
+
+exec "$@"
