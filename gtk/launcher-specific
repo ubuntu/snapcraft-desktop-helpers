@@ -22,7 +22,7 @@ fi
 
 # test for GTK2 or GTK3
 use_gtk3=true
-if [ -f $SNAP/usr/lib/x86_64-linux-gnu/libgtk-x11-2.0.so.0 ]; then
+if [ -f $SNAP/usr/lib/$ARCH/libgtk-x11-2.0.so.0 ]; then
   use_gtk3=false
 fi
 
