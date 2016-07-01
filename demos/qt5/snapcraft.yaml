@@ -1,0 +1,34 @@
+name: qt5-application
+version: 1
+summary: Qt5 Application Example
+description: A simple text editor
+confinement: strict
+
+apps:
+  qt5-application:
+    command: desktop-launch application
+    plugs: [unity7, home]
+
+parts:
+  application:
+    source: src/
+    plugin: qmake
+    qt-version: qt5
+    after: [qt5]
+  qt5:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: qt
+    plugin: make
+    build-packages:
+      - qtbase5-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - shared-mime-info
+      - libqt5gui5
+      - libgdk-pixbuf2.0-0
+      - libqt5svg5 # for loading icon themes which are svg
+      - appmenu-qt5
