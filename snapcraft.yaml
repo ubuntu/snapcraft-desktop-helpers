@@ -46,6 +46,23 @@ parts:
       - libglib2.0-bin
       - libgtk-3-bin
       - unity-gtk3-module
+  qt4:
+    source: .
+    source-subdir: qt
+    plugin: make
+    build-packages:
+      - libqt4-dev
+      - dpkg-dev
+    stage-packages:
+      - libxkbcommon0
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - shared-mime-info
+      - libqtgui4
+      - libgdk-pixbuf2.0-0
+      - libqt4-svg # for loading icon themes which are svg
+      - appmenu-qt
   qt5:
     source: .
     source-subdir: qt
