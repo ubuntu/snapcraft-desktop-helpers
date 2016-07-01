@@ -34,16 +34,7 @@ export APP_DIR=$SNAP
 export QTCOMPOSE=$SNAP/usr/share/X11/locale
 
 # Use GTK styling for running under Unity 7
-# TODO: find out what needs to be done for Unity 8
-#export QT_STYLE_OVERRIDE=gtk
-#export DESKTOP_SESSION=ubuntu
-#export XDG_SESSION_DESKTOP=ubuntu
-#export XDG_CURRENT_DESKTOP=Unity
-#export GTK2_MODULES=overlay-scrollbar
-#export GTK_MODULES=gail:atk-bridge:unity-gtk-module
-#export QT_QPA_PLATFORMTHEME=appmenu-qt5
 export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
-#export GIO_MODULE_DIR=$SNAP/usr/lib/$ARCH/gio/modules
 
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
