@@ -9,4 +9,4 @@ parts:
   gtk:
     source: .
     plugin: make
-    make-parameters: ["SRC_DIR=../src"]
+    make-parameters: ["SRC_DIR=../src", "FLAVOR=gtk2"]

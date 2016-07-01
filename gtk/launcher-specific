@@ -2,6 +2,9 @@
 # GTK launcher specific part #
 ##############################
 
+# select gtk version
+. $SNAP/.flavor-select
+
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
 export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
@@ -20,13 +23,7 @@ if [ $needs_update = true ]; then
   $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
 fi
 
-# test for GTK2 or GTK3
-use_gtk3=true
-if [ -f $SNAP/usr/lib/$ARCH/libgtk-x11-2.0.so.0 ]; then
-  use_gtk3=false
-fi
-
-if [ $use_gtk3 = true ]; then
+if [ "$USE_gtk3" = true ]; then
   export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
 else
   export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
@@ -40,7 +37,7 @@ export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache
 if [ $needs_update = true ]; then
   rm -rf $GTK_IM_MODULE_DIR
   mkdir -p $GTK_IM_MODULE_DIR
-  if [ $use_gtk3 = true ]; then
+  if [ "$USE_gtk3" = true ]; then
     ln -s $SNAP/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
     $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
   else
