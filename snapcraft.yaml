@@ -52,6 +52,7 @@ parts:
     source: .
     source-subdir: qt
     plugin: make
+    make-parameters: ["FLAVOR=qt4"]
     build-packages:
       - libqt4-dev
       - dpkg-dev
@@ -69,6 +70,7 @@ parts:
     source: .
     source-subdir: qt
     plugin: make
+    make-parameters: ["FLAVOR=qt5"]
     build-packages:
       - qtbase5-dev
       - dpkg-dev

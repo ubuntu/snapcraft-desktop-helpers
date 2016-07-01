@@ -1,8 +1,10 @@
 #!/usr/bin/make -f
 
-DEST_LAUNCHER = desktop-launch
-
+FLAVOR ?= qt5
 SRC_DIR ?= .
+
+DEST_LAUNCHER = desktop-launch
+FLAVOR_FILE = flavor-select
 
 arch_triplet := $(shell dpkg-architecture -q DEB_TARGET_MULTIARCH)
 
@@ -24,6 +26,7 @@ build: $(DEST_LAUNCHER)
 clean:
 	rm -f $(DEST_LAUNCHER)
 	rm -rf snappy-qt*.conf
+	rm -f $(FLAVOR_FILE)
 
 desktop-launch:
 	@echo "#!/bin/bash" > $(DEST_LAUNCHER)
@@ -31,6 +34,7 @@ desktop-launch:
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
 	@echo "$$QT5_CONF" > snappy-qt5.conf
 	@echo "$$QT5_CONF" > snappy-qt4.conf
+	@echo "USE_$(FLAVOR)=true" >> $(FLAVOR_FILE)
 		
 install: desktop-launch
 	install -D -m755 $(DEST_LAUNCHER) $(DESTDIR)/bin/$(DEST_LAUNCHER)
@@ -38,4 +42,5 @@ install: desktop-launch
 		$(DESTDIR)/etc/xdg/qtchooser/snappy-qt5.conf
 	install -D -m644 snappy-qt4.conf \
 		$(DESTDIR)/etc/xdg/qtchooser/snappy-qt4.conf
+	install -D -m644 $(FLAVOR_FILE) $(DESTDIR)/
 

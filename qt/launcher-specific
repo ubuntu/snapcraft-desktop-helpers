@@ -2,23 +2,19 @@
 # QT launcher specific part #
 #############################
 
-# test for qt4 or qt5
-use_qt5=true
-if [ -f $SNAP/usr/lib/$ARCH/libQtCore.so.4 ]; then
-  use_qt5=false
-fi
-
+# select qt version
+. $SNAP/flavor-select
 
 # Qt Platform to Mir
 export QTCHOOSER_NO_GLOBAL_DIR=1
-if [ $use_qt5 = true ]; then
+if [ "$USE_qt5" = true ]; then
   export QT_SELECT=snappy-qt5
 else
   export QT_SELECT=snappy-qt4
 fi
 
 # Qt Libs and Modules
-if [ $use_qt5 = true ]; then
+if [ "$USE_qt5" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt5/qml
