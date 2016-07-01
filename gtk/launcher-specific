@@ -3,7 +3,7 @@
 ##############################
 
 # select gtk version
-. $SNAP/.flavor-select
+. $SNAP/flavor-select
 
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache

@@ -4,7 +4,7 @@ FLAVOR ?= gtk3
 SRC_DIR ?= .
 
 DEST_LAUNCHER = desktop-launch
-FLAVOR_FILE = .flavor-select
+FLAVOR_FILE = flavor-select
 
 build: $(DEST_LAUNCHER)
 
