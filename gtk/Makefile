@@ -4,7 +4,7 @@ DEST_LAUNCHER = desktop-launch
 
 SRC_DIR ?= .
 
-all: $(DEST_LAUNCHER)
+build: $(DEST_LAUNCHER)
 
 clean:
 	rm -f $(DEST_LAUNCHER)

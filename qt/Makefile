@@ -19,7 +19,7 @@ endef
 export QT4_CONF
 
 
-all: $(DEST_LAUNCHER)
+build: $(DEST_LAUNCHER)
 
 clean:
 	rm -f $(DEST_LAUNCHER)
