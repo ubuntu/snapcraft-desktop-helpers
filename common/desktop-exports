@@ -57,9 +57,11 @@ if [ $needs_update = true ]; then
 fi
 
 # Build mime.cache
-# needed for gtk icon
+# needed for gtk and qt icon
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/mime
-  cp --preserve=timestamps -dR $SNAP/usr/share/mime $XDG_DATA_HOME
-  update-mime-database $XDG_DATA_HOME/mime
+  if [ `which update-mime-database` ]; then
+    cp --preserve=timestamps -dR $SNAP/usr/share/mime $XDG_DATA_HOME
+    update-mime-database $XDG_DATA_HOME/mime
+  fi
 fi
