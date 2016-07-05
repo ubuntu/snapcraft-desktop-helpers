@@ -1,0 +1,41 @@
+##############################
+# Glib minimum specific part #
+##############################
+
+# Gio modules and cache
+export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
+if [ $needs_update = true ]; then
+  rm -rf $GIO_MODULE_DIR
+  mkdir -p $GIO_MODULE_DIR
+  ln -s $SNAP/usr/lib/$ARCH/gio/modules/*.so $GIO_MODULE_DIR
+  $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
+fi
+
+# Keep an array of data dirs, for looping through them
+IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
+
+# Setup compiled gsettings schema
+GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
+if [ $needs_update = true ]; then
+  rm -rf $GS_SCHEMA_DIR
+  mkdir -p $GS_SCHEMA_DIR
+  for d in "${data_dirs_array[@]}"; do
+    schema_dir=$d/glib-2.0/schemas
+    if [ "$(ls -A $schema_dir/*.xml 2>/dev/null)" ]; then
+      ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
+    fi
+  done
+  $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas $GS_SCHEMA_DIR
+fi
+
+# Enable gsettings user changes
+# symlink the dconf file if home plug is connected for read
+DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf
+if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
+  if [ -f /home/$USER/.config/dconf/user ]; then
+    mkdir -p $DCONF_DEST_USER_DIR
+    ln -s /home/$USER/.config/dconf/user $DCONF_DEST_USER_DIR
+  fi
+fi
+
+exec "$@"
