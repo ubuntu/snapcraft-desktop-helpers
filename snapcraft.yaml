@@ -2,11 +2,33 @@ name: desktop-helpers
 version: 1
 summary: Various technology desktop helpers for snapcraft
 description: |
-  Those contains helpers for gtk2, gtk3, qt4 and qt5.
-  It brings the necessary code for binding and using those
-  and other desktop technologies in a relocatable fashion, still
-  linking to desktop properties.
+  Helpers for gtk2, gtk3, qt4 and qt5 or glib minimal launchers.
+  It brings the necessary code and exports for binding and using those
+  desktop technologies in a relocatable fashion, enabling binding with
+  global desktop theme, icon theme, image caching, fonts, mimetype handlers
+  application global menu and gsettings integration.
   It also brings basics ubuntu dependency packages.
+  .
+  Usage:
+    1. add "after: [desktop/<technology>]" to your launcher:
+       - gtk2, gtk3, qt4 and qt5 corresponds to their respective toolkit
+         main dependencies and default choices.
+       - glib-only enables to compile mime types and gsettings infos. If you
+         added your own graphical drivers, it will link them as well.
+    2. prepend your command with "desktop-launch", like:
+       commands: "desktop-launch foo" if foo is in $PATH. You can as well
+       specify: "desktop-launch $SNAP/foo".
+    3. add needed plugs to your application:
+       - for graphical application:
+         plugs: [x11 (or unity7 for appmenu integration)]. Think about adding
+         opengl if you need hw acceleration.
+       - if your application needs access to sound:
+         plugs: [pulseaudio]
+       - accessing to user's home directory:
+         plugs: [home]
+       - read/write to gsettings:
+         plugs: [gsettings, home]
+         (note that the home plug is needed to read new value)
 confinement: strict
 
 parts:
