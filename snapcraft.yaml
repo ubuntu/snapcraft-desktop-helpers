@@ -84,3 +84,11 @@ parts:
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
+  glib-only:
+    source: .
+    source-subdir: glib-only
+    plugin: make
+    build-packages:
+      - libglib2.0-dev
+    stage-packages:
+      - libglib2.0-bin
