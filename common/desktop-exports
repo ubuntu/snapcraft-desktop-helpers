@@ -65,3 +65,6 @@ if [ $needs_update = true ]; then
     update-mime-database $XDG_DATA_HOME/mime
   fi
 fi
+
+# Point sqlite3 to a writable directory for temp files
+export SQLITE_TMPDIR=/tmp
