@@ -11,7 +11,9 @@ export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
 
 if [ $needs_update = true ]; then
   rm -f $GDK_PIXBUF_MODULE_FILE
-  $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  if [ -f $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
+    $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  fi
 fi
 
 # Gio modules and cache
@@ -20,7 +22,9 @@ if [ $needs_update = true ]; then
   rm -rf $GIO_MODULE_DIR
   mkdir -p $GIO_MODULE_DIR
   ln -s $SNAP/usr/lib/$ARCH/gio/modules/*.so $GIO_MODULE_DIR
-  $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
+  if [ -f $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules ]; then
+    $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
+  fi
 fi
 
 # GI repository
@@ -63,7 +67,9 @@ if [ $needs_update = true ]; then
       ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
     fi
   done
-  $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas $GS_SCHEMA_DIR
+  if [ -f $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas ]; then
+    $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas $GS_SCHEMA_DIR
+  fi
 fi
 
 # Enable gsettings user changes
