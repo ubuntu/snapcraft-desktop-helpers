@@ -34,7 +34,7 @@ confinement: strict
 parts:
   desktop:
     plugin: nil
-  gtk2:
+  desktop/gtk2:
     source: .
     source-subdir: gtk
     plugin: make
@@ -52,7 +52,7 @@ parts:
       - libglib2.0-bin
       - libgtk2.0-bin
       - unity-gtk2-module
-  gtk3:
+  desktop/gtk3:
     source: .
     source-subdir: gtk
     plugin: make
@@ -70,7 +70,7 @@ parts:
       - libglib2.0-bin
       - libgtk-3-bin
       - unity-gtk3-module
-  qt4:
+  desktop/qt4:
     source: .
     source-subdir: qt
     plugin: make
@@ -88,7 +88,7 @@ parts:
       - libgdk-pixbuf2.0-0
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
-  qt5:
+  desktop/qt5:
     source: .
     source-subdir: qt
     plugin: make
@@ -106,7 +106,7 @@ parts:
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
-  glib-only:
+  desktop/glib-only:
     source: .
     source-subdir: glib-only
     plugin: make
