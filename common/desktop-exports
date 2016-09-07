@@ -53,7 +53,7 @@ export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
   ln -sf $SNAP/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
-  ln -sf $SNAP/usr/share/themes $SNAP_USER_DATA/.themes
+  ln -sfn $SNAP/usr/share/themes $SNAP_USER_DATA/.themes
 fi
 
 # Build mime.cache
