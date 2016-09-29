@@ -29,6 +29,9 @@ export XKB_CONFIG_ROOT=$SNAP/usr/share/X11/xkb
 export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/$ARCH/dri
 export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/dri:$LD_LIBRARY_PATH
 
+# Tell where to find the client libraries for Mir
+export MIR_CLIENT_PLATFORM_PATH=$SNAP/usr/lib/$ARCH/mir/client-platform
+
 # Pulseaudio export
 ##export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/pulseaudio:$LD_LIBRARY_PATH
 
