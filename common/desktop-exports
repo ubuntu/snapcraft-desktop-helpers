@@ -35,6 +35,9 @@ export MIR_CLIENT_PLATFORM_PATH=$SNAP/usr/lib/$ARCH/mir/client-platform
 # Pulseaudio export
 ##export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/pulseaudio:$LD_LIBRARY_PATH
 
+# Tell GStreamer where to find its system plugins
+export GST_PLUGIN_SYSTEM_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
+
 # XDG Config
 export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS
 
