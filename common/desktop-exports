@@ -71,3 +71,6 @@ if [ $needs_update = true ]; then
     update-mime-database $XDG_DATA_HOME/mime
   fi
 fi
+
+# Ensure the app finds locale definitions (requires locales-all to be installed)
+export LOCPATH=$SNAP/usr/lib/locale
