@@ -27,9 +27,6 @@ if [ $needs_update = true ]; then
   fi
 fi
 
-# GI repository
-export GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0
-
 if [ "$USE_gtk3" = true ]; then
   export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
 else

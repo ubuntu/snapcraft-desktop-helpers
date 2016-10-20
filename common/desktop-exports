@@ -53,6 +53,9 @@ mkdir -p $XDG_DATA_HOME
 export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
 mkdir -p $XDG_CACHE_HOME
 
+# GI repository
+export GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0
+
 # Font Config and themes
 export FONTCONFIG_PATH=$SNAP/etc/fonts/conf.d
 export FONTCONFIG_FILE=$SNAP/etc/fonts/fonts.conf
