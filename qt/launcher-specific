@@ -9,6 +9,8 @@
 export QTCHOOSER_NO_GLOBAL_DIR=1
 if [ "$USE_qt5" = true ]; then
   export QT_SELECT=snappy-qt5
+elif [ "$USE_qt5-app-platform" = true ]; then
+  export QT_SELECT=snappy-qt5-app-platform
 else
   export QT_SELECT=snappy-qt4
 fi
@@ -18,6 +20,11 @@ if [ "$USE_qt5" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt5/qml
+  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/lib/$ARCH
+elif [ "$USE_qt5-app-platform" = true ]; then
+  export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
+  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml
   export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/lib/$ARCH
 else
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
