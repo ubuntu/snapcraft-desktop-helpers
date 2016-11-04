@@ -20,7 +20,7 @@ else
   ARCH="$SNAP_ARCH-linux-gnu"
 fi
 
-export SNAP_LAUNCHER_ARCH=$ARCH
+export SNAP_LAUNCHER_ARCH_TRIPLET=$ARCH
 
 # XKB config
 export XKB_CONFIG_ROOT=$SNAP/usr/share/X11/xkb
