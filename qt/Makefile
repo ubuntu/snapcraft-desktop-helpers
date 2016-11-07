@@ -40,7 +40,7 @@ desktop-launch:
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
 	@echo "$$QT5_APP_PLATFORM_CONF" > snappy-qt5-app-platform.conf
 	@echo "$$QT5_CONF" > snappy-qt5.conf
-	@echo "$$QT5_CONF" > snappy-qt4.conf
+	@echo "$$QT4_CONF" > snappy-qt4.conf
 	@echo "USE_$(FLAVOR)=true" >> $(FLAVOR_FILE)
 		
 install: desktop-launch
