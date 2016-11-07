@@ -13,6 +13,7 @@ description: |
     1. add "after: [desktop-<technology>]" to your launcher:
        - gtk2, gtk3, qt4 and qt5 corresponds to their respective toolkit
          main dependencies and default choices.
+       - ubuntu-app-platform corresponds to the shared platform snap use.
        - glib-only enables to compile mime types and gsettings infos. If you
          added your own graphical drivers, it will link them as well.
     2. prepend your command with "desktop-launch", like:
@@ -29,6 +30,15 @@ description: |
        - read/write to gsettings:
          plugs: [gsettings, home]
          (note that the home plug is needed to read new value)
+       - use of the shared platform snap content, first define the plug:
+           plugs:
+             platform:
+               content: ubuntu-app-platform1
+               default-provider: ubuntu-app-platform
+               interface: content
+               target: ubuntu-app-platform
+         and then make your apps use it:
+           plugs: [platform]
 confinement: strict
 
 parts:
@@ -286,3 +296,13 @@ parts:
       - libglib2.0-dev
     stage-packages:
       - libglib2.0-bin
+  desktop-ubuntu-app-platform:
+    source: .
+    source-subdir: qt
+    plugin: make
+    make-parameters: ["FLAVOR=qt5-app-platform"]
+    # developer should use stable-phone-overlay PPA for Qt 5.6 to match the platform snap
+    build-packages:
+      - qtbase5-dev
+      - dpkg-dev
+    # No staged packages, they are in the platform snap
