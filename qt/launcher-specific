@@ -90,4 +90,9 @@ if [ "$USE_qt5-app-platform" = true ]; then
   compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
 fi
 
+# Necessary for the SDK to find the translations directory
+if [ "$USE_qt5-app-platform" = true ]; then
+  export APP_DIR=$SNAP
+fi
+
 exec "$@"
