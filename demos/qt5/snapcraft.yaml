@@ -2,6 +2,7 @@ name: qt5-application
 version: 1
 summary: Qt5 Application Example
 description: A simple text editor
+grade: stable
 confinement: strict
 
 apps:
@@ -14,4 +15,4 @@ parts:
     source: src/
     plugin: qmake
     qt-version: qt5
-    after: [desktop/qt5]
+    after: [desktop-qt5]
