@@ -34,7 +34,8 @@ parts:
       - appmenu-qt5
 
 #plugs:
-#  ubuntu-app-runtime:
-#      content: ubuntu-app-runtime
+#  platform:
+#      content: ubuntu-app-platform1
+#      default-provider: ubuntu-app-platform
 #      interface: content
-#      target: ubuntu-app-runtime
+#      target: ubuntu-app-platform
