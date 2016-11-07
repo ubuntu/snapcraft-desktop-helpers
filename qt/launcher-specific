@@ -85,5 +85,9 @@ if [ $needs_update = true ]; then
   done
 fi
 
+# compile real schema files now that we have the executable as part of the platform snap
+if [ "$USE_qt5-app-platform" = true ]; then
+  compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+fi
 
 exec "$@"
