@@ -10,8 +10,7 @@ export QTCHOOSER_NO_GLOBAL_DIR=1
 if [ "$USE_qt5" = true ]; then
   export QT_SELECT=snappy-qt5
 elif [ "$USE_qt5-app-platform" = true ]; then
-  ls -d $SNAP/ubuntu-app-platform >/dev/null 2>&1
-  if [ $? -ne 0 ] ; then
+  if [ ! -d $SNAP/ubuntu-app-platform ] ; then
     echo "You need to connect the ubuntu-app-platform package with your application "
     echo "to reuse shared assets, please run:"
     echo "snap install ubuntu-app-platform"
