@@ -35,6 +35,14 @@ elif [ "$USE_qt5appplatform" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
   export LIBGL_DRIVERS_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/dri
   export LD_LIBRARY_PATH=$LIBGL_DRIVERS_PATH:$LD_LIBRARY_PATH
+  export XKB_CONFIG_ROOT=$SNAP/ubuntu-app-platform/usr/share/X11/xkb
+  export FONTCONFIG_PATH=$SNAP/ubuntu-app-platform/etc/fonts/conf.d
+  export FONTCONFIG_FILE=$SNAP/ubuntu-app-platform/etc/fonts/fonts.conf
+  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
+  ln -sf $SNAP/ubuntu-app-platform/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+  ln -sfn $SNAP/ubuntu-app-platform/usr/share/themes $SNAP_USER_DATA/.themes
+  export LOCPATH=$SNAP/ubuntu-app-platform/usr/lib/locale
+  export QTCOMPOSE=$SNAP/ubuntu-app-platform/usr/share/X11/locale
 
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
