@@ -33,9 +33,11 @@ elif [ "$USE_qt5appplatform" = true ]; then
   export XKB_CONFIG_ROOT=$SNAP/ubuntu-app-platform/usr/share/X11/xkb
   export FONTCONFIG_PATH=$SNAP/ubuntu-app-platform/etc/fonts/conf.d
   export FONTCONFIG_FILE=$SNAP/ubuntu-app-platform/etc/fonts/fonts.conf
-  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
-  ln -sf $SNAP/ubuntu-app-platform/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
-  ln -sfn $SNAP/ubuntu-app-platform/usr/share/themes $SNAP_USER_DATA/.themes
+  if [ $needs_update = true ]; then
+    rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
+    ln -sf $SNAP/ubuntu-app-platform/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+    ln -sfn $SNAP/ubuntu-app-platform/usr/share/themes $SNAP_USER_DATA/.themes
+  fi
   export LOCPATH=$SNAP/ubuntu-app-platform/usr/lib/locale
   export QTCOMPOSE=$SNAP/ubuntu-app-platform/usr/share/X11/locale
   XDG_DATA_DIRS=$XDG_DATA_DIRS:$SNAP/ubuntu-app-platform/usr/share
