@@ -33,6 +33,10 @@ elif [ "$USE_qt5appplatform" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
+  # For mesa drivers
+  export LIBGL_DRIVERS_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/dri
+  # For keyboard config
+  export XKB_CONFIG_ROOT=$SNAP/ubuntu-app-platform/usr/share/X11/xkb
   # for qmlscene and other chooser tools
   PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/bin:$PATH
 else
