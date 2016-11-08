@@ -40,6 +40,9 @@ elif [ "$USE_qt5appplatform" = true ]; then
   # Fonts
   export FONTCONFIG_PATH=$SNAP/ubuntu-app-platform/etc/fonts/conf.d
   export FONTCONFIG_FILE=$SNAP/ubuntu-app-platform/etc/fonts/fonts.conf
+  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
+  ln -sf $SNAP/ubuntu-app-platform/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+  ln -sfn $SNAP/ubuntu-app-platform/usr/share/themes $SNAP_USER_DATA/.themes
   # Locales
   export LOCPATH=$SNAP/ubuntu-app-platform/usr/lib/locale
   # Removes Qt warning about system Compose files
