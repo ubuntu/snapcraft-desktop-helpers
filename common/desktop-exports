@@ -31,7 +31,7 @@ export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
 
 # Tell libGL where to find the drivers
 export LIBGL_DRIVERS_PATH=$SNAP/usr/lib/$ARCH/dri
-export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/dri:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$LIBGL_DRIVERS_PATH:$LD_LIBRARY_PATH
 
 # Tell where to find the client libraries for Mir
 export MIR_CLIENT_PLATFORM_PATH=$SNAP/usr/lib/$ARCH/mir/client-platform
