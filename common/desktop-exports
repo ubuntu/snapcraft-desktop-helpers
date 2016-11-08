@@ -57,6 +57,13 @@ mkdir -p $XDG_DATA_HOME
 export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
 mkdir -p $XDG_CACHE_HOME
 
+# Python paths
+for i in /usr/bin/python[0-9]{.[0-9],} $SNAP/usr/bin/python[0-9]{.[0-9],}; do
+  if [ -x $i ] && ! [ -L $i ]; then
+    export PYTHONPATH=$SNAP/usr/lib/$(basename $i):$SNAP/usr/lib/$(basename $i)/dist-packages
+  fi
+done
+
 # GI repository
 export GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0
 
