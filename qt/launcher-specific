@@ -24,24 +24,20 @@ fi
 
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ]; then
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
-  # for qmlscene and other chooser tools
-  PATH=$SNAP/usr/lib/$ARCH/bin:$PATH
+  PATH=$SNAP/usr/lib/$ARCH/qt5/bin:$PATH
 elif [ "$USE_qt5appplatform" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
-  # for qmlscene and other chooser tools
-  PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/bin:$PATH
+  PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/bin:$PATH
 else
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
   export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
-  export SNAP_LAUNCHER_QMLSCENE=$SNAP/usr/lib/$ARCH/qt4/qmlscene
-  # for qmlscene and other chooser tools
-  PATH=$SNAP/usr/lib/$ARCH/bin:$PATH
+  PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
 fi
 
 # Necessary for the SDK to find the translations directory
