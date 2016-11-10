@@ -16,17 +16,6 @@ if [ $needs_update = true ]; then
   fi
 fi
 
-# Gio modules and cache
-export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
-if [ $needs_update = true ]; then
-  rm -rf $GIO_MODULE_DIR
-  mkdir -p $GIO_MODULE_DIR
-  ln -s $SNAP/usr/lib/$ARCH/gio/modules/*.so $GIO_MODULE_DIR
-  if [ -f $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules ]; then
-    $SNAP/usr/lib/$ARCH/glib-2.0/gio-querymodules $GIO_MODULE_DIR
-  fi
-fi
-
 if [ "$USE_gtk3" = true ]; then
   export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
 else
