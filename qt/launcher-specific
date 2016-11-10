@@ -107,6 +107,7 @@ fi
 # compile real schema files now that we have the executable as part of the platform snap
 if [ "$USE_qt5appplatform" = true ]; then
   if [ $needs_update = true ]; then
+    compile_giomodules $SNAP/ubuntu-app-platform/usr/lib/$ARCH
     compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
   fi
 fi
