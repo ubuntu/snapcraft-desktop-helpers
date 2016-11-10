@@ -22,6 +22,10 @@ else
   export QT_SELECT=snappy-qt4
 fi
 
+# Removes Qt warning: Could not find a location
+# of the system Compose files
+export QTCOMPOSE=$SNAP/usr/share/X11/locale
+
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ]; then
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH
@@ -59,10 +63,6 @@ fi
 
 # Necessary for the SDK to find the translations directory
 export APP_DIR=$SNAP
-
-# Removes Qt warning: Could not find a location
-# of the system Compose files
-export QTCOMPOSE=$SNAP/usr/share/X11/locale
 
 # Use GTK styling for running under Unity 7
 export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
