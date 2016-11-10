@@ -88,7 +88,7 @@ IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 # Setup compiled gsettings schema
 GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
 function compile_schemas {
-  if [ $needs_update = true ]; then
+  if [ -f "$1" ]; then
     rm -rf $GS_SCHEMA_DIR
     mkdir -p $GS_SCHEMA_DIR
     for d in "${data_dirs_array[@]}"; do
@@ -97,12 +97,12 @@ function compile_schemas {
         ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
       fi
     done
-    if [ -f "$1" ]; then
-      "$1" $GS_SCHEMA_DIR
-    fi
+    "$1" $GS_SCHEMA_DIR
   fi
 }
-compile_schemas $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+if [ $needs_update = true ]; then
+  compile_schemas $SNAP/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+fi
 
 # Enable gsettings user changes
 # symlink the dconf file if home plug is connected for read

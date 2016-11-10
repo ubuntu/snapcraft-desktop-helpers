@@ -106,7 +106,9 @@ fi
 
 # compile real schema files now that we have the executable as part of the platform snap
 if [ "$USE_qt5appplatform" = true ]; then
-  compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+  if [ $needs_update = true ]; then
+    compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+  fi
 fi
 
 # Necessary for the SDK to find the translations directory
