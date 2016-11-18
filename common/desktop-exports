@@ -37,6 +37,9 @@ if [ ! -S "$MIR_SOCKET" -a -S /run/mir_socket ]; then
   export MIR_SOCKET=/run/mir_socket
 fi
 
+# Unity7 export (workaround for https://launchpad.net/bugs/1638405)
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/libunity
+
 # Pulseaudio export
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
 
