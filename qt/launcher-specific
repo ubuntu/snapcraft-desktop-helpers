@@ -36,6 +36,7 @@ elif [ "$USE_qt5appplatform" = true ]; then
   # GL and general libs coming from app platform
   export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/pulseaudio:$LD_LIBRARY_PATH
   export LIBGL_DRIVERS_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/dri
   export LD_LIBRARY_PATH=$LIBGL_DRIVERS_PATH:$LD_LIBRARY_PATH
   export XKB_CONFIG_ROOT=$SNAP/ubuntu-app-platform/usr/share/X11/xkb
