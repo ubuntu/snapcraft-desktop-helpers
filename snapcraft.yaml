@@ -63,6 +63,8 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    after:
+      - indicator-gtk2
   gtk3:
     source: .
     source-subdir: gtk
@@ -82,6 +84,8 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    after:
+      - indicator-gtk3
   qt4:
     source: .
     source-subdir: qt
@@ -101,6 +105,8 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+    after:
+      - indicator-qt4
   qt5:
     source: .
     source-subdir: qt
@@ -118,8 +124,9 @@ parts:
       - libqt5gui5
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
-      - appmenu-qt5
       - locales-all
+    after:
+      - indicator-qt5
   glib-only:
     source: .
     source-subdir: glib-only
@@ -147,6 +154,8 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    after:
+      - indicator-gtk2
   desktop/gtk3:
     source: .
     source-subdir: gtk
@@ -166,6 +175,8 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    after:
+      - indicator-gtk3
   desktop/qt4:
     source: .
     source-subdir: qt
@@ -185,6 +196,8 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+    after:
+      - indicator-qt4
   desktop/qt5:
     source: .
     source-subdir: qt
@@ -202,8 +215,9 @@ parts:
       - libqt5gui5
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
-      - appmenu-qt5
       - locales-all
+    after:
+      - indicator-qt5
   desktop/glib-only:
     source: .
     source-subdir: glib-only
@@ -231,6 +245,8 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    after:
+      - indicator-gtk2
   desktop-gtk3:
     source: .
     source-subdir: gtk
@@ -250,6 +266,8 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    after:
+      - indicator-gtk3
   desktop-qt4:
     source: .
     source-subdir: qt
@@ -286,8 +304,9 @@ parts:
       - libqt5gui5
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
-      - appmenu-qt5
       - locales-all
+    after:
+      - indicator-qt5
   desktop-glib-only:
     source: .
     source-subdir: glib-only
