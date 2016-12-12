@@ -35,6 +35,8 @@ export LD_LIBRARY_PATH=$LIBGL_DRIVERS_PATH:$LD_LIBRARY_PATH
 
 # Workaround in snapd for proprietary nVidia drivers mounts the drivers in
 # /var/lib/snapd/lib/gl that needs to be in LD_LIBRARY_PATH
+# Without that OpenGL using apps do not work with the nVidia drivers.
+# Ref.: https://bugs.launchpad.net/snappy/+bug/1588192
 export LD_LIBRARY_PATH=/var/lib/snapd/lib/gl:$LD_LIBRARY_PATH
 
 # Tell where to find the client libraries for Mir
