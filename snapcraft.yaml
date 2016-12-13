@@ -14,6 +14,8 @@ description: |
        - gtk2, gtk3, qt4 and qt5 corresponds to their respective toolkit
          main dependencies and default choices.
        - ubuntu-app-platform corresponds to the shared platform snap use.
+       - gnome is similar to gtk3 without the depends, it's meant to
+         be used with the gnome runtime which already includes those.
        - glib-only enables to compile mime types and gsettings infos. If you
          added your own graphical drivers, it will link them as well.
     2. prepend your command with "desktop-launch", like:
@@ -39,11 +41,28 @@ description: |
                target: ubuntu-app-platform
          and then make your apps use it:
            plugs: [platform]
+       - similarly for the gnome runtime
+          plugs:
+              gnome-runtime:
+                content: gnome318-runtime
+                default-provider: gnome318-udt:gnome318-runtime
+                interface: content
+                target: gnome-runtime
+         and then make your apps use it:
+           plugs: [gnome-runtime]
+
 confinement: strict
 
 parts:
   desktop:
     plugin: nil
+  gnome:
+    source: .
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - libgtk-3-dev
   gtk2:
     source: .
     source-subdir: gtk
