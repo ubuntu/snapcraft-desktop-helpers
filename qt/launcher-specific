@@ -28,8 +28,8 @@ export QTCOMPOSE=$SNAP/usr/share/X11/locale
 
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ]; then
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH
-  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$SNAP/ubuntu-app-themes/usr/lib/$ARCH:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-themes/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$SNAP/usr/lib/$ARCH/qt5/bin:$PATH
 elif [ "$USE_qt5appplatform" = true ]; then
@@ -51,8 +51,8 @@ elif [ "$USE_qt5appplatform" = true ]; then
   XDG_DATA_DIRS=$XDG_DATA_DIRS:$SNAP/ubuntu-app-platform/usr/share
   export MIR_CLIENT_PLATFORM_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mir/client-platform
 
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH:$LD_LIBRARY_PATH
-  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH:$SNAP/ubuntu-app-themes/usr/lib/$ARCH:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-themes/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
   PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/bin:$PATH
 else
