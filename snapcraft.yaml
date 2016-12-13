@@ -319,7 +319,7 @@ parts:
     source: .
     source-subdir: qt
     plugin: make
-    make-parameters: ["FLAVOR=qt5appplatform"]
+    make-parameters: ["FLAVOR=qt5"]
     # developer should use stable-phone-overlay PPA for Qt 5.6 to match the platform snap
     build-packages:
       - qtbase5-dev

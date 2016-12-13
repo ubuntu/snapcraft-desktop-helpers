@@ -1,0 +1,16 @@
+#########################################
+# Ubuntu App platform runtime selection #
+#########################################
+
+if [ -d $SNAP/ubuntu-app-platform ]; then
+  RUNTIMEDIR=$SNAP/ubuntu-app-platform
+  if [ ! -d $RUNTIME/usr ] ; then
+    echo "You need to connect the ubuntu-app-platform package with your application "
+    echo "to reuse shared assets, please run:"
+    echo "snap install ubuntu-app-platform"
+    echo "snap connect $SNAP_NAME:platform ubuntu-app-platform:platform"
+    exit 1
+  fi
+  export QT_SELECT=snappy-qt5-app-platform
+fi
+

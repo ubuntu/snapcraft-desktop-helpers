@@ -37,6 +37,7 @@ clean:
 desktop-launch:
 	@echo "#!/bin/bash" > $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/init >> $(DEST_LAUNCHER)
+	@cat $(SRC_DIR)/runtime-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/desktop-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
 	@echo "$$QT5_APP_PLATFORM_CONF" > snappy-qt5-app-platform.conf
