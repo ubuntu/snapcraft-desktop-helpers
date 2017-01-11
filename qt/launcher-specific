@@ -60,7 +60,7 @@ else
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
   export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
   PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
-  if [ -S "$MIR_SOCKET" ] || [ -f "$XDG_RUNTIME_DIR/mir_socket" ] ; then
+  if [ -S "$MIR_SOCKET" ] || [ -S "$XDG_RUNTIME_DIR/mir_socket" ] ; then
     export QT_QPA_PLATFORM=ubuntumirclient
   else
     export QT_QPA_PLATFORM=xcb
