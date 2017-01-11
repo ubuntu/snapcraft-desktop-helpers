@@ -55,16 +55,16 @@ elif [ "$USE_qt5appplatform" = true ]; then
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
   PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/bin:$PATH
-else
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
-  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
-  export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
-  PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
   if [ -S "$MIR_SOCKET" ] || [ -S "$XDG_RUNTIME_DIR/mir_socket" ] ; then
     export QT_QPA_PLATFORM=ubuntumirclient
   else
     export QT_QPA_PLATFORM=xcb
   fi
+else
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
+  export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
+  PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
 fi
 
 # Necessary for the SDK to find the translations directory
