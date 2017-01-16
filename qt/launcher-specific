@@ -55,6 +55,11 @@ elif [ "$USE_qt5appplatform" = true ]; then
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
   export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
   PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/bin:$PATH
+  if [ "$XDG_SESSION_TYPE" = "x11" ] ; then
+    export QT_QPA_PLATFORM=xcb
+  else
+    export QT_QPA_PLATFORM=ubuntumirclient
+  fi
 else
   export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
