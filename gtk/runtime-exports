@@ -8,7 +8,7 @@ if [ -d $SNAP/gnome-runtime ]; then
     echo "You need to connect the snap to the gnome-runtime interface."
     echo ""
     echo "You can do this with those commands:"
-    echo "snap install gnome318-udt"
+    echo "snap install --edge gnome318-udt"
     echo "snap connect $SNAP_NAME:gnome318-runtime gnome318-udt:gnome318-runtime"
     echo ""
     echo "(the '318' number defines the runtime version and might change)"
