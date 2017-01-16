@@ -16,6 +16,8 @@ description: |
        - gnome is similar to gtk3 without the extra depends, it's meant to
          be used with the gnome runtime which already includes those.
        - ubuntu-app-platform corresponds to the shared platform snap use.
+       - gnome is similar to gtk3 without the depends, it's meant to
+         be used with the gnome runtime which already includes those.
        - glib-only enables to compile mime types and gsettings infos. If you
          added your own graphical drivers, it will link them as well.
     2. prepend your command with "desktop-launch", like:
