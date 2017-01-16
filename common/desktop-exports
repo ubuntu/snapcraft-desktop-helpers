@@ -52,7 +52,10 @@ export GST_PLUGIN_SYSTEM_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
 export XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS
 
 # Define snaps' own data dir
-export XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS
+export XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$SNAP/ubuntu-app-themes/usr/share:$XDG_DATA_DIRS
+
+# Add the GTK3 path of ubuntu-app-themes dirs (in case they're being used)
+export XDG_DATA_DIRS=$XDG_DATA_DIRS:$SNAP/ubuntu-app-themes/usr/share
 
 # Set XDG_DATA_HOME to local path
 export XDG_DATA_HOME=$SNAP_USER_DATA/.local/share
