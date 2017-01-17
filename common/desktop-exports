@@ -2,14 +2,14 @@
 # Launcher common exports for any desktop app #
 ###############################################
 
-USE_RUNTIME=no
+WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
 else
   # add general paths not added by snapcraft due to runtime snap
   export LD_LIBRARY_PATH=$RUNTIME/usr/lib/$ARCH:$LD_LIBRARY_PATH
   export PATH=$RUNTIME/usr/bin:$PATH
-  USE_RUNTIME=yes
+  WITH_RUNTIME=yes
 fi
 
 # XKB config
@@ -40,11 +40,11 @@ export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
 
 # XDG Config
 export XDG_CONFIG_DIRS=$RUNTIME/etc/xdg:$RUNTIME/usr/xdg:$XDG_CONFIG_DIRS
-[ "$USE_RUNTIME" = yes ] && XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS # add local SNAP assets if a runtime is used
 
 # Define snaps' own data dir
 export XDG_DATA_DIRS=$SNAP_USER_DATA:$RUNTIME/usr/share:$XDG_DATA_DIRS
-[ "$USE_RUNTIME" = yes ] && XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS # add local SNAP assets if a runtime is used
 
 # Set XDG_DATA_HOME to local path
 export XDG_DATA_HOME=$SNAP_USER_DATA/.local/share
@@ -57,7 +57,7 @@ mkdir -p $XDG_CACHE_HOME
 
 # GI repository
 export GI_TYPELIB_PATH=$RUNTIME/usr/lib/girepository-1.0:$RUNTIME/usr/lib/$ARCH/girepository-1.0
-[ "$USE_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
 
 # Font Config and themes
 export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
