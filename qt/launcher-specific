@@ -23,7 +23,7 @@ export QTCOMPOSE=$SNAP/usr/share/X11/locale
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ]; then
   export QT_PLUGIN_PATH=$RUNTIME/usr/lib/$ARCH/qt5/plugins
-  export QML2_IMPORT_PATH=$RUNTIME/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
+  export QML2_IMPORT_PATH=$RUNTIME/lib/$ARCH:$RUNTIME/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
   if [ "$XDG_SESSION_TYPE" = "x11" ] ; then
     export QT_QPA_PLATFORM=xcb
