@@ -63,6 +63,9 @@ mkdir -p $XDG_DATA_HOME
 export XDG_CACHE_HOME=$SNAP_USER_DATA/.cache
 mkdir -p $XDG_CACHE_HOME
 
+# Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
+[ -n "$XDG_RUNTIME_DIR" ] && ! [ -d "$XDG_RUNTIME_DIR" ] && mkdir $XDG_RUNTIME_DIR -m 700
+
 # GI repository
 export GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0
 
