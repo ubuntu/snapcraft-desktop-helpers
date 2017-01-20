@@ -9,29 +9,72 @@
 export QTCHOOSER_NO_GLOBAL_DIR=1
 if [ "$USE_qt5" = true ]; then
   export QT_SELECT=snappy-qt5
+elif [ "$USE_qt5appplatform" = true ]; then
+  if [ ! -d $SNAP/ubuntu-app-platform/usr ] ; then
+    echo "You need to connect the ubuntu-app-platform package with your application "
+    echo "to reuse shared assets, please run:"
+    echo "snap install ubuntu-app-platform"
+    echo "snap connect $SNAP_NAME:platform ubuntu-app-platform:platform"
+    exit 1
+  fi
+  export QT_SELECT=snappy-qt5-app-platform
 else
   export QT_SELECT=snappy-qt4
 fi
 
-# Qt Libs and Modules
-if [ "$USE_qt5" = true ]; then
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt5/libs:$LD_LIBRARY_PATH
-  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
-  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt5/qml
-  export QML2_IMPORT_PATH=$QML2_IMPORT_PATH:$SNAP/lib/$ARCH
-else
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
-  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
-  export QML_IMPORT_PATH=$QML_IMPORT_PATH:$SNAP/usr/lib/$ARCH/qt4/qml
-  export QML_IMPORT_PATH=$QML_IMPORT_PATH:$SNAP/lib/$ARCH
-fi
-
-# Necessary for the SDK to find the translations directory
-export APP_DIR=$SNAP
-
 # Removes Qt warning: Could not find a location
 # of the system Compose files
 export QTCOMPOSE=$SNAP/usr/share/X11/locale
+
+# Qt Libs, Modules and helpers
+if [ "$USE_qt5" = true ]; then
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins
+  export QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
+  PATH=$SNAP/usr/lib/$ARCH/qt5/bin:$PATH
+elif [ "$USE_qt5appplatform" = true ]; then
+  # GL and general libs coming from app platform
+  export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
+  export LIBGL_DRIVERS_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/dri
+  export LD_LIBRARY_PATH=$LIBGL_DRIVERS_PATH:$LD_LIBRARY_PATH
+  export XKB_CONFIG_ROOT=$SNAP/ubuntu-app-platform/usr/share/X11/xkb
+  export FONTCONFIG_PATH=$SNAP/ubuntu-app-platform/etc/fonts/conf.d
+  export FONTCONFIG_FILE=$SNAP/ubuntu-app-platform/etc/fonts/fonts.conf
+  if [ $needs_update = true ]; then
+    rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
+    ln -sf $SNAP/ubuntu-app-platform/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+    ln -sfn $SNAP/ubuntu-app-platform/usr/share/themes $SNAP_USER_DATA/.themes
+  fi
+  export LOCPATH=$SNAP/ubuntu-app-platform/usr/lib/locale
+  export QTCOMPOSE=$SNAP/ubuntu-app-platform/usr/share/X11/locale
+  XDG_DATA_DIRS=$XDG_DATA_DIRS:$SNAP/ubuntu-app-platform/usr/share
+  export MIR_CLIENT_PLATFORM_PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/mir/client-platform
+
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt5/plugins:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/plugins
+  export QML2_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt5/qml:$SNAP/lib/$ARCH:$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/qml:$SNAP/ubuntu-app-platform/lib/$ARCH:$QML2_IMPORT_PATH
+  PATH=$SNAP/ubuntu-app-platform/usr/lib/$ARCH/qt5/bin:$PATH
+  if [ "$XDG_SESSION_TYPE" = "x11" ] ; then
+    export QT_QPA_PLATFORM=xcb
+  else
+    export QT_QPA_PLATFORM=ubuntumirclient
+  fi
+else
+  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
+  export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
+  export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
+  PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
+fi
+
+# Workaround in snapd for proprietary nVidia drivers mounts the drivers in
+# /var/lib/snapd/lib/gl that needs to be in LD_LIBRARY_PATH
+# Without that OpenGL using apps do not work with the nVidia drivers.
+# Ref.: https://bugs.launchpad.net/snappy/+bug/1588192
+export LD_LIBRARY_PATH=/var/lib/snapd/lib/gl:$LD_LIBRARY_PATH
+
+# Necessary for the SDK to find the translations directory
+export APP_DIR=$SNAP
 
 # Use GTK styling for running under Unity 7
 export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
@@ -48,6 +91,7 @@ if [ $needs_update = true ]; then
 fi
 
 # Keep an array of data dirs, for looping through them
+# Refresh it with potential new XDG_DATA_DIRS DIRS
 IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Icon themes cache
@@ -72,5 +116,17 @@ if [ $needs_update = true ]; then
   done
 fi
 
+# compile real schema files now that we have the executable as part of the platform snap
+if [ "$USE_qt5appplatform" = true ]; then
+  if [ $needs_update = true ]; then
+    compile_giomodules $SNAP/ubuntu-app-platform/usr/lib/$ARCH
+    compile_schemas $SNAP/ubuntu-app-platform/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
+  fi
+fi
+
+# Necessary for the SDK to find the translations directory
+if [ "$USE_qt5appplatform" = true ]; then
+  export APP_DIR=$SNAP
+fi
 
 exec "$@"
