@@ -79,7 +79,7 @@ if [ $needs_update = true ]; then
 fi
 
 # Ensure the app finds locale definitions (requires locales-all to be installed)
-export LOCPATH=$RUNTIME/usr/lib/locale
+export LOCPATH=$LOCPATH:$SNAP/usr/lib/locale
 
 # Gio modules and cache (including gsettings module)
 export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
