@@ -3,7 +3,7 @@
 #########################################
 
 if [ -d $SNAP/ubuntu-app-platform ]; then
-  RUNTIMEDIR=$SNAP/ubuntu-app-platform
+  RUNTIME=$SNAP/ubuntu-app-platform
   if [ ! -d $RUNTIME/usr ] ; then
     echo "You need to connect the ubuntu-app-platform package with your application "
     echo "to reuse shared assets, please run:"
