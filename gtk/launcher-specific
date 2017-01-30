@@ -7,19 +7,19 @@
 
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
-export GDK_PIXBUF_MODULEDIR=$SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
+export GDK_PIXBUF_MODULEDIR=$RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
 
 if [ $needs_update = true ]; then
   rm -f $GDK_PIXBUF_MODULE_FILE
-  if [ -f $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
-    $SNAP/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  if [ -f $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
+    $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
   fi
 fi
 
 if [ "$USE_gtk3" = true ]; then
-  export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-3.0
+  export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-3.0
 else
-  export GTK_PATH=$SNAP/usr/lib/$ARCH/gtk-2.0
+  export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-2.0
 fi
 
 # ibus and fcitx integration
@@ -31,11 +31,11 @@ if [ $needs_update = true ]; then
   rm -rf $GTK_IM_MODULE_DIR
   mkdir -p $GTK_IM_MODULE_DIR
   if [ "$USE_gtk3" = true ]; then
-    ln -s $SNAP/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
-    $SNAP/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
+    ln -s $RUNTIME/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $RUNTIME/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
   else
-    ln -s $SNAP/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
-    $SNAP/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
+    ln -s $RUNTIME/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
+    $RUNTIME/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
   fi
 fi
 
@@ -50,10 +50,10 @@ if [ $needs_update = true ]; then
         if [ ! -d "$theme_dir" ]; then
           mkdir -p "$theme_dir"
           ln -s $i/* "$theme_dir"
-          if [ -f $SNAP/usr/sbin/update-icon-caches ]; then
-            $SNAP/usr/sbin/update-icon-caches "$theme_dir"
-          elif [ -f $SNAP/usr/sbin/update-icon-cache.gtk2 ]; then
-            $SNAP/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
+          if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
+            $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
+          elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
+            $RUNTIME/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
           fi
         fi
       fi
