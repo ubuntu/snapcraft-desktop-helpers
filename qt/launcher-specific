@@ -32,7 +32,7 @@ if [ "$USE_qt5" = true ]; then
     export QT_QPA_PLATFORM=ubuntumirclient
   fi
 else
-  export LD_LIBRARY_PATH=$SNAP/usr/lib/$ARCH/qt4:$LD_LIBRARY_PATH
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib/$ARCH/qt4
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
   export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
   PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
