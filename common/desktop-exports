@@ -8,6 +8,7 @@ if [ -z "$RUNTIME" ]; then
 else
   # add general paths not added by snapcraft due to runtime snap
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/lib/$ARCH
   export PATH=$PATH:$RUNTIME/usr/bin
   WITH_RUNTIME=yes
 fi
