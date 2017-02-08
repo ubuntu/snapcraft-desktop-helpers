@@ -29,8 +29,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBGL_DRIVERS_PATH
 # Ref.: https://bugs.launchpad.net/snappy/+bug/1588192
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 
-# Tell where to find the client libraries for Mir
+# Mir
 export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
+export MIR_SOCKET=/run/user/$(id -u)/mir_socket
 
 # Pulseaudio export
 ##export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
