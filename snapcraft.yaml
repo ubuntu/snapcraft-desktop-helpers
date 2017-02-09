@@ -324,4 +324,6 @@ parts:
     build-packages:
       - qtbase5-dev
       - dpkg-dev
-    # No staged packages, they are in the platform snap
+    stage-packages:
+      - locales-all
+    # Other staged packages are in the platform snap
