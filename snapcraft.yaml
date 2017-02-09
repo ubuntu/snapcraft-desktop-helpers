@@ -43,13 +43,13 @@ description: |
            plugs: [platform]
        - similarly for the gnome platform based apps
           plugs:
-              gnome-runtime:
-                content: gnome318-runtime
-                default-provider: gnome318-udt:gnome318-runtime
+              gnome-platform:
+                content: gnome318-platform
+                default-provider: gnome318-udt:gnome318-platform
                 interface: content
-                target: gnome-runtime
+                target: gnome-platform
          and then make your apps use it:
-           plugs: [gnome-runtime]
+           plugs: [gnome-platform]
 
 confinement: strict
 
