@@ -18,7 +18,7 @@ fi
 
 # Removes Qt warning: Could not find a location
 # of the system Compose files
-export QTCOMPOSE=$SNAP/usr/share/X11/locale
+export QTCOMPOSE=$RUNTIME/usr/share/X11/locale
 
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ]; then
