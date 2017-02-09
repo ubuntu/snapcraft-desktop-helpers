@@ -315,6 +315,13 @@ parts:
       - libglib2.0-dev
     stage-packages:
       - libglib2.0-bin
+  desktop-gnome:
+    source: .
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - libgtk-3-dev
   desktop-ubuntu-app-platform:
     source: .
     source-subdir: qt
