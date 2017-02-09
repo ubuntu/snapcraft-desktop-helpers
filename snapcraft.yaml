@@ -2,7 +2,7 @@ name: desktop-helpers
 version: 1
 summary: Various technology desktop helpers for snapcraft
 description: |
-  Helpers for gtk2, gtk3, qt4 and qt5 or glib minimal launchers.
+  Helpers for gtk2, gtk3, qt4 and qt5 or gnome-platform and glib minimal launchers.
   It brings the necessary code and exports for binding and using those
   desktop technologies in a relocatable fashion, enabling binding with
   global desktop theme, icon theme, image caching, fonts, mimetype handlers
@@ -13,8 +13,8 @@ description: |
     1. add "after: [desktop-<technology>]" to your launcher:
        - gtk2, gtk3, qt4 and qt5 corresponds to their respective toolkit
          main dependencies and default choices.
-       - gnome is similar to gtk3 without the extra depends, it's meant to
-         be used with the gnome runtime which already includes those.
+       - gnome-platform is similar to gtk3 without the extra depends, it's
+         meant to be used with the gnome platform which already includes those.
        - ubuntu-app-platform corresponds to the shared platform snap use.
        - glib-only enables to compile mime types and gsettings infos. If you
          added your own graphical drivers, it will link them as well.
@@ -41,7 +41,7 @@ description: |
                target: ubuntu-app-platform
          and then make your apps use it:
            plugs: [platform]
-       - similarly for the gnome runtime
+       - similarly for the gnome platform based apps
           plugs:
               gnome-runtime:
                 content: gnome318-runtime
@@ -56,13 +56,6 @@ confinement: strict
 parts:
   desktop:
     plugin: nil
-  gnome:
-    source: .
-    source-subdir: gtk
-    plugin: make
-    make-parameters: ["FLAVOR=gtk3"]
-    build-packages:
-      - libgtk-3-dev
   gtk2:
     source: .
     source-subdir: gtk
@@ -315,7 +308,7 @@ parts:
       - libglib2.0-dev
     stage-packages:
       - libglib2.0-bin
-  desktop-gnome:
+  desktop-gnome-platform:
     source: .
     source-subdir: gtk
     plugin: make
