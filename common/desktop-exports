@@ -34,7 +34,7 @@ export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
 export MIR_SOCKET=/run/user/$(id -u)/mir_socket
 
 # Pulseaudio export
-##export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
 
 # Tell GStreamer where to find its system plugins
 export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
