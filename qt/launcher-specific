@@ -26,10 +26,11 @@ if [ "$USE_qt5" = true ]; then
   export QML2_IMPORT_PATH=$RUNTIME/lib/$ARCH:$RUNTIME/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   [ "$WITH_RUNTIME" = yes ] && QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
-  if [ "$XDG_SESSION_TYPE" = "x11" ] ; then
-    export QT_QPA_PLATFORM=xcb
-  else
+  if [ -z "$DISPLAY" ] ; then
     export QT_QPA_PLATFORM=ubuntumirclient
+  else
+    # If a X11 $DISPLAY variable is set we should use it
+    export QT_QPA_PLATFORM=xcb
   fi
 else
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib/$ARCH/qt4
