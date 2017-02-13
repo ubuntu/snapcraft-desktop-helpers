@@ -32,6 +32,10 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 # Mir
 export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
 export MIR_SOCKET=/run/user/$(id -u)/mir_socket
+if [ ! -S "$MIR_SOCKET" -a -S /run/mir_socket ]; then
+  # Fall back to global location if there is no user server (e.g. on a kiosk)
+  export MIR_SOCKET=/run/mir_socket
+fi
 
 # Pulseaudio export
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
