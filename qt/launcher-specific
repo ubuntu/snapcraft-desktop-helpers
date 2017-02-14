@@ -28,6 +28,8 @@ if [ "$USE_qt5" = true ]; then
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
   if [ -z "$DISPLAY" ] ; then
     export QT_QPA_PLATFORM=ubuntumirclient
+    # When under Mir try to use qtubuntu-print plugin, if it doesn't exist Qt will fallback to cups plugin
+    export QT_PRINTER_MODULE=qtubuntu-print
   else
     # If a X11 $DISPLAY variable is set we should use it
     export QT_QPA_PLATFORM=xcb
