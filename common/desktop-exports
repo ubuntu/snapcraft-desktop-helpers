@@ -40,7 +40,8 @@ fi
 # Pulseaudio export
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
 
-# Tell GStreamer where to find its system plugins
+# Tell GStreamer where to find its plugins
+export GST_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
 export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
 # gst plugin scanner doesn't install in the correct path: https://github.com/ubuntu/snapcraft-desktop-helpers/issues/43
 export GST_PLUGIN_SCANNER=$RUNTIME/usr/lib/$ARCH/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
