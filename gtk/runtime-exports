@@ -2,16 +2,16 @@
 # GNOME runtime selection #
 ###########################
 
-if [ -d $SNAP/gnome-runtime ]; then
-  RUNTIME=$SNAP/gnome-runtime
+if [ -d $SNAP/gnome-platform ]; then
+  RUNTIME=$SNAP/gnome-platform
   if [ ! -d $RUNTIME/usr ]; then
-    echo "You need to connect the snap to the gnome-runtime interface."
+    echo "You need to connect this snap to the gnome platform snap."
     echo ""
     echo "You can do this with those commands:"
     echo "snap install --edge gnome318-udt"
-    echo "snap connect $SNAP_NAME:gnome318-runtime gnome318-udt:gnome318-runtime"
+    echo "snap connect $SNAP_NAME:gnome318-platform gnome318-udt:gnome318-platform"
     echo ""
-    echo "(the '318' number defines the runtime version and might change)"
+    echo "(the '318' number defines the platform version and might change)"
     exit 1
   fi
 fi
