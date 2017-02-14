@@ -49,6 +49,8 @@ description: |
                 target: gnome-platform
          and then make your apps use it:
            plugs: [gnome-platform]
+         Note that an empty "gnome-platform" directory will be created for you
+         in your snap.
 
 confinement: strict
 
@@ -314,6 +316,7 @@ parts:
     make-parameters: ["FLAVOR=gtk3"]
     build-packages:
       - libgtk-3-dev
+    install: mkdir -p gnome-platform
   desktop-ubuntu-app-platform:
     source: .
     source-subdir: qt
