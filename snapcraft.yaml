@@ -43,8 +43,7 @@ description: |
            plugs: [platform]
        - similarly for the gnome platform based apps
           plugs:
-              gnome-platform:
-                content: gnome318-platform
+              gnome318-platform:
                 default-provider: gnome318-udt:gnome318-platform
                 interface: content
                 target: gnome-platform

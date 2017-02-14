@@ -5,7 +5,7 @@
 if [ -d $SNAP/gnome-platform ]; then
   RUNTIME=$SNAP/gnome-platform
   if [ ! -d $RUNTIME/usr ]; then
-    echo "You need to connect the snap to the gnome-platform interface."
+    echo "You need to connect this snap to the gnome platform snap."
     echo ""
     echo "You can do this with those commands:"
     echo "snap install --edge gnome318-udt"
