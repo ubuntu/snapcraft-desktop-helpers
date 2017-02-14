@@ -5,8 +5,9 @@
 if [ -d $SNAP/ubuntu-app-platform ]; then
   RUNTIME=$SNAP/ubuntu-app-platform
   if [ ! -d $RUNTIME/usr ] ; then
-    echo "You need to connect the ubuntu-app-platform package with your application "
-    echo "to reuse shared assets, please run:"
+    echo "You need to connect this snap to the ubuntu app platform snap."
+    echo ""
+    echo "You can do this with those commands:"
     echo "snap install ubuntu-app-platform"
     echo "snap connect $SNAP_NAME:platform ubuntu-app-platform:platform"
     exit 1
