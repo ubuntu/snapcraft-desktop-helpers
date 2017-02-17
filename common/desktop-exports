@@ -30,7 +30,9 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBGL_DRIVERS_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 
 # Mir
-export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
+# Put mir-libs first because it's easy to end up with a snap-internal copy
+export LD_LIBRARY_PATH=$SNAP/mir-libs/$ARCH:$LD_LIBRARY_PATH
+export MIR_CLIENT_PLATFORM_PATH=$SNAP/mir-libs/$ARCH/mir/client-platform
 export MIR_SOCKET=/run/user/$(id -u)/mir_socket
 if [ ! -S "$MIR_SOCKET" -a -S /run/mir_socket ]; then
   # Fall back to global location if there is no user server (e.g. on a kiosk)
