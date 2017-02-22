@@ -45,7 +45,6 @@ description: |
            plugs:
              mir:
              mir-libs:
-               content: mir-libs
                default-provider: mir-libs
                interface: content
                target: mir-libs
