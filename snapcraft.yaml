@@ -41,6 +41,13 @@ description: |
                target: ubuntu-app-platform
          and then make your apps use it:
            plugs: [platform]
+       - access to Mir:
+           plugs:
+             mir:
+             mir-libs:
+               default-provider: mir-libs
+               interface: content
+               target: mir-libs
        - similarly for the gnome platform based apps
           plugs:
               gnome318-platform:
@@ -76,6 +83,9 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   gtk3:
     source: .
     source-subdir: gtk
@@ -95,6 +105,9 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   qt4:
     source: .
     source-subdir: qt
@@ -114,6 +127,9 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   qt5:
     source: .
     source-subdir: qt
@@ -133,6 +149,9 @@ parts:
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   glib-only:
     source: .
     source-subdir: glib-only
@@ -160,6 +179,9 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop/gtk3:
     source: .
     source-subdir: gtk
@@ -179,6 +201,9 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop/qt4:
     source: .
     source-subdir: qt
@@ -198,6 +223,9 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop/qt5:
     source: .
     source-subdir: qt
@@ -217,6 +245,9 @@ parts:
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop/glib-only:
     source: .
     source-subdir: glib-only
@@ -244,6 +275,9 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop-gtk3:
     source: .
     source-subdir: gtk
@@ -263,6 +297,9 @@ parts:
       - libgtk-3-bin
       - unity-gtk3-module
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop-qt4:
     source: .
     source-subdir: qt
@@ -282,6 +319,9 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop-qt5:
     source: .
     source-subdir: qt
@@ -301,6 +341,9 @@ parts:
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
       - locales-all
+    prime:
+      - -usr/lib/*/libmir*
+      - -usr/share/doc/libmir*
   desktop-glib-only:
     source: .
     source-subdir: glib-only
