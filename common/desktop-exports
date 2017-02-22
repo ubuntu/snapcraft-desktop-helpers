@@ -146,7 +146,6 @@ if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
 fi
 
 # Testability support
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability/$ARCH
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability/$ARCH/mesa
-
+if [ -d "$SNAP/testability/$ARCH" ]; then
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability:$SNAP/testability/$ARCH:$SNAP/testability/$ARCH/mesa
+fi
