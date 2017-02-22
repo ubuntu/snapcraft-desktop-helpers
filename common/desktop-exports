@@ -43,6 +43,8 @@ if [ -d $SNAP/mir-libs/$ARCH ]; then
 elif [ -d $RUNTIME/usr/lib/$ARCH/mir ]; then
   # As of this writing, ubuntu-app-platform holds a copy of the Mir libraries,
   # but may remove them in favor of mir-libs.  Use them if present.
+  # We check both RUNTIME and SNAP (below) because if the SDK does drop the
+  # libraries, we want to fall back to an internal copy transparently.
   export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
 else
   # Fall back to internal copy.
