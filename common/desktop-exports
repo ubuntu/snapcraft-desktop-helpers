@@ -144,3 +144,8 @@ if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
     ln -s /home/$USER/.config/dconf/user $DCONF_DEST_USER_DIR
   fi
 fi
+
+# Testability support
+if [ -d "$SNAP/testability/$ARCH" ]; then
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability:$SNAP/testability/$ARCH:$SNAP/testability/$ARCH/mesa
+fi
