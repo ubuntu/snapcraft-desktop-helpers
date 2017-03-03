@@ -28,11 +28,12 @@ if [ "$USE_qt5" = true ]; then
   export QT_PRINTER_MODULE=qtubuntu-print
   [ "$WITH_RUNTIME" = yes ] && QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
-  if [ -z "$DISPLAY" ] ; then
+  if [ -z "$DISPLAY" ] || [ -n "$MIR_SOCKET" ]; then
     export QT_QPA_PLATFORM=ubuntumirclient
   else
     # If a X11 $DISPLAY variable is set we should use it
     export QT_QPA_PLATFORM=xcb
+    export QT_QPA_PLATFORMTHEME=appmenu-qt5
   fi
 else
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib/$ARCH/qt4
