@@ -2,6 +2,9 @@
 # Launcher common exports for any desktop app #
 ###############################################
 
+# The 'xdg-open' tool is located in /usr/local/bin in the 'core' snap
+export PATH=$PATH:/usr/local/bin
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
