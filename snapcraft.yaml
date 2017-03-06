@@ -82,6 +82,7 @@ parts:
       - libglib2.0-bin
       - libgtk2.0-bin
       - unity-gtk2-module
+      - libappindicator1
       - locales-all
     prime:
       - -usr/lib/*/libmir*
@@ -104,6 +105,7 @@ parts:
       - libglib2.0-bin
       - libgtk-3-bin
       - unity-gtk3-module
+      - libappindicator3-1
       - locales-all
     prime:
       - -usr/lib/*/libmir*
@@ -127,6 +129,7 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+      - sni-qt
     prime:
       - -usr/lib/*/libmir*
       - -usr/share/doc/libmir*
@@ -178,6 +181,7 @@ parts:
       - libglib2.0-bin
       - libgtk2.0-bin
       - unity-gtk2-module
+      - libappindicator1
       - locales-all
     prime:
       - -usr/lib/*/libmir*
@@ -200,6 +204,7 @@ parts:
       - libglib2.0-bin
       - libgtk-3-bin
       - unity-gtk3-module
+      - libappindicator3-1
       - locales-all
     prime:
       - -usr/lib/*/libmir*
@@ -223,6 +228,7 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+      - sni-qt
     prime:
       - -usr/lib/*/libmir*
       - -usr/share/doc/libmir*
@@ -275,6 +281,7 @@ parts:
       - libgtk2.0-bin
       - unity-gtk2-module
       - locales-all
+      - libappindicator1
     prime:
       - -usr/lib/*/libmir*
       - -usr/share/doc/libmir*
@@ -296,6 +303,7 @@ parts:
       - libglib2.0-bin
       - libgtk-3-bin
       - unity-gtk3-module
+      - libappindicator3-1
       - locales-all
     prime:
       - -usr/lib/*/libmir*
@@ -319,6 +327,7 @@ parts:
       - libqt4-svg # for loading icon themes which are svg
       - appmenu-qt
       - locales-all
+      - sni-qt
     prime:
       - -usr/lib/*/libmir*
       - -usr/share/doc/libmir*
