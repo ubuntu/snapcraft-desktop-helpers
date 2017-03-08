@@ -376,6 +376,21 @@ parts:
     make-parameters: ["FLAVOR=qt5"]
     # developer should use stable-phone-overlay PPA for Qt 5.6 to match the platform snap
     build-packages:
-      - qtbase5-dev
       - dpkg-dev
+      - libcontent-hub-dev
+      - libmediascanner-2.0-dev
+      - libqt5sensors5-dev
+      - libqt5websockets5-dev
+      - libthumbnailer-qt-dev
+      - libubuntu-download-manager-client-dev
+      - libubuntutoolkit5-dev
+      - libubuntumetrics5-dev
+      - libubuntugestures5-dev
+      - qtbase5-dev
+      - qtconnectivity5-dev
+      - qtdeclarative5-dev
+      - qtlocation5-dev
+      - qtmultimedia5-dev
+      - qtpim5-dev
+      - qtpositioning5-dev
     # No staged packages, they are in the platform snap
