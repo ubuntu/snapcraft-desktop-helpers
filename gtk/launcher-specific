@@ -61,4 +61,3 @@ if [ $needs_update = true ]; then
   done
 fi
 
-exec "$@"

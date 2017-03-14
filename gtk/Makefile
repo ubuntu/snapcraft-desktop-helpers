@@ -18,6 +18,7 @@ $(DEST_LAUNCHER):
 	@cat $(SRC_DIR)/runtime-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/desktop-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
+	@cat $(SRC_DIR)/mark-and-exec >> $(DEST_LAUNCHER)
 	@echo "USE_$(FLAVOR)=true" >> $(FLAVOR_FILE)
 		
 install: $(DEST_LAUNCHER)

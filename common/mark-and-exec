@@ -1,0 +1,7 @@
+###############################
+# Mark update and exec binary #
+###############################
+
+[ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > ~/.last_revision
+
+exec "$@"

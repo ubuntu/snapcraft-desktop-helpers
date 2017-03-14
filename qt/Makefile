@@ -40,6 +40,7 @@ desktop-launch:
 	@cat $(SRC_DIR)/runtime-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/desktop-exports >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
+	@cat $(SRC_DIR)/mark-and-exec >> $(DEST_LAUNCHER)
 	@echo "$$QT5_APP_PLATFORM_CONF" > snappy-qt5-app-platform.conf
 	@echo "$$QT5_CONF" > snappy-qt5.conf
 	@echo "$$QT4_CONF" > snappy-qt4.conf

@@ -2,4 +2,3 @@
 # Glib minimum specific part #
 ##############################
 
-exec "$@"
