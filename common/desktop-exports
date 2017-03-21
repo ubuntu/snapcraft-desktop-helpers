@@ -36,7 +36,7 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 # Mir
 if [ -S /run/user/$(id -u)/mir_socket ]; then
   export MIR_SOCKET=/run/user/$(id -u)/mir_socket
-elif [ -S /run/mir_socket ]; then
+elif [ -S /run/mir_socket -a "$(id -u)" = "0" ]; then
   # Fall back to global location if there is no user server (e.g. on a kiosk)
   export MIR_SOCKET=/run/mir_socket
 fi
