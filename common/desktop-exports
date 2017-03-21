@@ -34,9 +34,13 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBGL_DRIVERS_PATH
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 
 # Mir
-if [ -S /run/user/$(id -u)/mir_socket ]; then
+if [ -n "$DISPLAY" ]; then
+  # Either we are in legacy env (e.g. unity7) or ubuntu-app-launch is launching
+  # us intentionally in an XMir environment, in which case we should use it.
+  unset MIR_SOCKET
+elif [ -S /run/user/$(id -u)/mir_socket ]; then
   export MIR_SOCKET=/run/user/$(id -u)/mir_socket
-elif [ -S /run/mir_socket -a "$(id -u)" = "0" ]; then
+elif [ -S /run/mir_socket ]; then
   # Fall back to global location if there is no user server (e.g. on a kiosk)
   export MIR_SOCKET=/run/mir_socket
 fi
