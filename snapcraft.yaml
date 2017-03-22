@@ -48,6 +48,7 @@ description: |
                default-provider: mir-libs
                interface: content
                target: mir-libs
+               content: mir0
        - similarly for the gnome platform based apps
           plugs:
               gnome318-platform:
