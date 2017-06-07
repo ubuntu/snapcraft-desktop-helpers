@@ -29,8 +29,7 @@ description: |
        - accessing to user's home directory:
          plugs: [home]
        - read/write to gsettings:
-         plugs: [gsettings, home]
-         (note that the home plug is needed to read new value)
+         plugs: [gsettings]
        - use of the shared platform snap content, first define the plug:
            plugs:
              gnome318-platform:
