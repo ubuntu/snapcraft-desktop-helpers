@@ -141,3 +141,36 @@ fi
 if [ -d "$SNAP/testability/$ARCH" ]; then
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability:$SNAP/testability/$ARCH:$SNAP/testability/$ARCH/mesa
 fi
+
+# Gdk-pixbuf loaders
+export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
+export GDK_PIXBUF_MODULEDIR=$RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
+if [ $needs_update = true ]; then
+  rm -f $GDK_PIXBUF_MODULE_FILE
+  if [ -f $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
+    $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
+  fi
+fi
+
+# Icon themes cache
+if [ $needs_update = true ]; then
+  rm -rf $XDG_DATA_HOME/icons
+  mkdir -p $XDG_DATA_HOME/icons
+  for d in "${data_dirs_array[@]}"; do
+    for i in $d/icons/*; do
+      if [ -d "$i" ]; then
+        theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
+        if [ ! -d "$theme_dir" ]; then
+          mkdir -p "$theme_dir"
+          ln -s $i/* "$theme_dir"
+          if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
+            $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
+          elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
+            $RUNTIME/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
+          fi
+        fi
+      fi
+    done
+  done
+fi
+

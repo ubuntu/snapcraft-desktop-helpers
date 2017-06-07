@@ -5,17 +5,6 @@
 # select gtk version
 . $SNAP/flavor-select
 
-# Gdk-pixbuf loaders
-export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
-export GDK_PIXBUF_MODULEDIR=$RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
-
-if [ $needs_update = true ]; then
-  rm -f $GDK_PIXBUF_MODULE_FILE
-  if [ -f $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
-    $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
-  fi
-fi
-
 if [ "$USE_gtk3" = true ]; then
   export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-3.0
 else
@@ -37,27 +26,5 @@ if [ $needs_update = true ]; then
     ln -s $RUNTIME/usr/lib/$ARCH/gtk-2.0/2.10.0/immodules/*.so $GTK_IM_MODULE_DIR
     $RUNTIME/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
   fi
-fi
-
-# Icon themes cache
-if [ $needs_update = true ]; then
-  rm -rf $XDG_DATA_HOME/icons
-  mkdir -p $XDG_DATA_HOME/icons
-  for d in "${data_dirs_array[@]}"; do
-    for i in $d/icons/*; do
-      if [ -d "$i" ]; then
-        theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
-        if [ ! -d "$theme_dir" ]; then
-          mkdir -p "$theme_dir"
-          ln -s $i/* "$theme_dir"
-          if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
-            $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
-          elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
-            $RUNTIME/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
-          fi
-        fi
-      fi
-    done
-  done
 fi
 
