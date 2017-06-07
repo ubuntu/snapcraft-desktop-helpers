@@ -33,34 +33,6 @@ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBGL_DRIVERS_PATH
 # Ref.: https://bugs.launchpad.net/snappy/+bug/1588192
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
 
-# Mir
-if [ -n "$DISPLAY" ]; then
-  # Either we are in legacy env (e.g. unity7) or ubuntu-app-launch is launching
-  # us intentionally in an XMir environment, in which case we should use it.
-  # Specifically unset because some versions of UAL unconditionally set
-  # MIR_SOCKET for us, even if launching us under XMir.
-  unset MIR_SOCKET
-elif [ -S /run/user/$(id -u)/mir_socket ]; then
-  export MIR_SOCKET=/run/user/$(id -u)/mir_socket
-elif [ -S /run/mir_socket ]; then
-  # Fall back to global location if there is no user server (e.g. on a kiosk)
-  export MIR_SOCKET=/run/mir_socket
-fi
-if [ -d $SNAP/mir-libs/$ARCH ]; then
-  export MIR_CLIENT_PLATFORM_PATH=$SNAP/mir-libs/$ARCH/mir/client-platform
-  # Put mir-libs first because it's easy to end up with a snap-internal copy
-  export LD_LIBRARY_PATH=$SNAP/mir-libs/$ARCH:$LD_LIBRARY_PATH
-elif [ -d $RUNTIME/usr/lib/$ARCH/mir ]; then
-  # As of this writing, ubuntu-app-platform holds a copy of the Mir libraries,
-  # but may remove them in favor of mir-libs.  Use them if present.
-  # We check both RUNTIME and SNAP (below) because if the SDK does drop the
-  # libraries, we want to fall back to an internal copy transparently.
-  export MIR_CLIENT_PLATFORM_PATH=$RUNTIME/usr/lib/$ARCH/mir/client-platform
-else
-  # Fall back to internal copy.
-  export MIR_CLIENT_PLATFORM_PATH=$SNAP/usr/lib/$ARCH/mir/client-platform
-fi
-
 # Unity7 export (workaround for https://launchpad.net/bugs/1638405)
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/libunity
 
