@@ -37,9 +37,6 @@ else
   PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
 fi
 
-# Necessary for the SDK to find the translations directory
-export APP_DIR=$SNAP
-
 # Use GTK styling for running under Unity 7
 export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-2.0
 
