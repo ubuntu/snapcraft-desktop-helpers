@@ -15,7 +15,6 @@ description: |
          main dependencies and default choices.
        - gnome-platform is similar to gtk3 without the extra depends, it's
          meant to be used with the gnome platform which already includes those.
-       - ubuntu-app-platform corresponds to the shared platform snap use.
        - glib-only enables to compile mime types and gsettings infos. If you
          added your own graphical drivers, it will link them as well.
     2. prepend your command with "desktop-launch", like:
@@ -34,21 +33,12 @@ description: |
          (note that the home plug is needed to read new value)
        - use of the shared platform snap content, first define the plug:
            plugs:
-             platform:
-               content: ubuntu-app-platform1
-               default-provider: ubuntu-app-platform
+             gnome318-platform:
                interface: content
-               target: ubuntu-app-platform
+               target: gnome-platform
+               default-provider: gnome318-udt:gnome318-platform
          and then make your apps use it:
-           plugs: [platform]
-       - similarly for the gnome platform based apps
-          plugs:
-              gnome318-platform:
-                default-provider: gnome318-udt:gnome318-platform
-                interface: content
-                target: gnome-platform
-         and then make your apps use it:
-           plugs: [gnome-platform]
+           plugs: [gnome318-platform]
          Note that an empty "gnome-platform" directory will be created for you
          in your snap.
 
@@ -239,28 +229,3 @@ parts:
     build-packages:
       - libgtk-3-dev
     install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
-  desktop-ubuntu-app-platform:
-    source: .
-    source-subdir: qt
-    plugin: make
-    make-parameters: ["FLAVOR=qt5"]
-    # developer should use stable-phone-overlay PPA for Qt 5.6 to match the platform snap
-    build-packages:
-      - dpkg-dev
-      - libcontent-hub-dev
-      - libmediascanner-2.0-dev
-      - libqt5sensors5-dev
-      - libqt5websockets5-dev
-      - libthumbnailer-qt-dev
-      - libubuntu-download-manager-client-dev
-      - libubuntutoolkit5-dev
-      - libubuntumetrics5-dev
-      - libubuntugestures5-dev
-      - qtbase5-dev
-      - qtconnectivity5-dev
-      - qtdeclarative5-dev
-      - qtlocation5-dev
-      - qtmultimedia5-dev
-      - qtpim5-dev
-      - qtpositioning5-dev
-    # No staged packages, they are in the platform snap
