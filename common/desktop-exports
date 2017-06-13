@@ -179,9 +179,9 @@ fi
 gtk_configs=(.config/gtk-3.0/settings.ini .config/gtk-3.0/bookmarks .config/gtk-2.0/gtkfilechooser.ini)
 for f in ${gtk_configs[@]}; do
   dest="$SNAP_USER_DATA/$f"
-  mkdir -p `dirname $dest`
-  if [ ! -e $dest ]; then
+  if [ ! -L "$dest" ]
+  then
+    mkdir -p `dirname $dest`
     ln -s /home/$USER/$f $dest
   fi
 done
-
