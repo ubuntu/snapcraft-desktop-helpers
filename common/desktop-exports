@@ -73,6 +73,8 @@ export GI_TYPELIB_PATH=$RUNTIME/usr/lib/girepository-1.0:$RUNTIME/usr/lib/$ARCH/
 export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
 export FONTCONFIG_FILE=$RUNTIME/etc/fonts/fonts.conf
 if [ $needs_update = true ]; then
+  # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
+  # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
   rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
   ln -sf $RUNTIME/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
   ln -sfn $RUNTIME/usr/share/themes $SNAP_USER_DATA/.themes
