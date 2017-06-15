@@ -1,7 +1,8 @@
 name: gtk3-demo
-version: "0"
+version: "3.18"
 summary: Gtk3 launcher demo
-description: This is using the gtk3 demo
+description: Use the gtk3 demo to show desktop launcher properties with all
+  librairies included.
 grade: stable
 confinement: strict
 
