@@ -32,12 +32,12 @@ description: |
          plugs: [gsettings]
        - use of the shared platform snap content, first define the plug:
            plugs:
-             gnome318-platform:
+             gnome-3-24-platform:
                interface: content
                target: gnome-platform
-               default-provider: gnome318-udt:gnome318-platform
+               default-provider: gnome-3-24:gnome-3-24-platform
          and then make your apps use it:
-           plugs: [gnome318-platform]
+           plugs: [gnome-3-24-platform]
          Note that an empty "gnome-platform" directory will be created for you
          in your snap.
 
