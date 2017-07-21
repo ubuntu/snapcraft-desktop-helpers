@@ -55,11 +55,6 @@ parts:
       - libgtk2.0-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libgtk2.0-0
       - libgdk-pixbuf2.0-0
@@ -68,6 +63,7 @@ parts:
       - unity-gtk2-module
       - libappindicator1
       - locales-all
+    after: [desktop-internal-gtk-theming]
   gtk3:
     source: .
     source-subdir: gtk
@@ -77,11 +73,6 @@ parts:
       - libgtk-3-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libgtk-3-0
       - libgdk-pixbuf2.0-0
@@ -90,6 +81,7 @@ parts:
       - unity-gtk3-module
       - libappindicator3-1
       - locales-all
+    after: [desktop-internal-gtk-theming]
   qt4:
     source: .
     source-subdir: qt
@@ -100,11 +92,6 @@ parts:
       - dpkg-dev
     stage-packages:
       - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libqtgui4
       - libgdk-pixbuf2.0-0
@@ -112,6 +99,7 @@ parts:
       - appmenu-qt
       - locales-all
       - sni-qt
+    after: [desktop-internal-gtk-theming]
   qt5:
     source: .
     source-subdir: qt
@@ -122,17 +110,13 @@ parts:
       - dpkg-dev
     stage-packages:
       - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libqt5gui5
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
       - locales-all
+    after: [desktop-internal-gtk-theming]
   glib-only:
     source: .
     source-subdir: glib-only
@@ -150,11 +134,6 @@ parts:
       - libgtk2.0-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libgtk2.0-0
       - libgdk-pixbuf2.0-0
@@ -163,6 +142,7 @@ parts:
       - unity-gtk2-module
       - locales-all
       - libappindicator1
+    after: [desktop-internal-gtk-theming]
   desktop-gtk3:
     source: .
     source-subdir: gtk
@@ -172,11 +152,6 @@ parts:
       - libgtk-3-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libgtk-3-0
       - libgdk-pixbuf2.0-0
@@ -185,6 +160,7 @@ parts:
       - unity-gtk3-module
       - libappindicator3-1
       - locales-all
+    after: [desktop-internal-gtk-theming]
   desktop-qt4:
     source: .
     source-subdir: qt
@@ -195,11 +171,6 @@ parts:
       - dpkg-dev
     stage-packages:
       - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libqtgui4
       - libgdk-pixbuf2.0-0
@@ -207,6 +178,7 @@ parts:
       - appmenu-qt
       - locales-all
       - sni-qt
+    after: [desktop-internal-gtk-theming]
   desktop-qt5:
     source: .
     source-subdir: qt
@@ -217,17 +189,13 @@ parts:
       - dpkg-dev
     stage-packages:
       - libxkbcommon0
-      - ttf-ubuntu-font-family
-      - dmz-cursor-theme
-      - light-themes
-      - adwaita-icon-theme
-      - gnome-themes-standard
       - shared-mime-info
       - libqt5gui5
       - libgdk-pixbuf2.0-0
       - libqt5svg5 # for loading icon themes which are svg
       - appmenu-qt5
       - locales-all
+    after: [desktop-internal-gtk-theming]
   desktop-glib-only:
     source: .
     source-subdir: glib-only
@@ -244,3 +212,12 @@ parts:
     build-packages:
       - libgtk-3-dev
     install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
+  desktop-internal-gtk-theming:
+    plugin: nil
+    stage-packages:
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - ubuntu-mono
+      - gnome-themes-standard
+      - adwaita-icon-theme
