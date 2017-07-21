@@ -221,3 +221,20 @@ parts:
       - ubuntu-mono
       - gnome-themes-standard
       - adwaita-icon-theme
+      - mate-themes
+      - mate-icon-theme
+      - mate-icon-theme-faenza
+      - lubuntu-icon-theme
+      - shimmer-themes # xubuntu
+      - xubuntu-icon-theme
+      - arc-theme
+      - numix-gtk-theme
+      - numix-blue-gtk-theme
+      - numix-icon-theme
+      - elementary-icon-theme # only elementary icon theme is available in ubuntu
+      - clearlooks-phenix-theme
+      - greybird-gtk-theme
+      - moka-icon-theme
+      - tango-icon-theme
+      - tango-icon-theme-common
+      - tango-icon-theme-extras
