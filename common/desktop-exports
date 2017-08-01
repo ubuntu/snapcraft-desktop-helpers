@@ -101,7 +101,7 @@ fi
 
 # GI repository
 export GI_TYPELIB_PATH=$RUNTIME/usr/lib/girepository-1.0:$RUNTIME/usr/lib/$ARCH/girepository-1.0
-[ "$WITH_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/gjs/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
 
 # Font Config and themes
 export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
