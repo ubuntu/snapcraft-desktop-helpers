@@ -82,6 +82,7 @@ if [ -n "$XDG_RUNTIME_DIR" ]; then
         #export WAYLAND_DEBUG=1
         export GDK_BACKEND="wayland"
         export CLUTTER_BACKEND="wayland"
+        export QT_QPA_PLATFORM="wayland-egl"
         # create the compat symlink for now
         if [ ! -e "$wayland_snappath" ]; then
             ln -s "$wayland_sockpath" "$wayland_snappath"
