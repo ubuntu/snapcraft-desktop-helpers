@@ -20,8 +20,8 @@ export XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
 export XLOCALEDIR=$RUNTIME/usr/share/X11/locale
 
 # Mesa Libs for OpenGL support
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/mesa
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/mesa-egl
+export LD_LIBRARY_PATH=$RUNTIME/usr/lib/$ARCH/mesa:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$RUNTIME/usr/lib/$ARCH/mesa-egl:$LD_LIBRARY_PATH
 
 # Tell libGL where to find the drivers
 export LIBGL_DRIVERS_PATH=$RUNTIME/usr/lib/$ARCH/dri
