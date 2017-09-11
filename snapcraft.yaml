@@ -22,14 +22,22 @@ description: |
        specify: "desktop-launch $SNAP/foo".
     3. add needed plugs to your application:
        - for graphical application:
-         plugs: [x11 (or unity7 for appmenu integration)]. Think about adding
-         opengl if you need hw acceleration.
+         plugs: [x11] or:
+                [unity7] for appmenu, input methods, a11y integration. And/or:
+                [desktop] for GNOME Shell/Plasma
+                [wayland] for Wayland compositors
+                See https://forum.snapcraft.io/t/the-desktop-interfaces/2042
+                for details
+       - if your application needs hw acceleration:
+         plugs: [opengl]
        - if your application needs access to sound:
          plugs: [pulseaudio]
        - accessing to user's home directory:
          plugs: [home]
        - read/write to gsettings:
          plugs: [gsettings]
+       - if using "desktop" and need a11y or other input methods:
+         plugs: [desktop-legacy]
        - use of the shared platform snap content, first define the plug:
            plugs:
              gnome-3-24-platform:

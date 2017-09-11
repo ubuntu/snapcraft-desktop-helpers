@@ -9,7 +9,7 @@ confinement: strict
 apps:
   gtk3-demo:
     command: desktop-launch gtk3-demo
-    plugs: [unity7, x11, gsettings, home]
+    plugs: [desktop, desktop-legacy, wayland, unity7, gsettings, home]
   gsettings:
     command: desktop-launch gsettings
     plugs: [gsettings]
