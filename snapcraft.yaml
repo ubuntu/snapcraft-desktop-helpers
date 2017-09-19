@@ -98,6 +98,7 @@ parts:
       - unity-gtk3-module
       - libappindicator3-1
       - locales-all
+      - xdg-user-dirs
   qt4:
     source: .
     source-subdir: qt
@@ -193,6 +194,7 @@ parts:
       - unity-gtk3-module
       - libappindicator3-1
       - locales-all
+      - xdg-user-dirs
   desktop-qt4:
     source: .
     source-subdir: qt
