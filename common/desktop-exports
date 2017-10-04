@@ -218,6 +218,7 @@ for f in ${gtk_configs[@]}; do
   if [ ! -L "$dest" ]
   then
     mkdir -p `dirname $dest`
+    [ -e "$dest" ] && rm -rf "$dest"
     ln -s /home/$USER/$f $dest
   fi
 done
