@@ -40,12 +40,12 @@ description: |
          plugs: [desktop-legacy]
        - use of the shared platform snap content, first define the plug:
            plugs:
-             gnome-3-24-platform:
+             gnome-3-26-1604:
                interface: content
                target: gnome-platform
-               default-provider: gnome-3-24:gnome-3-24-platform
+               default-provider: gnome-3-26-1604:gnome-3-26-1604
          and then make your apps use it:
-           plugs: [gnome-3-24-platform]
+           plugs: [gnome-3-26-1604]
          Note that an empty "gnome-platform" directory will be created for you
          in your snap.
 

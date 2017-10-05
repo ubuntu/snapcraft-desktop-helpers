@@ -8,10 +8,10 @@ if [ -d $SNAP/gnome-platform ]; then
     echo "You need to connect this snap to the gnome platform snap."
     echo ""
     echo "You can do this with those commands:"
-    echo "snap install gnome-3-24"
-    echo "snap connect $SNAP_NAME:gnome-3-24-platform gnome-3-24:gnome-3-24-platform"
+    echo "snap install gnome-3-26-1604"
+    echo "snap connect $SNAP_NAME:gnome-3-26-1604 gnome-3-26-1604:gnome-3-26-1604"
     echo ""
-    echo "(the '3-24' number defines the platform version and might change)"
+    echo "(the '3-26-1604' number defines the platform version and might change)"
     exit 1
   fi
 fi
