@@ -9,7 +9,7 @@ if [ -d $SNAP/gnome-platform ]; then
     echo ""
     echo "You can do this with those commands:"
     echo "snap install gnome-3-26-1604"
-    echo "snap connect $SNAP_NAME:gnome-3-26-1604 gnome-3-26-1604:gnome-3-26-1604"
+    echo "snap connect $SNAP_NAME:gnome-3-26-1604 gnome-3-26-1604"
     echo ""
     echo "(the '3-26-1604' number defines the platform version and might change)"
     exit 1
