@@ -2,6 +2,13 @@
 # Launcher common exports for any desktop app #
 ###############################################
 
+# On Fedora $SNAP is under /var and there is some magic to map it to /snap.
+# We need to handle that case and reset $SNAP
+if [[ $SNAP == /var/lib/snapd/* ]];
+then
+  export SNAP=`echo $SNAP | sed -e "s/\/var\/lib\/snapd//g"`
+fi
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
