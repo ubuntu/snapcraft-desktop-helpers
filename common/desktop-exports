@@ -155,6 +155,9 @@ function compile_schemas {
       if [ "$(ls -A $schema_dir/*.xml 2>/dev/null)" ]; then
         ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
       fi
+      if [ "$(ls -A $schema_dir/*.override 2>/dev/null)" ]; then
+        ln -s $schema_dir/*.override $GS_SCHEMA_DIR
+      fi
     done
     "$1" $GS_SCHEMA_DIR
   fi
