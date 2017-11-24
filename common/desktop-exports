@@ -172,14 +172,21 @@ function compile_schemas {
     mkdir -p $GS_SCHEMA_DIR
     for d in "${data_dirs_array[@]}"; do
       schema_dir=$d/glib-2.0/schemas
-      if [ "$(ls -A $schema_dir/*.xml 2>/dev/null)" ]; then
+      if [ -f "$schema_dir/gschemas.compiled" ]; then
+        # This directory already has compiled schemas
+        continue
+      fi
+      if [ -n "$(ls -A $schema_dir/*.xml 2>/dev/null)" ]; then
         ln -s $schema_dir/*.xml $GS_SCHEMA_DIR
       fi
-      if [ "$(ls -A $schema_dir/*.override 2>/dev/null)" ]; then
+      if [ -n "$(ls -A $schema_dir/*.override 2>/dev/null)" ]; then
         ln -s $schema_dir/*.override $GS_SCHEMA_DIR
       fi
     done
-    "$1" $GS_SCHEMA_DIR
+    # Only compile schemas if we copied anyting
+    if [ -n "$(ls -A $GS_SCHEMA_DIR/*.xml $GS_SCHEMA_DIR/*.override 2>/dev/null)" ]; then
+      "$1" $GS_SCHEMA_DIR
+    fi
   fi
 }
 if [ $needs_update = true ]; then
