@@ -226,7 +226,7 @@ if [ $needs_update = true ]; then
   mkdir -p $XDG_DATA_HOME/icons
   for d in "${data_dirs_array[@]}"; do
     for i in $d/icons/*; do
-      if [ -d "$i" ]; then
+      if [ -f "$i/index.theme" -a ! -f "$i/icon-theme.cache" ]; then
         theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
         if [ ! -d "$theme_dir" ]; then
           mkdir -p "$theme_dir"
