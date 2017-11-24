@@ -2,13 +2,30 @@
 # Launcher common exports for any desktop app #
 ###############################################
 
+function prepend_dir() {
+  local var="$1"
+  local dir="$2"
+  if [ -d "$dir" ]; then
+    eval "export $var=\"\$dir\${$var:+:\$$var}\""
+  fi
+}
+
+function append_dir() {
+  local var="$1"
+  local dir="$2"
+  if [ -d "$dir" ]; then
+    eval "export $var=\"\${$var:+\$$var:}\$dir\""
+  fi
+}
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
 else
   # add general paths not added by snapcraft due to runtime snap
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/lib/$ARCH:$RUNTIME/usr/lib/$ARCH
-  export PATH=$PATH:$RUNTIME/usr/bin
+  append_dir LD_LIBRARY_PATH $RUNTIME/lib/$ARCH
+  append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH
+  append_dir PATH $RUNTIME/usr/bin
   WITH_RUNTIME=yes
 fi
 
@@ -20,24 +37,24 @@ export XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
 export XLOCALEDIR=$RUNTIME/usr/share/X11/locale
 
 # Mesa Libs for OpenGL support
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/mesa
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/mesa-egl
+append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/mesa
+append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/mesa-egl
 
 # Tell libGL where to find the drivers
 export LIBGL_DRIVERS_PATH=$RUNTIME/usr/lib/$ARCH/dri
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$LIBGL_DRIVERS_PATH
+append_dir LD_LIBRARY_PATH $LIBGL_DRIVERS_PATH
 
 # Workaround in snapd for proprietary nVidia drivers mounts the drivers in
 # /var/lib/snapd/lib/gl that needs to be in LD_LIBRARY_PATH
 # Without that OpenGL using apps do not work with the nVidia drivers.
 # Ref.: https://bugs.launchpad.net/snappy/+bug/1588192
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/var/lib/snapd/lib/gl
+append_dir LD_LIBRARY_PATH /var/lib/snapd/lib/gl
 
 # Unity7 export (workaround for https://launchpad.net/bugs/1638405)
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/libunity
+append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/libunity
 
 # Pulseaudio export
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$RUNTIME/usr/lib/$ARCH/pulseaudio
+append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/pulseaudio
 
 # Tell GStreamer where to find its plugins
 export GST_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
@@ -46,16 +63,16 @@ export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
 export GST_PLUGIN_SCANNER=$RUNTIME/usr/lib/$ARCH/gstreamer1.0/gstreamer-1.0/gst-plugin-scanner
 
 # XDG Config
-export XDG_CONFIG_DIRS=$RUNTIME/etc/xdg:$RUNTIME/usr/xdg:$XDG_CONFIG_DIRS
-[ "$WITH_RUNTIME" = yes ] && XDG_CONFIG_DIRS=$SNAP/etc/xdg:$SNAP/usr/xdg:$XDG_CONFIG_DIRS # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && prepend_dir XDG_CONFIG_DIRS $RUNTIME/etc/xdg
+prepend_dir XDG_CONFIG_DIRS $SNAP/etc/xdg
 
 # Define snaps' own data dir
-export XDG_DATA_DIRS=$SNAP_USER_DATA:$RUNTIME/usr/share:$XDG_DATA_DIRS
-[ "$WITH_RUNTIME" = yes ] && XDG_DATA_DIRS=$SNAP_USER_DATA:$SNAP/usr/share:$XDG_DATA_DIRS # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && prepend_dir XDG_DATA_DIRS $RUNTIME/usr/share
+prepend_dir XDG_DATA_DIRS $SNAP/usr/share
+prepend_dir XDG_DATA_DIRS $SNAP_USER_DATA
 
 # Set XDG_DATA_HOME to local path
 export XDG_DATA_HOME=$SNAP_USER_DATA/.local/share
-export XDG_DATA_DIRS=$XDG_DATA_HOME:$XDG_DATA_DIRS
 mkdir -p $XDG_DATA_HOME
 
 # Set cache folder to local path
@@ -100,8 +117,11 @@ if [ -n "$XDG_RUNTIME_DIR" ]; then
 fi
 
 # GI repository
-export GI_TYPELIB_PATH=$RUNTIME/usr/lib/girepository-1.0:$RUNTIME/usr/lib/$ARCH/girepository-1.0
-[ "$WITH_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/gjs/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
+[ "$WITH_RUNTIME" = yes ] && prepend_dir GI_TYPELIB_PATH $RUNTIME/usr/lib/$ARCH/girepository-1.0
+[ "$WITH_RUNTIME" = yes ] && prepend_dir GI_TYPELIB_PATH $RUNTIME/usr/lib/girepository-1.0
+prepend_dir GI_TYPELIB_PATH $SNAP/usr/lib/$ARCH/girepository-1.0
+prepend_dir GI_TYPELIB_PATH $SNAP/usr/lib/girepository-1.0
+prepend_dir GI_TYPELIB_PATH $SNAP/usr/lib/gjs/girepository-1.0
 
 # Font Config and themes
 export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
@@ -125,7 +145,7 @@ if [ $needs_update = true ]; then
 fi
 
 # Ensure the app finds locale definitions (requires locales-all to be installed)
-export LOCPATH=$LOCPATH:$SNAP/usr/lib/locale
+append_dir LOCPATH $SNAP/usr/lib/locale
 
 # Gio modules and cache (including gsettings module)
 export GIO_MODULE_DIR=$XDG_CACHE_HOME/gio-modules
@@ -177,9 +197,9 @@ if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
 fi
 
 # Testability support
-if [ -d "$SNAP/testability/$ARCH" ]; then
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/testability:$SNAP/testability/$ARCH:$SNAP/testability/$ARCH/mesa
-fi
+append_dir LD_LIBRARY_PATH $SNAP/testability
+append_dir LD_LIBRARY_PATH $SNAP/testability/$ARCH
+append_dir LD_LIBRARY_PATH $SNAP/testability/$ARCH/mesa
 
 # Gdk-pixbuf loaders
 export GDK_PIXBUF_MODULE_FILE=$XDG_CACHE_HOME/gdk-pixbuf-loaders.cache
