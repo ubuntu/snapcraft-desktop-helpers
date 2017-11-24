@@ -138,9 +138,11 @@ fi
 # needed for gtk and qt icon
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/mime
-  if [ `which update-mime-database` ]; then
-    cp --preserve=timestamps -dR $RUNTIME/usr/share/mime $XDG_DATA_HOME
-    update-mime-database $XDG_DATA_HOME/mime
+  if [ ! -f $RUNTIME/usr/share/mime/mime.cache ]; then
+    if [ `which update-mime-database` ]; then
+      cp --preserve=timestamps -dR $RUNTIME/usr/share/mime $XDG_DATA_HOME
+      update-mime-database $XDG_DATA_HOME/mime
+    fi
   fi
 fi
 
