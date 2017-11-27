@@ -103,14 +103,44 @@ fi
 export GI_TYPELIB_PATH=$RUNTIME/usr/lib/girepository-1.0:$RUNTIME/usr/lib/$ARCH/girepository-1.0
 [ "$WITH_RUNTIME" = yes ] && GI_TYPELIB_PATH=$SNAP/usr/lib/gjs/girepository-1.0:$SNAP/usr/lib/girepository-1.0:$SNAP/usr/lib/$ARCH/girepository-1.0 # add local SNAP assets if a runtime is used
 
+# Keep an array of data dirs, for looping through them
+IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
+
 # Font Config and themes
 export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
 export FONTCONFIG_FILE=$RUNTIME/etc/fonts/fonts.conf
+
+function make_user_fontconfig {
+  echo "<fontconfig>"
+  if [ -d /home/$USER/.local/share/fonts ]; then
+    echo "  <dir>/home/$USER/.local/share/fonts</dir>"
+  fi
+  if [ -d /home/$USER/.fonts ]; then
+    echo "  <dir>/home/$USER/.fonts</dir>"
+  fi
+  for d in "${data_dirs_array[@]}"; do
+    if [ -d "$d/fonts" ]; then
+      echo "  <dir>$d/fonts</dir>"
+    fi
+  done
+  # We need to include this default cachedir first so that caching
+  # works: without it, fontconfig will try to write to the /home/$USER
+  # cachedir and be blocked by AppArmor.
+  echo '  <cachedir prefix="xdg">fontconfig</cachedir>'
+  if [ -d /home/$USER/.cache/fontconfig ]; then
+    echo "  <cachedir>/home/$USER/.cache/fontconfig</cachedir>"
+  fi
+  echo "</fontconfig>"
+}
+
 if [ $needs_update = true ]; then
+  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
+  mkdir -p $XDG_CONFIG_HOME/fontconfig
+  make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
+
   # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
   # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
-  rm -rf $XDG_DATA_HOME/{fontconfig,fonts,fonts-*,themes,.themes}
-  ln -sf $RUNTIME/usr/share/{fontconfig,fonts,fonts-*,themes} $XDG_DATA_HOME
+  ln -sf $RUNTIME/usr/share/themes $XDG_DATA_HOME
   ln -sfn $RUNTIME/usr/share/themes $SNAP_USER_DATA/.themes
 fi
 
@@ -140,9 +170,6 @@ function compile_giomodules {
 if [ $needs_update = true ]; then
   compile_giomodules $RUNTIME/usr/lib/$ARCH
 fi
-
-# Keep an array of data dirs, for looping through them
-IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Setup compiled gsettings schema
 GS_SCHEMA_DIR=$XDG_DATA_HOME/glib-2.0/schemas
