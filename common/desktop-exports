@@ -100,7 +100,9 @@ fi
 # XDG_RUNTIME_DIR is /run/user/<uid>/snap.$SNAP so look in the parent directory
 # for the socket. For details:
 # https://forum.snapcraft.io/t/wayland-dconf-and-xdg-runtime-dir/186/10
-if [ -n "$XDG_RUNTIME_DIR" ]; then
+# Applications that don't support wayland natively may define DISABLE_WAYLAND
+# (to any non-empty value) to skip that logic entirely.
+if [[ -n "$XDG_RUNTIME_DIR" && -z "$DISABLE_WAYLAND" ]]; then
     wdisplay="wayland-0"
     if [ -n "$WAYLAND_DISPLAY" ]; then
         wdisplay="$WAYLAND_DISPLAY"
