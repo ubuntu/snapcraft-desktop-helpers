@@ -122,6 +122,15 @@ if [[ -n "$XDG_RUNTIME_DIR" && -z "$DISABLE_WAYLAND" ]]; then
     fi
 fi
 
+# Make PulseAudio socket available inside the snap-specific $XDG_RUNTIME_DIR
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+    pulsenative="pulse/native"
+    pulseaudio_sockpath="$XDG_RUNTIME_DIR/../$pulsenative"
+    if [ -S "$pulseaudio_sockpath" ]; then
+        export PULSE_SERVER="unix:${pulseaudio_sockpath}"
+    fi
+fi
+
 # GI repository
 [ "$WITH_RUNTIME" = yes ] && prepend_dir GI_TYPELIB_PATH $RUNTIME/usr/lib/$ARCH/girepository-1.0
 [ "$WITH_RUNTIME" = yes ] && prepend_dir GI_TYPELIB_PATH $RUNTIME/usr/lib/girepository-1.0
