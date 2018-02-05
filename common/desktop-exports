@@ -36,6 +36,9 @@ export XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
 # This is required for text input to work in SDL2 games.
 export XLOCALEDIR=$RUNTIME/usr/share/X11/locale
 
+# Set XCursors path
+export XCURSOR_PATH=$RUNTIME/usr/share/icons
+
 # Mesa Libs for OpenGL support
 append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/mesa
 append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/mesa-egl
