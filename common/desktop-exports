@@ -109,11 +109,6 @@ for d in ${XDG_SPECIAL_DIRS[@]}; do
     fi
 done
 
-# Run xdg-user-dirs-update
-if [ `which xdg-user-dirs-update` ]; then
-   xdg-user-dirs-update
-fi
-
 # If detect wayland server socket, then set environment so applications prefer
 # wayland, and setup compat symlink (until we use user mounts. Remember,
 # XDG_RUNTIME_DIR is /run/user/<uid>/snap.$SNAP so look in the parent directory
