@@ -90,11 +90,6 @@ mkdir -p $XDG_CACHE_HOME
 export XDG_CONFIG_HOME=$SNAP_USER_DATA/.config
 mkdir -p $XDG_CONFIG_HOME
 
-# Run xdg-user-dirs-update
-if [ `which xdg-user-dirs-update` ]; then
-   xdg-user-dirs-update
-fi
-
 # Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
 [ -n "$XDG_RUNTIME_DIR" ] && mkdir -p $XDG_RUNTIME_DIR -m 700
 
@@ -108,6 +103,11 @@ for d in ${XDG_SPECIAL_DIRS[@]}; do
       ln -s $REALHOME/$b $SNAP_USER_DATA/$b
     fi
 done
+
+# Run xdg-user-dirs-update
+if [ `which xdg-user-dirs-update` ]; then
+   xdg-user-dirs-update
+fi
 
 # If detect wayland server socket, then set environment so applications prefer
 # wayland, and setup compat symlink (until we use user mounts. Remember,
