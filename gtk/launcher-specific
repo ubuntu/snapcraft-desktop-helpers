@@ -12,7 +12,7 @@ else
 fi
 
 # ibus and fcitx integration
-# with those defintions fcitx works unconfined out of the box, ibus requires
+# with those definitions fcitx works unconfined out of the box, ibus requires
 # user config to be copied though, https://launchpad.net/bugs/1580463
 GTK_IM_MODULE_DIR=$XDG_CACHE_HOME/immodules
 export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache
