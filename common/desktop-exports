@@ -18,6 +18,8 @@ function append_dir() {
   fi
 }
 
+REALHOME=`getent passwd $UID | cut -d ':' -f 6`
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
@@ -101,8 +103,7 @@ if [ `which xdg-user-dirs-update` ]; then
    xdg-user-dirs-update
 fi
 
-# Create links for user-dirs.dirs 
-REALHOME=`getent passwd $UID | cut -d ':' -f 6`
+# Create links for user-dirs.dirs
 test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
 XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
 for d in ${XDG_SPECIAL_DIRS[@]}; do
@@ -164,11 +165,11 @@ export FONTCONFIG_FILE=$RUNTIME/etc/fonts/fonts.conf
 
 function make_user_fontconfig {
   echo "<fontconfig>"
-  if [ -d /home/$USER/.local/share/fonts ]; then
-    echo "  <dir>/home/$USER/.local/share/fonts</dir>"
+  if [ -d $REALHOME/.local/share/fonts ]; then
+    echo "  <dir>$REALHOME/.local/share/fonts</dir>"
   fi
-  if [ -d /home/$USER/.fonts ]; then
-    echo "  <dir>/home/$USER/.fonts</dir>"
+  if [ -d $REALHOME/.fonts ]; then
+    echo "  <dir>$REALHOME/.fonts</dir>"
   fi
   for d in "${data_dirs_array[@]}"; do
     if [ -d "$d/fonts" ]; then
@@ -176,11 +177,11 @@ function make_user_fontconfig {
     fi
   done
   # We need to include this default cachedir first so that caching
-  # works: without it, fontconfig will try to write to the /home/$USER
+  # works: without it, fontconfig will try to write to the real user home
   # cachedir and be blocked by AppArmor.
   echo '  <cachedir prefix="xdg">fontconfig</cachedir>'
-  if [ -d /home/$USER/.cache/fontconfig ]; then
-    echo "  <cachedir>/home/$USER/.cache/fontconfig</cachedir>"
+  if [ -d $REALHOME/.cache/fontconfig ]; then
+    echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
   fi
   echo "</fontconfig>"
 }
@@ -255,9 +256,9 @@ fi
 # symlink the dconf file if home plug is connected for read
 DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf
 if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
-  if [ -f /home/$USER/.config/dconf/user ]; then
+  if [ -f $REALHOME/.config/dconf/user ]; then
     mkdir -p $DCONF_DEST_USER_DIR
-    ln -s /home/$USER/.config/dconf/user $DCONF_DEST_USER_DIR
+    ln -s $REALHOME/.config/dconf/user $DCONF_DEST_USER_DIR
   fi
 fi
 
@@ -306,6 +307,6 @@ for f in ${gtk_configs[@]}; do
   if [ ! -L "$dest" ]
   then
     mkdir -p `dirname $dest`
-    ln -s /home/$USER/$f $dest
+    ln -s $REALHOME/$f $dest
   fi
 done
