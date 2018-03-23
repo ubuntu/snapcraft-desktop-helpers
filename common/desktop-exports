@@ -103,7 +103,10 @@ mkdir -p $XDG_CONFIG_HOME
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
 # Run xdg-user-dirs-update
-if [ `which xdg-user-dirs-update` ]; then
+if [ -f $REALHOME/.config/user-dirs.dirs ] && [ -f $REALHOME/.config/user-dirs.locale ]; then
+   ln -s $REALHOME/.config/user-dirs.dirs $HOME/.config/
+   ln -s $REALHOME/.config/user-dirs.locale $HOME/.config/
+elif [ `which xdg-user-dirs-update` ]; then
    xdg-user-dirs-update
 fi
 
