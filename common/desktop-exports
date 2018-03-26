@@ -107,7 +107,7 @@ append_dir LOCPATH $RUNTIME/usr/lib/locale
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_links=false
 if can_open_file $REALHOME/.config/user-dirs.dirs && can_open_file $REALHOME/.config/user-dirs.locale; then
-   cat $REALHOME/.config/user-dirs.dirs | sed -e s#\$HOME#${REALHOME}# > $HOME/.config/user-dirs.dirs
+   sed s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
    cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
    for f in user-dirs.dirs user-dirs.locale; do
      md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
