@@ -22,8 +22,6 @@ function can_open_file() {
   return `head -c0 "$1" &> /dev/null`;
 }
 
-REALHOME=`getent passwd $UID | cut -d ':' -f 6`
-
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
@@ -111,6 +109,9 @@ needs_xdg_links=false
 if can_open_file $REALHOME/.config/user-dirs.dirs && can_open_file $REALHOME/.config/user-dirs.locale; then
    cat $REALHOME/.config/user-dirs.dirs | sed -e s#\$HOME#${REALHOME}# > $HOME/.config/user-dirs.dirs
    cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
+   for f in user-dirs.dirs user-dirs.locale; do
+     md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
+   done
 elif [ `which xdg-user-dirs-update` ]; then
    xdg-user-dirs-update
    needs_xdg_links=true
