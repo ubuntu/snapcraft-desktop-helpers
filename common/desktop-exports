@@ -105,18 +105,33 @@ mkdir -p $XDG_CONFIG_HOME
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
+needs_xdg_update=false
 needs_xdg_links=false
-if can_open_file $REALHOME/.config/user-dirs.dirs && can_open_file $REALHOME/.config/user-dirs.locale; then
+if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
    sed s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
    cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
    for f in user-dirs.dirs user-dirs.locale; do
      md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
    done
-elif [ `which xdg-user-dirs-update` ]; then
-   xdg-user-dirs-update
+else;
+   needs_xdg_update=true
    needs_xdg_links=true
 fi
 
+# Check if we can actually read the contents of each xdg dir
+test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
+XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
+for d in ${XDG_SPECIAL_DIRS[@]}; do
+  if ! can_open_file $d; then
+    needs_xdg_update=true
+  fi
+done
+
+# If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
+if [ $needs_xdg_update = true && `which xdg-user-dirs-update` ]; then
+   xdg-user-dirs-update
+fi
+    
 # Create links for user-dirs.dirs
 if [ $needs_xdg_links = true ]; then
   test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
