@@ -12,8 +12,6 @@ else
 fi
 
 # ibus and fcitx integration
-# with those definitions fcitx works unconfined out of the box, ibus requires
-# user config to be copied though, https://launchpad.net/bugs/1580463
 GTK_IM_MODULE_DIR=$XDG_CACHE_HOME/immodules
 export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache
 if [ $needs_update = true ]; then
@@ -27,4 +25,9 @@ if [ $needs_update = true ]; then
     $RUNTIME/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
   fi
 fi
+# copy socket files for ibus to look them up
+# (see comments #3 and #6 on https://launchpad.net/bugs/1580463)
+IBUS_SOCKET_PATH=$XDG_CONFIG_HOME/ibus/bus
+mkdir -p $IBUS_SOCKET_PATH
+cp $REALHOME/.config/ibus/bus/* $IBUS_SOCKET_PATH/
 
