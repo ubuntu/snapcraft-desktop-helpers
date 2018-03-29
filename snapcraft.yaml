@@ -99,6 +99,8 @@ parts:
       - libappindicator3-1
       - locales-all
       - xdg-user-dirs
+      - ibus-gtk3
+      - libibus-1.0-5
   qt4:
     source: .
     source-subdir: qt
