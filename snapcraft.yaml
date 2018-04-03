@@ -76,6 +76,8 @@ parts:
       - unity-gtk2-module
       - libappindicator1
       - locales-all
+      - ibus-gtk
+      - libibus-1.0-5
   gtk3:
     source: .
     source-subdir: gtk
@@ -175,6 +177,8 @@ parts:
       - locales-all
       - libappindicator1
       - xdg-user-dirs
+      - ibus-gtk
+      - libibus-1.0-5
   desktop-gtk3:
     source: .
     source-subdir: gtk
@@ -198,6 +202,8 @@ parts:
       - libappindicator3-1
       - locales-all
       - xdg-user-dirs
+      - ibus-gtk3
+      - libibus-1.0-5
   desktop-qt4:
     source: .
     source-subdir: qt
