@@ -108,8 +108,6 @@ append_dir LOCPATH $RUNTIME/usr/lib/locale
 test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
 for link in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
   eval $(echo "OLD_XDG_${link}_DIR")=`eval "$(echo "echo \\$XDG_${link}_DIR")"`
-  # Echo for debugging
-  echo OLD_XDG_${link}_DIR=`eval $(echo "echo \\$XDG_${link}_DIR")`
 done
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
@@ -157,16 +155,9 @@ else
     old=`eval "$(echo "echo \\$OLD_XDG_${link}_DIR")"`
     new=`eval "$(echo "echo \\$XDG_${link}_DIR")"`
     if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
-      # Echo for debugging
-      echo "$old" is not "$new", migrating content
       mv "$old"/* "$new"/
     elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
-      # Echo for debugging
-      echo "$old" is not "$new", migrating content
       mv "$old"/* "$new"/
-    else
-      # Echo for debugging
-      echo "$old" is "$new", not migrating content
     fi
   done
 fi
