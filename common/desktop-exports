@@ -104,6 +104,14 @@ mkdir -p $XDG_CONFIG_HOME
 # Ensure the app finds locale definitions (requires locales-all to be installed)
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
+# If any, keep track of where XDG dirs were so we can potentially migrate the content later
+test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
+for link in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
+  eval $(echo "OLD_XDG_${link}_DIR")=`eval "$(echo "echo \\$XDG_${link}_DIR")"`
+  # Echo for debugging
+  echo OLD_XDG_${link}_DIR=`eval $(echo "echo \\$XDG_${link}_DIR")`
+done
+
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_update=false
 needs_xdg_links=false
@@ -140,6 +148,25 @@ if [ $needs_xdg_links = true ]; then
     b=$(basename "$d")
     if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
       ln -s $REALHOME/$b $HOME/$b
+    fi
+  done
+else
+  # If we aren't creating new links, check if we have content saved in old locations and move it
+  for link in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
+    echo $link
+    old=`eval "$(echo "echo \\$OLD_XDG_${link}_DIR")"`
+    new=`eval "$(echo "echo \\$XDG_${link}_DIR")"`
+    if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
+      # Echo for debugging
+      echo "$old" is not "$new", migrating content
+      mv "$old"/* "$new"/
+    elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
+      # Echo for debugging
+      echo "$old" is not "$new", migrating content
+      mv "$old"/* "$new"/
+    else
+      # Echo for debugging
+      echo "$old" is "$new", not migrating content
     fi
   done
 fi
