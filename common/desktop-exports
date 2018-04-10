@@ -154,9 +154,9 @@ else
     old=`eval "$(echo "echo \\$OLD_XDG_${d}_DIR")"`
     new=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
     if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
-      mv "$old"/* "$new"/
+      mv "$old"/* "$new"/ 2>/dev/null
     elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
-      mv "$old"/* "$new"/
+      mv "$old"/* "$new"/ 2>/dev/null
     fi
   done
 fi
