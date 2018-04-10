@@ -119,7 +119,7 @@ if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/
    for f in user-dirs.dirs user-dirs.locale; do
      md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
    done
-else;
+else
    needs_xdg_update=true
    needs_xdg_links=true
 fi
