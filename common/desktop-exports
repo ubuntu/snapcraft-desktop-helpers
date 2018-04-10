@@ -134,7 +134,7 @@ for d in ${XDG_SPECIAL_DIRS[@]}; do
 done
 
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
-if [ $needs_xdg_update = true && `which xdg-user-dirs-update` ]; then
+if [ $needs_xdg_update = true ] && [ `which xdg-user-dirs-update` ]; then
    xdg-user-dirs-update
 fi
     
