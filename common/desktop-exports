@@ -18,7 +18,9 @@ function append_dir() {
   fi
 }
 
-REALHOME=`getent passwd $UID | cut -d ':' -f 6`
+function can_open_file() {
+  return `head -c0 "$1" &> /dev/null`;
+}
 
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
@@ -102,20 +104,62 @@ mkdir -p $XDG_CONFIG_HOME
 # Ensure the app finds locale definitions (requires locales-all to be installed)
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
-# Run xdg-user-dirs-update
-if [ `which xdg-user-dirs-update` ]; then
-   xdg-user-dirs-update
+# If any, keep track of where XDG dirs were so we can potentially migrate the content later
+test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
+for d in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
+  eval $(echo "OLD_XDG_${d}_DIR")=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
+done
+
+# Setup user-dirs.* or run xdg-user-dirs-update if needed
+needs_xdg_update=false
+needs_xdg_links=false
+if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
+   sed s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
+   cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
+   for f in user-dirs.dirs user-dirs.locale; do
+     md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
+   done
+else;
+   needs_xdg_update=true
+   needs_xdg_links=true
 fi
 
-# Create links for user-dirs.dirs
+# Check if we can actually read the contents of each xdg dir
 test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
 XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
 for d in ${XDG_SPECIAL_DIRS[@]}; do
-  b=$(basename "$d")
+  if ! can_open_file $d; then
+    needs_xdg_update=true
+  fi
+done
+
+# If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
+if [ $needs_xdg_update = true && `which xdg-user-dirs-update` ]; then
+   xdg-user-dirs-update
+fi
+    
+# Create links for user-dirs.dirs
+if [ $needs_xdg_links = true ]; then
+  test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
+  XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
+  for d in ${XDG_SPECIAL_DIRS[@]}; do
+    b=$(basename "$d")
     if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
       ln -s $REALHOME/$b $HOME/$b
     fi
-done
+  done
+else
+  # If we aren't creating new links, check if we have content saved in old locations and move it
+  for d in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
+    old=`eval "$(echo "echo \\$OLD_XDG_${d}_DIR")"`
+    new=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
+    if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
+      mv "$old"/* "$new"/
+    elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
+      mv "$old"/* "$new"/
+    fi
+  done
+fi
 
 # If detect wayland server socket, then set environment so applications prefer
 # wayland, and setup compat symlink (until we use user mounts. Remember,
