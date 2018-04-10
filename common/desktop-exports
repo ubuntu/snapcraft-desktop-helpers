@@ -143,7 +143,7 @@ if [ $needs_xdg_links = true ]; then
   test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
   XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
   for d in ${XDG_SPECIAL_DIRS[@]}; do
-    b=$(basename "$d")
+    b=$(realpath "$d" --relative-to="$REALHOME")
     if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
       ln -s $REALHOME/$b $HOME/$b
     fi
