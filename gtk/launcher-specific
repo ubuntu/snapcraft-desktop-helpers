@@ -25,10 +25,4 @@ if [ $needs_update = true ]; then
     $RUNTIME/usr/lib/$ARCH/libgtk2.0-0/gtk-query-immodules-2.0 > $GTK_IM_MODULE_FILE
   fi
 fi
-# create symbolic link to ibus socket path for ibus to look up its socket files
-# (see comments #3 and #6 on https://launchpad.net/bugs/1580463)
-IBUS_CONFIG_PATH=$XDG_CONFIG_HOME/ibus
-mkdir -p $IBUS_CONFIG_PATH
-[ -d $IBUS_CONFIG_PATH/bus ] && rm -rf $IBUS_CONFIG_PATH/bus
-ln -sfn $REALHOME/.config/ibus/bus $IBUS_CONFIG_PATH
 
