@@ -77,16 +77,24 @@ char *bindtextdomain(const char *domainname, const char *dirname)
 				      domainname) < 0)
 				continue;
 
+			/* snap_locale_path has been allocated if we made it 
+			 * this far, be sure it's freed before any goto 
+			 * or continue
+			 */
+
 			if (access (snap_locale_path, F_OK) == 0) {
 				closedir (dir);
+				free (snap_locale_path);
 				goto ok;
 			} else if (errno != ENOENT) {
+				free (snap_locale_path);
 				continue;
 			}
 		}
 
 		closedir (dir);
-		continue;
+		free (snap_path);
+		free (snap_locale_path);
 	}
 	/*
 	 * we fell out of the loop, so we'll go to orig regardless - no need to
@@ -95,12 +103,12 @@ char *bindtextdomain(const char *domainname, const char *dirname)
 	goto orig;
 
 ok:
-        ret = r_bindtextdomain (domainname, snap_path);
-        goto out;
+	ret = r_bindtextdomain (domainname, snap_path);
+	goto out;
 orig:
-        ret = r_bindtextdomain (domainname, dirname);
+	ret = r_bindtextdomain (domainname, dirname);
+	goto out;
 out:
-        free (snap_path);
-        free (snap_locale_path);
-        return ret;
+	free (snap_path);
+	return ret;
 }
