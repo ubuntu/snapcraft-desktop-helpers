@@ -35,4 +35,7 @@ else
 fi
 
 export SNAP_LAUNCHER_ARCH_TRIPLET=$ARCH
+if [ -f $SNAP/bindtextdomain.so ]; then
+  export LD_PRELOAD=$LD_PRELOAD:$SNAP/bindtextdomain.so
+fi
 
