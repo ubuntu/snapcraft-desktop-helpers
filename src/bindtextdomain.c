@@ -42,73 +42,73 @@ char *bindtextdomain(const char *domainname, const char *dirname)
         if (snap == NULL || strcmp (snap, "") == 0)
                 goto orig;
 
-	char * paths[] = {
-		"gnome-platform/usr/share/locale",
-		"usr/share/locale",
-		"usr/share/locale-langpack",
-		NULL
-	};
-	for(int i = 0; paths[i] != NULL; i++)
-	{
-		if (asprintf (&snap_path, "%s/%s", snap, paths[i]) < 0)
-			continue;
+        char * paths[] = {
+                "gnome-platform/usr/share/locale",
+                "usr/share/locale",
+                "usr/share/locale-langpack",
+                NULL
+        };
+        for(int i = 0; paths[i] != NULL; i++)
+        {
+                if (asprintf (&snap_path, "%s/%s", snap, paths[i]) < 0)
+                        continue;
 
-		if (access (snap_path, F_OK) < 0)
-			continue;
+                if (access (snap_path, F_OK) < 0)
+                        continue;
 
-	        /*
-		 * if the mo file exists for one language we assume it exists for them
-		 * all, or at least that we're not going to find it anywhere else. we
-		 * don't know at this point what locale the application is actually
-		 * going to use, so we can't look in any particular directory.
-		 */
-	        dir = opendir (snap_path);
-		if (dir == NULL)
-			continue;
+                /*
+                 * if the mo file exists for one language we assume it exists for them
+                 * all, or at least that we're not going to find it anywhere else. we
+                 * don't know at this point what locale the application is actually
+                 * going to use, so we can't look in any particular directory.
+                 */
+                dir = opendir (snap_path);
+                if (dir == NULL)
+                        continue;
 
-		while ((ent = readdir (dir)) != NULL) {
-			if (ent->d_name[0] == '.')
-				continue;
+                while ((ent = readdir (dir)) != NULL) {
+                        if (ent->d_name[0] == '.')
+                                continue;
 
-			if (asprintf (&snap_locale_path,
-				      "%s/%s/LC_MESSAGES/%s.mo",
-				      snap_path,
-				      ent->d_name,
-				      domainname) < 0)
-				continue;
+                        if (asprintf (&snap_locale_path,
+                                      "%s/%s/LC_MESSAGES/%s.mo",
+                                      snap_path,
+                                      ent->d_name,
+                                      domainname) < 0)
+                                continue;
 
-			/* snap_locale_path has been allocated if we made it 
-			 * this far, be sure it's freed before any goto 
-			 * or continue
-			 */
+                        /* snap_locale_path has been allocated if we made it 
+                         * this far, be sure it's freed before any goto 
+                         * or continue
+                         */
 
-			if (access (snap_locale_path, F_OK) == 0) {
-				closedir (dir);
-				free (snap_locale_path);
-				goto ok;
-			} else if (errno != ENOENT) {
-				free (snap_locale_path);
-				continue;
-			}
-		}
+                        if (access (snap_locale_path, F_OK) == 0) {
+                                closedir (dir);
+                                free (snap_locale_path);
+                                goto ok;
+                        } else if (errno != ENOENT) {
+                                free (snap_locale_path);
+                                continue;
+                        }
+                }
 
-		closedir (dir);
-		free (snap_path);
-		free (snap_locale_path);
-	}
-	/*
-	 * we fell out of the loop, so we'll go to orig regardless - no need to
-	 * check for errors
-	 */
-	goto orig;
+                closedir (dir);
+                free (snap_path);
+                free (snap_locale_path);
+        }
+        /*
+         * we fell out of the loop, so we'll go to orig regardless - no need to
+         * check for errors
+         */
+        goto orig;
 
 ok:
-	ret = r_bindtextdomain (domainname, snap_path);
-	goto out;
+        ret = r_bindtextdomain (domainname, snap_path);
+        goto out;
 orig:
-	ret = r_bindtextdomain (domainname, dirname);
-	goto out;
+        ret = r_bindtextdomain (domainname, dirname);
+        goto out;
 out:
-	free (snap_path);
-	return ret;
+        free (snap_path);
+        return ret;
 }
