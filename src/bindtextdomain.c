@@ -85,16 +85,20 @@ char *bindtextdomain(const char *domainname, const char *dirname)
                         if (access (snap_locale_path, F_OK) == 0) {
                                 closedir (dir);
                                 free (snap_locale_path);
+                                snap_locale_path = NULL;
                                 goto ok;
-                        } else if (errno != ENOENT) {
+                        } else {
                                 free (snap_locale_path);
+                                snap_locale_path = NULL;
                                 continue;
                         }
                 }
 
                 closedir (dir);
                 free (snap_path);
+                snap_path = NULL;
                 free (snap_locale_path);
+                snap_locale_path = NULL;
         }
         /*
          * we fell out of the loop, so we'll go to orig regardless - no need to
@@ -110,5 +114,6 @@ orig:
         goto out;
 out:
         free (snap_path);
+        snap_path = NULL;
         return ret;
 }
