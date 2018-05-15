@@ -224,6 +224,7 @@ function make_user_fontconfig {
       echo "  <dir>$d/fonts</dir>"
     fi
   done
+  echo '  <include ignore_missing="yes">conf.d</include>'
   # We need to include this default cachedir first so that caching
   # works: without it, fontconfig will try to write to the real user home
   # cachedir and be blocked by AppArmor.
