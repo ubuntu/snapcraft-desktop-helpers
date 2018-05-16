@@ -11,6 +11,15 @@ else
   export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-2.0
 fi
 
+if [ "$display_server" = "wayland" ]; then
+  if [ not "$USE_gtk3" = true ]; then
+    echo "Gtk2 does not support Wayland" >&2
+    exit 1
+  fi
+  export GDK_BACKEND="wayland"
+  export CLUTTER_BACKEND="wayland"
+fi
+
 # ibus and fcitx integration
 GTK_IM_MODULE_DIR=$XDG_CACHE_HOME/immodules
 export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache

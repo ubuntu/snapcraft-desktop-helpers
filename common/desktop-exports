@@ -161,6 +161,9 @@ else
   done
 fi
 
+# We should test if an X11 $DISPLAY variable is set first
+display_server="x11"
+
 # If detect wayland server socket, then set environment so applications prefer
 # wayland, and setup compat symlink (until we use user mounts. Remember,
 # XDG_RUNTIME_DIR is /run/user/<uid>/snap.$SNAP so look in the parent directory
@@ -175,12 +178,12 @@ if [[ -n "$XDG_RUNTIME_DIR" && -z "$DISABLE_WAYLAND" ]]; then
     fi
     wayland_sockpath="$XDG_RUNTIME_DIR/../$wdisplay"
     wayland_snappath="$XDG_RUNTIME_DIR/$wdisplay"
-    if [ -S "$wayland_sockpath" ]; then
+    if [ -S "$wayland_snappath" ]; then
+      display_server="wayland"
+    elif [ -S "$wayland_sockpath" ]; then
         # if running under wayland, use it
         #export WAYLAND_DEBUG=1
-        export GDK_BACKEND="wayland"
-        export CLUTTER_BACKEND="wayland"
-        export QT_QPA_PLATFORM="wayland-egl"
+        display_server="wayland"
         # create the compat symlink for now
         if [ ! -e "$wayland_snappath" ]; then
             ln -s "$wayland_sockpath" "$wayland_snappath"
