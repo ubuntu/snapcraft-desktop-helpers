@@ -3,6 +3,9 @@
 FLAVOR ?= gtk3
 SRC_DIR ?= .
 
+CC ?= gcc
+CFLAGS ?= -Wall -O2
+
 DEST_LAUNCHER = desktop-launch
 FLAVOR_FILE = flavor-select
 BINDTEXTDOMAIN = bindtextdomain.so
@@ -22,7 +25,7 @@ $(DEST_LAUNCHER):
 	@cat $(SRC_DIR)/launcher-specific >> $(DEST_LAUNCHER)
 	@cat $(SRC_DIR)/mark-and-exec >> $(DEST_LAUNCHER)
 	@echo "USE_$(FLAVOR)=true" >> $(FLAVOR_FILE)
-	gcc -Wall -O2 -o $(BINDTEXTDOMAIN) -fPIC -shared $(SRC_DIR)/../src/bindtextdomain.c -ldl
+	$(CC) $(CFLAGS) -o $(BINDTEXTDOMAIN) -fPIC -shared $(SRC_DIR)/../src/bindtextdomain.c -ldl
 		
 install: $(DEST_LAUNCHER)
 	install -D -m755 $(DEST_LAUNCHER) $(DESTDIR)/bin/$(DEST_LAUNCHER)
