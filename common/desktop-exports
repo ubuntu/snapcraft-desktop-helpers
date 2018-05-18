@@ -113,11 +113,11 @@ done
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_update=false
 needs_xdg_links=false
-if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
-   sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
-   cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
+if can_open_file "$REALHOME"/.config/user-dirs.dirs && can_open_file "$REALHOME"/.config/user-dirs.locale; then
+   sed /^#/!s#\$HOME#${REALHOME}#g "$REALHOME"/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
+   cp -a "$REALHOME"/.config/user-dirs.locale $HOME/.config/
    for f in user-dirs.dirs user-dirs.locale; do
-     md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
+     md5sum < "$REALHOME"/.config/$f > $HOME/.config/$f.md5sum
    done
 else
    needs_xdg_update=true
@@ -144,8 +144,8 @@ if [ $needs_xdg_links = true ]; then
   XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
   for d in ${XDG_SPECIAL_DIRS[@]}; do
     b=$(realpath "$d" --relative-to="$REALHOME")
-    if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
-      ln -s $REALHOME/$b $HOME/$b
+    if [ -e "$REALHOME"/$b ] && [ ! -e $HOME/$b ]; then
+      ln -s "$REALHOME"/$b $HOME/$b
     fi
   done
 else
@@ -213,10 +213,10 @@ export FONTCONFIG_FILE=$XDG_CONFIG_HOME/fontconfig/fonts.conf
 
 function make_user_fontconfig {
   echo "<fontconfig>"
-  if [ -d $REALHOME/.local/share/fonts ]; then
+  if [ -d "$REALHOME"/.local/share/fonts ]; then
     echo "  <dir>$REALHOME/.local/share/fonts</dir>"
   fi
-  if [ -d $REALHOME/.fonts ]; then
+  if [ -d "$REALHOME"/.fonts ]; then
     echo "  <dir>$REALHOME/.fonts</dir>"
   fi
   for d in "${data_dirs_array[@]}"; do
@@ -229,7 +229,7 @@ function make_user_fontconfig {
   # works: without it, fontconfig will try to write to the real user home
   # cachedir and be blocked by AppArmor.
   echo '  <cachedir prefix="xdg">fontconfig</cachedir>'
-  if [ -d $REALHOME/.cache/fontconfig ]; then
+  if [ -d "$REALHOME"/.cache/fontconfig ]; then
     echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
   fi
   echo "</fontconfig>"
@@ -305,9 +305,9 @@ fi
 # symlink the dconf file if home plug is connected for read
 DCONF_DEST_USER_DIR=$SNAP_USER_DATA/.config/dconf
 if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
-  if [ -f $REALHOME/.config/dconf/user ]; then
+  if [ -f "$REALHOME"/.config/dconf/user ]; then
     mkdir -p $DCONF_DEST_USER_DIR
-    ln -s $REALHOME/.config/dconf/user $DCONF_DEST_USER_DIR
+    ln -s "$REALHOME"/.config/dconf/user $DCONF_DEST_USER_DIR
   fi
 fi
 
@@ -356,7 +356,7 @@ for f in ${gtk_configs[@]}; do
   if [ ! -L "$dest" ]
   then
     mkdir -p `dirname $dest`
-    ln -s $REALHOME/$f $dest
+    ln -s "$REALHOME"/$f $dest
   fi
 done
 
@@ -365,5 +365,5 @@ done
 IBUS_CONFIG_PATH=$XDG_CONFIG_HOME/ibus
 mkdir -p $IBUS_CONFIG_PATH
 [ -d $IBUS_CONFIG_PATH/bus ] && rm -rf $IBUS_CONFIG_PATH/bus
-ln -sfn $REALHOME/.config/ibus/bus $IBUS_CONFIG_PATH
+ln -sfn "$REALHOME"/.config/ibus/bus $IBUS_CONFIG_PATH
 

@@ -14,12 +14,12 @@ if [ "$SNAP_DESKTOP_LAST_REVISION" = "$SNAP_REVISION" ]; then
 fi
 
 # Set $REALHOME to the users real home directory
-REALHOME=`getent passwd $UID | cut -d ':' -f 6`
+REALHOME="`getent passwd $UID | cut -d ':' -f 6`"
 
 # If the user has modified their user-dirs settings, force an update
 if [[ -f $HOME/.config/user-dirs.dirs.md5sum && -f $HOME/.config/user-dirs.locale.md5sum ]]; then
-  if [[ "$(md5sum < $REALHOME/.config/user-dirs.dirs)" != "$(cat $HOME/.config/user-dirs.dirs.md5sum)" ||
-        "$(md5sum < $REALHOME/.config/user-dirs.locale)" != "$(cat $HOME/.config/user-dirs.locale.md5sum)" ]]; then
+  if [[ "$(md5sum < "$REALHOME"/.config/user-dirs.dirs)" != "$(cat $HOME/.config/user-dirs.dirs.md5sum)" ||
+        "$(md5sum < "$REALHOME"/.config/user-dirs.locale)" != "$(cat $HOME/.config/user-dirs.locale.md5sum)" ]]; then
     needs_update=true
   fi
 fi
