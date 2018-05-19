@@ -8,7 +8,7 @@ SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
 
 needs_update=true
 
-. $SNAP_USER_DATA/.last_revision 2>/dev/null || true
+. "$SNAP_USER_DATA"/.last_revision 2>/dev/null || true
 if [ "$SNAP_DESKTOP_LAST_REVISION" = "$SNAP_REVISION" ]; then
   needs_update=false
 fi

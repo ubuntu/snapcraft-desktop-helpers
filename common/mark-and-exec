@@ -2,6 +2,6 @@
 # Mark update and exec binary #
 ###############################
 
-[ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > $SNAP_USER_DATA/.last_revision
+[ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > "$SNAP_USER_DATA"/.last_revision
 
 exec "$@"
