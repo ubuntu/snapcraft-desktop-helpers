@@ -2,9 +2,9 @@
 # GNOME runtime selection #
 ###########################
 
-if [ -d $SNAP/gnome-platform ]; then
-  RUNTIME=$SNAP/gnome-platform
-  if [ ! -d $RUNTIME/usr ]; then
+if [ -d "$SNAP"/gnome-platform ]; then
+  RUNTIME="$SNAP"/gnome-platform
+  if [ ! -d "$RUNTIME"/usr ]; then
     echo "You need to connect this snap to the gnome platform snap."
     echo ""
     echo "You can do this with those commands:"

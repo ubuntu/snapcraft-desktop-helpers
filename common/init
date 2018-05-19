@@ -4,7 +4,7 @@
 
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP
-SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
+SNAP=`echo "$SNAP" | sed -e "s|/var/lib/snapd||g"`
 
 needs_update=true
 
@@ -17,9 +17,9 @@ fi
 REALHOME="`getent passwd $UID | cut -d ':' -f 6`"
 
 # If the user has modified their user-dirs settings, force an update
-if [[ -f $HOME/.config/user-dirs.dirs.md5sum && -f $HOME/.config/user-dirs.locale.md5sum ]]; then
-  if [[ "$(md5sum < "$REALHOME"/.config/user-dirs.dirs)" != "$(cat $HOME/.config/user-dirs.dirs.md5sum)" ||
-        "$(md5sum < "$REALHOME"/.config/user-dirs.locale)" != "$(cat $HOME/.config/user-dirs.locale.md5sum)" ]]; then
+if [[ -f "$HOME"/.config/user-dirs.dirs.md5sum && -f "$HOME"/.config/user-dirs.locale.md5sum ]]; then
+  if [[ "$(md5sum < "$REALHOME"/.config/user-dirs.dirs)" != "$(cat "$HOME"/.config/user-dirs.dirs.md5sum)" ||
+        "$(md5sum < "$REALHOME"/.config/user-dirs.locale)" != "$(cat "$HOME"/.config/user-dirs.locale.md5sum)" ]]; then
     needs_update=true
   fi
 fi
@@ -35,7 +35,7 @@ else
 fi
 
 export SNAP_LAUNCHER_ARCH_TRIPLET=$ARCH
-if [ -f $SNAP/bindtextdomain.so ]; then
-  export LD_PRELOAD=$LD_PRELOAD:$SNAP/bindtextdomain.so
+if [ -f "$SNAP"/bindtextdomain.so ]; then
+  export LD_PRELOAD=$LD_PRELOAD:"$SNAP"/bindtextdomain.so
 fi
 
