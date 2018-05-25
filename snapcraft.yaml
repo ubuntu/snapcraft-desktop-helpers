@@ -264,4 +264,6 @@ parts:
     make-parameters: ["FLAVOR=gtk3"]
     build-packages:
       - libgtk-3-dev
-    install: mkdir -p $SNAPCRAFT_PART_INSTALL/gnome-platform
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
