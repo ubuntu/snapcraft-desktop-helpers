@@ -360,7 +360,7 @@ for f in ${gtk_configs[@]}; do
   if [ ! -L "$dest" ]
   then
     mkdir -p `dirname $dest`
-    ln -s $REALHOME/$f $dest
+    ln -sf $REALHOME/$f $dest
   fi
 done
 
