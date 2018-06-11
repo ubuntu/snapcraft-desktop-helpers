@@ -22,6 +22,32 @@ function can_open_file() {
   return `head -c0 "$1" &> /dev/null`;
 }
 
+function update_xdg_dirs_values() {
+  local save_initial_values=false
+  local XDG_DIRS="DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES"
+  unset XDG_SPECIAL_DIRS_PATHS
+
+  if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+  fi
+
+  if [ -z ${XDG_SPECIAL_DIRS+x} ]; then
+    save_initial_values=true
+  fi
+
+  for d in $XDG_DIRS; do
+    var="XDG_${d}_DIR"
+    value="$(eval echo $(echo \$${var}))"
+
+    if [ "$save_initial_values" = true ]; then
+      XDG_SPECIAL_DIRS+=("$var")
+      XDG_SPECIAL_DIRS_INITIAL_PATHS+=("$value")
+    fi
+
+    XDG_SPECIAL_DIRS_PATHS+=("$value")
+  done
+}
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
@@ -109,16 +135,7 @@ mkdir -p $XDG_CONFIG_HOME
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
 # If any, keep track of where XDG dirs were so we can potentially migrate the content later
-test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
-XDG_DIRS="DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES"
-
-for d in $XDG_DIRS; do
-  XDG_SPECIAL_DIRS+=("XDG_${d}_DIR")
-done
-
-for d in ${XDG_SPECIAL_DIRS[@]}; do
-  eval $(echo "OLD_${d}")=\"$(eval echo $(echo \$${d}))\"
-done
+update_xdg_dirs_values
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_update=false
@@ -135,9 +152,8 @@ else
 fi
 
 # Check if we can actually read the contents of each xdg dir
-for d in ${XDG_SPECIAL_DIRS[@]}; do
-  d="`eval echo "\\$OLD_${d}"`"
-  if ! can_open_file $d; then
+for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
+  if ! can_open_file "${XDG_SPECIAL_DIRS_PATHS[$i]}"; then
     needs_xdg_update=true
   fi
 done
@@ -145,22 +161,22 @@ done
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
 if [ $needs_xdg_update = true ] && [ `which xdg-user-dirs-update` ]; then
    xdg-user-dirs-update
+   update_xdg_dirs_values
 fi
 
 # Create links for user-dirs.dirs
 if [ $needs_xdg_links = true ]; then
-  for d in ${XDG_SPECIAL_DIRS[@]}; do
-    d="`eval echo "\\$OLD_${d}"`"
-    b=$(realpath "$d" --relative-to="$REALHOME")
+  for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
+    b=$(realpath "${XDG_SPECIAL_DIRS_PATHS[$i]}" --relative-to="$REALHOME")
     if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
       ln -s $REALHOME/$b $HOME/$b
     fi
   done
 else
   # If we aren't creating new links, check if we have content saved in old locations and move it
-  for d in ${XDG_SPECIAL_DIRS[@]}; do
-    old="`eval echo "\\$OLD_${d}"`"
-    new="`eval echo "\\$${d}"`"
+  for ((i = 0; i < ${#XDG_SPECIAL_DIRS[@]}; i++)); do
+    old="${XDG_SPECIAL_DIRS_INITIAL_PATHS[$i]}"
+    new="${XDG_SPECIAL_DIRS_PATHS[$i]}"
     if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
       mv "$old"/* "$new"/ 2>/dev/null
     elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
