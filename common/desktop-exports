@@ -111,7 +111,7 @@ append_dir LOCPATH $RUNTIME/usr/lib/locale
 # If any, keep track of where XDG dirs were so we can potentially migrate the content later
 test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
 for d in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
-  eval $(echo "OLD_XDG_${d}_DIR")=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
+  eval $(echo "OLD_XDG_${d}_DIR")=\"`eval "$(echo "echo \\$XDG_${d}_DIR")"`\"
 done
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
