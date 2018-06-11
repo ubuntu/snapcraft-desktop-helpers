@@ -243,9 +243,9 @@ function make_user_fontconfig {
   if [ -d $REALHOME/.fonts ]; then
     echo "  <dir>$REALHOME/.fonts</dir>"
   fi
-  for d in "${data_dirs_array[@]}"; do
-    if [ -d "$d/fonts" ]; then
-      echo "  <dir>$d/fonts</dir>"
+  for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+    if [ -d "${data_dirs_array[$i]}/fonts" ]; then
+      echo "  <dir>${data_dirs_array[$i]}/fonts</dir>"
     fi
   done
   echo '  <include ignore_missing="yes">conf.d</include>'
@@ -302,8 +302,8 @@ function compile_schemas {
   if [ -f "$1" ]; then
     rm -rf $GS_SCHEMA_DIR
     mkdir -p $GS_SCHEMA_DIR
-    for d in "${data_dirs_array[@]}"; do
-      schema_dir=$d/glib-2.0/schemas
+    for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+      schema_dir=${data_dirs_array[$i]}/glib-2.0/schemas
       if [ -f "$schema_dir/gschemas.compiled" ]; then
         # This directory already has compiled schemas
         continue
@@ -354,8 +354,8 @@ fi
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/icons
   mkdir -p $XDG_DATA_HOME/icons
-  for d in "${data_dirs_array[@]}"; do
-    for i in $d/icons/*; do
+  for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+    for i in ${data_dirs_array[$i]}/icons/*; do
       if [ -f "$i/index.theme" -a ! -f "$i/icon-theme.cache" ]; then
         theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
         if [ ! -d "$theme_dir" ]; then
