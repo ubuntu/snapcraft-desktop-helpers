@@ -80,6 +80,7 @@ prepend_dir XDG_CONFIG_DIRS $SNAP/etc/xdg
 # Define snaps' own data dir
 [ "$WITH_RUNTIME" = yes ] && prepend_dir XDG_DATA_DIRS $RUNTIME/usr/share
 prepend_dir XDG_DATA_DIRS $SNAP/usr/share
+prepend_dir XDG_DATA_DIRS $SNAP/data-dir
 prepend_dir XDG_DATA_DIRS $SNAP_USER_DATA
 
 # Set XDG_DATA_HOME to local path
