@@ -63,6 +63,10 @@ append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/libunity
 # Pulseaudio export
 append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/pulseaudio
 
+# EGL vendor files on glvnd enabled systems
+[ -d /var/lib/snapd/lib/glvnd/egl_vendor.d ] && \
+    append_dir __EGL_VENDOR_LIBRARY_DIRS /var/lib/snapd/lib/glvnd/egl_vendor.d
+
 # Tell GStreamer where to find its plugins
 export GST_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
 export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
@@ -77,6 +81,7 @@ prepend_dir XDG_CONFIG_DIRS $SNAP/etc/xdg
 [ "$WITH_RUNTIME" = yes ] && prepend_dir XDG_DATA_DIRS $RUNTIME/usr/share
 prepend_dir XDG_DATA_DIRS $SNAP/usr/share
 prepend_dir XDG_DATA_DIRS $SNAP/share
+prepend_dir XDG_DATA_DIRS $SNAP/data-dir
 prepend_dir XDG_DATA_DIRS $SNAP_USER_DATA
 
 # Set XDG_DATA_HOME to local path
@@ -135,7 +140,7 @@ for d in ${XDG_SPECIAL_DIRS[@]}; do
 done
 
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
-if [ $needs_xdg_update = true ] && [ `which xdg-user-dirs-update` ]; then
+if [ $needs_xdg_update = true ] && command -v xdg-user-dirs-update >/dev/null; then
    xdg-user-dirs-update
 fi
     
@@ -252,7 +257,7 @@ fi
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/mime
   if [ ! -f $RUNTIME/usr/share/mime/mime.cache ]; then
-    if [ `which update-mime-database` ]; then
+    if command -v update-mime-database >/dev/null; then
       cp --preserve=timestamps -dR $RUNTIME/usr/share/mime $XDG_DATA_HOME
       update-mime-database $XDG_DATA_HOME/mime
     fi
