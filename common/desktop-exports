@@ -120,6 +120,7 @@ done
 needs_xdg_update=false
 needs_xdg_links=false
 if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
+   ! [ -d "$HOME/.config/" ] && mkdir -p $HOME/.config
    sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
    cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
    for f in user-dirs.dirs user-dirs.locale; do
