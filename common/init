@@ -2,6 +2,8 @@
 # Launcher init #
 #################
 
+START=$(date +%s.%N)
+
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP
 SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
