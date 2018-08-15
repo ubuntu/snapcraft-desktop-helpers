@@ -27,14 +27,23 @@ if [ "$USE_qt5" = true ]; then
   export QT_PRINTER_MODULE=qtubuntu-print
   [ "$WITH_RUNTIME" = yes ] && QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
-  # If a X11 $DISPLAY variable is set we should use it
-  export QT_QPA_PLATFORM=xcb
-  export QT_QPA_PLATFORMTHEME=appmenu-qt5
+
+  if [ "$display_server" = "x11" ]; then
+    export QT_QPA_PLATFORM="xcb"
+    export QT_QPA_PLATFORMTHEME="appmenu-qt5"
+  else
+    export QT_QPA_PLATFORM="wayland-egl"
+  fi
 else
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib/$ARCH/qt4
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
   export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH
   PATH=$SNAP/usr/lib/$ARCH/qt4/bin:$PATH
+
+  if [ "$display_server" = "wayland" ]; then
+    echo "Qt4 does not support Wayland" >&2
+    exit 1
+  fi
 fi
 
 # Use GTK styling for running under the GNOME desktop
