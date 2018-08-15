@@ -27,10 +27,20 @@ if [ "$USE_qt5" = true ]; then
   export QT_PRINTER_MODULE=qtubuntu-print
   [ "$WITH_RUNTIME" = yes ] && QML2_IMPORT_PATH=$SNAP/lib/$ARCH:$SNAP/usr/lib/$ARCH/qt5/qml:$QML2_IMPORT_PATH
   PATH=$RUNTIME/usr/lib/$ARCH/qt5/bin:$PATH
-  # If a X11 $DISPLAY variable is set we should use it
-  export QT_QPA_PLATFORM=xcb
-  export QT_QPA_PLATFORMTHEME=appmenu-qt5
+
+  if [ "$wayland_available" = true ]; then
+    export QT_QPA_PLATFORM=wayland-egl
+    # Does not hurt to specify these as well, just in case
+    export GDK_BACKEND="wayland"
+    export CLUTTER_BACKEND="wayland"
+  else
+    # Should check if a X11 $DISPLAY variable is set and accessible
+    export QT_QPA_PLATFORM=xcb
+    export QT_QPA_PLATFORMTHEME=appmenu-qt5
+  fi
+
 else
+  [ "$wayland_available" = true ] && echo "Warning: Qt4 does not support Wayland!"
   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$SNAP/usr/lib/$ARCH/qt4
   export QT_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/qt4/plugins
   export QML_IMPORT_PATH=$SNAP/usr/lib/$ARCH/qt4/qml:$SNAP/lib/$ARCH:$QML_IMPORT_PATH

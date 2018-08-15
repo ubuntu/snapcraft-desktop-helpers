@@ -6,8 +6,15 @@
 . $SNAP/flavor-select
 
 if [ "$USE_gtk3" = true ]; then
+  if [ "$wayland_available" = true ]; then
+    export GDK_BACKEND="wayland"
+    export CLUTTER_BACKEND="wayland"
+    # Does not hurt to specify this as well, just in case
+    export QT_QPA_PLATFORM=wayland-egl
+  fi
   export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-3.0
 else
+  [ "$wayland_available" = true ] && echo "Warning: GTK2 does not support Wayland!"
   export GTK_PATH=$RUNTIME/usr/lib/$ARCH/gtk-2.0
 fi
 
