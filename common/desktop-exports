@@ -214,7 +214,7 @@ prepend_dir GI_TYPELIB_PATH $SNAP/usr/lib/gjs/girepository-1.0
 IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Font Config and themes
-export FONTCONFIG_PATH=$RUNTIME/etc/fonts/conf.d
+export FONTCONFIG_PATH=$RUNTIME/etc/fonts
 export FONTCONFIG_FILE=$RUNTIME/etc/fonts/fonts.conf
 
 function make_user_fontconfig {
