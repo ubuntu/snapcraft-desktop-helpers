@@ -160,6 +160,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=gtk2"]
     build-packages:
+      - build-essential
       - libgtk2.0-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
@@ -185,6 +186,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=gtk3"]
     build-packages:
+      - build-essential
       - libgtk-3-dev
     stage-packages:
       - libxkbcommon0  # XKB_CONFIG_ROOT
@@ -263,6 +265,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=gtk3"]
     build-packages:
+      - build-essential
       - libgtk-3-dev
     override-build: |
       snapcraftctl build
