@@ -80,6 +80,8 @@ prepend_dir XDG_CONFIG_DIRS "$SNAP"/etc/xdg
 # Define snaps' own data dir
 [ "$WITH_RUNTIME" = yes ] && prepend_dir XDG_DATA_DIRS "$RUNTIME"/usr/share
 prepend_dir XDG_DATA_DIRS "$SNAP"/usr/share
+prepend_dir XDG_DATA_DIRS "$SNAP"/share
+prepend_dir XDG_DATA_DIRS "$SNAP"/data-dir
 prepend_dir XDG_DATA_DIRS "$SNAP_USER_DATA"
 
 # Set XDG_DATA_HOME to local path
@@ -172,6 +174,7 @@ fi
 # https://forum.snapcraft.io/t/wayland-dconf-and-xdg-runtime-dir/186/10
 # Applications that don't support wayland natively may define DISABLE_WAYLAND
 # (to any non-empty value) to skip that logic entirely.
+wayland_available=false
 if [[ -n "$XDG_RUNTIME_DIR" && -z "$DISABLE_WAYLAND" ]]; then
     wdisplay="wayland-0"
     if [ -n "$WAYLAND_DISPLAY" ]; then
@@ -182,9 +185,7 @@ if [[ -n "$XDG_RUNTIME_DIR" && -z "$DISABLE_WAYLAND" ]]; then
     if [ -S "$wayland_sockpath" ]; then
         # if running under wayland, use it
         #export WAYLAND_DEBUG=1
-        export GDK_BACKEND="wayland"
-        export CLUTTER_BACKEND="wayland"
-        export QT_QPA_PLATFORM="wayland-egl"
+        wayland_available=true
         # create the compat symlink for now
         if [ ! -e "$wayland_snappath" ]; then
             ln -s "$wayland_sockpath" "$wayland_snappath"
@@ -212,8 +213,8 @@ prepend_dir GI_TYPELIB_PATH "$SNAP"/usr/lib/gjs/girepository-1.0
 IFS=':' read -r -a data_dirs_array <<< "$XDG_DATA_DIRS"
 
 # Font Config and themes
-export FONTCONFIG_PATH="$RUNTIME"/etc/fonts/conf.d
-export FONTCONFIG_FILE="$XDG_CONFIG_HOME"/fontconfig/fonts.conf
+export FONTCONFIG_PATH="$RUNTIME"/etc/fonts
+export FONTCONFIG_FILE="$RUNTIME"/etc/fonts/fonts.conf
 
 function make_user_fontconfig {
   echo "<fontconfig>"
@@ -239,10 +240,14 @@ function make_user_fontconfig {
   echo "</fontconfig>"
 }
 
-if [ "$needs_update" = true ]; then
+if [ $needs_update = true ]; then
   rm -rf "$XDG_DATA_HOME"/{fontconfig,fonts,fonts-*,themes,.themes}
+
+  # This fontconfig fragment is installed in a location that is
+  # included by the system fontconfig configuration: namely the
+  # etc/fonts/conf.d/50-user.conf file.
   mkdir -p "$XDG_CONFIG_HOME"/fontconfig
-  make_user_fontconfig > "$FONTCONFIG_FILE"
+  make_user_fontconfig > "$XDG_CONFIG_HOME"/fontconfig/fonts.conf
 
   # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
   # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
