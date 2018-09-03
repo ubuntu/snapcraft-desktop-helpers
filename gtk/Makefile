@@ -25,6 +25,6 @@ $(DEST_LAUNCHER):
 	gcc -Wall -O2 -o $(BINDTEXTDOMAIN) -fPIC -shared $(SRC_DIR)/../src/bindtextdomain.c -ldl
 		
 install: $(DEST_LAUNCHER)
-	install -D -m755 $(DEST_LAUNCHER) $(DESTDIR)/bin/$(DEST_LAUNCHER)
-	install -D -m644 $(FLAVOR_FILE) $(DESTDIR)/
-	install -D -m644 $(BINDTEXTDOMAIN) $(DESTDIR)/lib/$(BINDTEXTDOMAIN)
+	install -D -m755 $(DEST_LAUNCHER) "$(DESTDIR)"/bin/$(DEST_LAUNCHER)
+	install -D -m644 $(FLAVOR_FILE) "$(DESTDIR)"/
+	install -D -m644 $(BINDTEXTDOMAIN) "$(DESTDIR)"/lib/$(BINDTEXTDOMAIN)
