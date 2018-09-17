@@ -212,6 +212,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=qt4"]
     build-packages:
+      - build-essential
       - libqt4-dev
       - dpkg-dev
     stage-packages:
@@ -235,6 +236,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=qt5"]
     build-packages:
+      - build-essential
       - qtbase5-dev
       - dpkg-dev
     stage-packages:
