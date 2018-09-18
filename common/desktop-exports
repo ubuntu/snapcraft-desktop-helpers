@@ -22,6 +22,32 @@ function can_open_file() {
   return `head -c0 "$1" &> /dev/null`;
 }
 
+function update_xdg_dirs_values() {
+  local save_initial_values=false
+  local XDG_DIRS="DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES"
+  unset XDG_SPECIAL_DIRS_PATHS
+
+  if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs" ]; then
+    source "${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs"
+  fi
+
+  if [ -z ${XDG_SPECIAL_DIRS+x} ]; then
+    save_initial_values=true
+  fi
+
+  for d in $XDG_DIRS; do
+    var="XDG_${d}_DIR"
+    value="$(eval echo $(echo \$${var}))"
+
+    if [ "$save_initial_values" = true ]; then
+      XDG_SPECIAL_DIRS+=("$var")
+      XDG_SPECIAL_DIRS_INITIAL_PATHS+=("$value")
+    fi
+
+    XDG_SPECIAL_DIRS_PATHS+=("$value")
+  done
+}
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
@@ -111,10 +137,7 @@ mkdir -p $XDG_CONFIG_HOME
 append_dir LOCPATH $RUNTIME/usr/lib/locale
 
 # If any, keep track of where XDG dirs were so we can potentially migrate the content later
-test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
-for d in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
-  eval $(echo "OLD_XDG_${d}_DIR")=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
-done
+update_xdg_dirs_values
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_update=false
@@ -132,10 +155,8 @@ else
 fi
 
 # Check if we can actually read the contents of each xdg dir
-test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
-XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
-for d in ${XDG_SPECIAL_DIRS[@]}; do
-  if ! can_open_file $d; then
+for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
+  if ! can_open_file "${XDG_SPECIAL_DIRS_PATHS[$i]}"; then
     needs_xdg_update=true
   fi
 done
@@ -143,23 +164,22 @@ done
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
 if [ $needs_xdg_update = true ] && command -v xdg-user-dirs-update >/dev/null; then
    xdg-user-dirs-update
+   update_xdg_dirs_values
 fi
-    
+
 # Create links for user-dirs.dirs
 if [ $needs_xdg_links = true ]; then
-  test -f ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs && . ${XDG_CONFIG_HOME:-$HOME/.config}/user-dirs.dirs
-  XDG_SPECIAL_DIRS=($XDG_DOCUMENTS_DIR $XDG_DESKTOP_DIR $XDG_DOWNLOAD_DIR $XDG_MUSIC_DIR $XDG_PICTURES_DIR $XDG_VIDEOS_DIR $XDG_PUBLIC_DIR $XDG_TEMPLATES_DIR)
-  for d in ${XDG_SPECIAL_DIRS[@]}; do
-    b=$(realpath "$d" --relative-to="$REALHOME")
+  for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
+    b=$(realpath "${XDG_SPECIAL_DIRS_PATHS[$i]}" --relative-to="$REALHOME")
     if [ -e $REALHOME/$b ] && [ ! -e $HOME/$b ]; then
       ln -s $REALHOME/$b $HOME/$b
     fi
   done
 else
   # If we aren't creating new links, check if we have content saved in old locations and move it
-  for d in DOCUMENTS DESKTOP DOWNLOAD MUSIC PICTURES VIDEOS PUBLICSHARE TEMPLATES; do
-    old=`eval "$(echo "echo \\$OLD_XDG_${d}_DIR")"`
-    new=`eval "$(echo "echo \\$XDG_${d}_DIR")"`
+  for ((i = 0; i < ${#XDG_SPECIAL_DIRS[@]}; i++)); do
+    old="${XDG_SPECIAL_DIRS_INITIAL_PATHS[$i]}"
+    new="${XDG_SPECIAL_DIRS_PATHS[$i]}"
     if [ -L "$old" ] && [ -d "$new" ] && [ `readlink "$old"` != "$new" ]; then
       mv "$old"/* "$new"/ 2>/dev/null
     elif [ -d "$old" ] && [ -d "$new" ] && [ "$old" != "$new" ]; then
@@ -225,9 +245,9 @@ function make_user_fontconfig {
   if [ -d $REALHOME/.fonts ]; then
     echo "  <dir>$REALHOME/.fonts</dir>"
   fi
-  for d in "${data_dirs_array[@]}"; do
-    if [ -d "$d/fonts" ]; then
-      echo "  <dir>$d/fonts</dir>"
+  for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+    if [ -d "${data_dirs_array[$i]}/fonts" ]; then
+      echo "  <dir>${data_dirs_array[$i]}/fonts</dir>"
     fi
   done
   echo '  <include ignore_missing="yes">conf.d</include>'
@@ -288,8 +308,8 @@ function compile_schemas {
   if [ -f "$1" ]; then
     rm -rf $GS_SCHEMA_DIR
     mkdir -p $GS_SCHEMA_DIR
-    for d in "${data_dirs_array[@]}"; do
-      schema_dir=$d/glib-2.0/schemas
+    for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+      schema_dir=${data_dirs_array[$i]}/glib-2.0/schemas
       if [ -f "$schema_dir/gschemas.compiled" ]; then
         # This directory already has compiled schemas
         continue
@@ -340,8 +360,8 @@ fi
 if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/icons
   mkdir -p $XDG_DATA_HOME/icons
-  for d in "${data_dirs_array[@]}"; do
-    for i in $d/icons/*; do
+  for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
+    for i in ${data_dirs_array[$i]}/icons/*; do
       if [ -f "$i/index.theme" -a ! -f "$i/icon-theme.cache" ]; then
         theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
         if [ ! -d "$theme_dir" ]; then
