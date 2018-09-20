@@ -309,7 +309,7 @@ function compile_schemas {
     rm -rf $GS_SCHEMA_DIR
     mkdir -p $GS_SCHEMA_DIR
     for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
-      schema_dir=${data_dirs_array[$i]}/glib-2.0/schemas
+      schema_dir="${data_dirs_array[$i]}/glib-2.0/schemas"
       if [ -f "$schema_dir/gschemas.compiled" ]; then
         # This directory already has compiled schemas
         continue
@@ -361,12 +361,12 @@ if [ $needs_update = true ]; then
   rm -rf $XDG_DATA_HOME/icons
   mkdir -p $XDG_DATA_HOME/icons
   for ((i = 0; i < ${#data_dirs_array[@]}; i++)); do
-    for i in ${data_dirs_array[$i]}/icons/*; do
-      if [ -f "$i/index.theme" -a ! -f "$i/icon-theme.cache" ]; then
-        theme_dir=$XDG_DATA_HOME/icons/$(basename "$i")
+    for theme in "${data_dirs_array[$i]}/icons/"*; do
+      if [ -f "$theme/index.theme" -a ! -f "$theme/icon-theme.cache" ]; then
+        theme_dir=$XDG_DATA_HOME/icons/$(basename "$theme")
         if [ ! -d "$theme_dir" ]; then
           mkdir -p "$theme_dir"
-          ln -s $i/* "$theme_dir"
+          ln -sv $theme/* "$theme_dir"
           if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
             $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
           elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
