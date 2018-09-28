@@ -366,7 +366,7 @@ if [ $needs_update = true ]; then
         theme_dir=$XDG_DATA_HOME/icons/$(basename "$theme")
         if [ ! -d "$theme_dir" ]; then
           mkdir -p "$theme_dir"
-          ln -sv $theme/* "$theme_dir"
+          ln -s $theme/* "$theme_dir"
           if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
             $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
           elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
