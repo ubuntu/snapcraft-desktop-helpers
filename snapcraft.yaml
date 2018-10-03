@@ -180,6 +180,9 @@ parts:
       - xdg-user-dirs
       - ibus-gtk
       - libibus-1.0-5
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
   desktop-gtk3:
     source: .
     source-subdir: gtk
@@ -206,6 +209,9 @@ parts:
       - xdg-user-dirs
       - ibus-gtk3
       - libibus-1.0-5
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
   desktop-qt4:
     source: .
     source-subdir: qt
@@ -230,6 +236,9 @@ parts:
       - locales-all
       - sni-qt
       - xdg-user-dirs
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
   desktop-qt5:
     source: .
     source-subdir: qt
@@ -253,6 +262,9 @@ parts:
       - try: [appmenu-qt5] # not available on core18
       - locales-all
       - xdg-user-dirs
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
   desktop-glib-only:
     source: .
     source-subdir: glib-only
@@ -272,3 +284,4 @@ parts:
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
