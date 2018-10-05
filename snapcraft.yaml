@@ -180,9 +180,6 @@ parts:
       - xdg-user-dirs
       - ibus-gtk
       - libibus-1.0-5
-    override-build: |
-      snapcraftctl build
-      mkdir -pv $SNAPCRAFT_PART_INSTALL/data-dir
   desktop-gtk3:
     source: .
     source-subdir: gtk
