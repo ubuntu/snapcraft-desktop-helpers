@@ -272,8 +272,13 @@ if [ $needs_update = true ]; then
 
   # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
   # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
-  ln -sf $RUNTIME/usr/share/themes $XDG_DATA_HOME
-  ln -sfn $RUNTIME/usr/share/themes $SNAP_USER_DATA/.themes
+  if [ -d $SNAP/data-dir/themes ]; then
+    ln -sf $SNAP/data-dir/themes $XDG_DATA_HOME
+    ln -sfn $SNAP/data-dir/themes $SNAP_USER_DATA/.themes
+  else
+    ln -sf $RUNTIME/usr/share/themes $XDG_DATA_HOME
+    ln -sfn $RUNTIME/usr/share/themes $SNAP_USER_DATA/.themes
+  fi
 fi
 
 # Build mime.cache
