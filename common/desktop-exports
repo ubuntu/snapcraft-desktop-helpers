@@ -126,10 +126,6 @@ if [[ -d $SNAP_USER_DATA/.cache && ! -e $XDG_CACHE_HOME ]]; then
 fi
 mkdir -p $XDG_CACHE_HOME
 
-# Set config folder to local path
-export XDG_CONFIG_HOME=$SNAP_USER_DATA/.config
-mkdir -p $XDG_CONFIG_HOME
-
 # Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
 [ -n "$XDG_RUNTIME_DIR" ] && mkdir -p $XDG_RUNTIME_DIR -m 700
 
