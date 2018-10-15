@@ -409,13 +409,12 @@ fi
 
 # GTK theme and behavior modifier
 # Those can impact the theme engine used by Qt as well
-gtk_configs=(.config/gtk-3.0/settings.ini .config/gtk-3.0/bookmarks .config/gtk-2.0/gtkfilechooser.ini)
+gtk_configs=(gtk-3.0/settings.ini gtk-3.0/bookmarks gtk-2.0/gtkfilechooser.ini)
 for f in ${gtk_configs[@]}; do
-  dest="$SNAP_USER_DATA/$f"
-  if [ ! -L "$dest" ]
-  then
+  dest="$XDG_CONFIG_HOME/$f"
+  if [ ! -L "$dest" ]; then
     mkdir -p `dirname $dest`
-    ln -s $REALHOME/$f $dest
+    ln -s $REALHOME/.config/$f $dest
   fi
 done
 
