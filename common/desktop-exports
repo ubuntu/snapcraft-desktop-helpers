@@ -48,6 +48,12 @@ function update_xdg_dirs_values() {
   done
 }
 
+function is_subpath() {
+  dir=$(realpath $1)
+  parent=$(realpath $2)
+  [ "${dir##$parent/}" != "$dir" ] && return 0 || return 1
+}
+
 WITH_RUNTIME=no
 if [ -z "$RUNTIME" ]; then
   RUNTIME=$SNAP
@@ -137,16 +143,29 @@ update_xdg_dirs_values
 
 # Setup user-dirs.* or run xdg-user-dirs-update if needed
 needs_xdg_update=false
+needs_xdg_reload=false
 needs_xdg_links=false
+
+if [ "$HOME" != "$SNAP_USER_DATA" ] && ! is_subpath "$XDG_CONFIG_HOME" "$HOME"; then
+  for f in user-dirs.dirs user-dirs.locale; do
+    if [ -f "$HOME/.config/$f" ]; then
+      mv "$HOME/.config/$f" "$XDG_CONFIG_HOME"
+      needs_xdg_reload=true
+    fi
+  done
+fi
+
 if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
-   sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $XDG_CONFIG_HOME/user-dirs.dirs
-   cp -a $REALHOME/.config/user-dirs.locale $XDG_CONFIG_HOME
-   for f in user-dirs.dirs user-dirs.locale; do
-     md5sum < $REALHOME/.config/$f > $XDG_CONFIG_HOME/$f.md5sum
-   done
+  if [ $needs_xdg_reload = true ]; then
+    sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $XDG_CONFIG_HOME/user-dirs.dirs
+    cp -a $REALHOME/.config/user-dirs.locale $XDG_CONFIG_HOME
+    for f in user-dirs.dirs user-dirs.locale; do
+      md5sum < $REALHOME/.config/$f > $XDG_CONFIG_HOME/$f.md5sum
+    done
+  fi
 else
-   needs_xdg_update=true
-   needs_xdg_links=true
+  needs_xdg_update=true
+  needs_xdg_links=true
 fi
 
 # Check if we can actually read the contents of each xdg dir
@@ -158,8 +177,10 @@ done
 
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
 if [ $needs_xdg_update = true ] && command -v xdg-user-dirs-update >/dev/null; then
-   xdg-user-dirs-update
-   update_xdg_dirs_values
+  xdg-user-dirs-update
+  update_xdg_dirs_values
+elif [ $needs_xdg_reload = true ]; then
+  update_xdg_dirs_values
 fi
 
 # Create links for user-dirs.dirs
