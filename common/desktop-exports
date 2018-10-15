@@ -169,18 +169,23 @@ else
   needs_xdg_links=true
 fi
 
+if [ $needs_xdg_reload = true ]; then
+  update_xdg_dirs_values
+  needs_xdg_reload=false
+fi
+
 # Check if we can actually read the contents of each xdg dir
 for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
   if ! can_open_file "${XDG_SPECIAL_DIRS_PATHS[$i]}"; then
     needs_xdg_update=true
+    needs_xdg_links=true
+    break
   fi
 done
 
 # If needs XDG update and xdg-user-dirs-update exists in $PATH, run it
 if [ $needs_xdg_update = true ] && command -v xdg-user-dirs-update >/dev/null; then
   xdg-user-dirs-update
-  update_xdg_dirs_values
-elif [ $needs_xdg_reload = true ]; then
   update_xdg_dirs_values
 fi
 
