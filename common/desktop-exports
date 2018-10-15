@@ -139,11 +139,10 @@ update_xdg_dirs_values
 needs_xdg_update=false
 needs_xdg_links=false
 if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
-   mkdir -p $HOME/.config -m 700
-   sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $HOME/.config/user-dirs.dirs
-   cp -a $REALHOME/.config/user-dirs.locale $HOME/.config/
+   sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $XDG_CONFIG_HOME/user-dirs.dirs
+   cp -a $REALHOME/.config/user-dirs.locale $XDG_CONFIG_HOME
    for f in user-dirs.dirs user-dirs.locale; do
-     md5sum < $REALHOME/.config/$f > $HOME/.config/$f.md5sum
+     md5sum < $REALHOME/.config/$f > $XDG_CONFIG_HOME/$f.md5sum
    done
 else
    needs_xdg_update=true
