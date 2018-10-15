@@ -156,12 +156,13 @@ if [ "$HOME" != "$SNAP_USER_DATA" ] && ! is_subpath "$XDG_CONFIG_HOME" "$HOME"; 
 fi
 
 if can_open_file "$REALHOME/.config/user-dirs.dirs" && can_open_file "$REALHOME/.config/user-dirs.locale"; then
-  if [ $needs_xdg_reload = true ]; then
+  if [ $needs_update = true ] || [ $needs_xdg_reload = true ]; then
     sed /^#/!s#\$HOME#${REALHOME}#g $REALHOME/.config/user-dirs.dirs > $XDG_CONFIG_HOME/user-dirs.dirs
     cp -a $REALHOME/.config/user-dirs.locale $XDG_CONFIG_HOME
     for f in user-dirs.dirs user-dirs.locale; do
       md5sum < $REALHOME/.config/$f > $XDG_CONFIG_HOME/$f.md5sum
     done
+    needs_xdg_reload=true
   fi
 else
   needs_xdg_update=true
@@ -418,4 +419,3 @@ IBUS_CONFIG_PATH=$XDG_CONFIG_HOME/ibus
 mkdir -p $IBUS_CONFIG_PATH
 [ -d $IBUS_CONFIG_PATH/bus ] && rm -rf $IBUS_CONFIG_PATH/bus
 ln -sfn $REALHOME/.config/ibus/bus $IBUS_CONFIG_PATH
-

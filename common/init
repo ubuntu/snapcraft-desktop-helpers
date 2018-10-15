@@ -28,6 +28,8 @@ if [[ -f $XDG_CONFIG_HOME/user-dirs.dirs.md5sum && -f $XDG_CONFIG_HOME/user-dirs
         "$(md5sum < $REALHOME/.config/user-dirs.locale)" != "$(cat $XDG_CONFIG_HOME/user-dirs.locale.md5sum)" ]]; then
     needs_update=true
   fi
+else
+  needs_update=true
 fi
 
 if [ "$SNAP_ARCH" == "amd64" ]; then
