@@ -206,6 +206,7 @@ parts:
       - xdg-user-dirs
       - ibus-gtk3
       - libibus-1.0-5
+      - fcitx-frontend-gtk3
   desktop-qt4:
     source: .
     source-subdir: qt
