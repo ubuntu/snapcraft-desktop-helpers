@@ -18,12 +18,18 @@ fi
 # Set $REALHOME to the users real home directory
 REALHOME=`getent passwd $UID | cut -d ':' -f 6`
 
+# Set config folder to local path
+export XDG_CONFIG_HOME=$SNAP_USER_DATA/.config
+mkdir -p $XDG_CONFIG_HOME -m 700
+
 # If the user has modified their user-dirs settings, force an update
-if [[ -f $HOME/.config/user-dirs.dirs.md5sum && -f $HOME/.config/user-dirs.locale.md5sum ]]; then
-  if [[ "$(md5sum < $REALHOME/.config/user-dirs.dirs)" != "$(cat $HOME/.config/user-dirs.dirs.md5sum)" ||
-        "$(md5sum < $REALHOME/.config/user-dirs.locale)" != "$(cat $HOME/.config/user-dirs.locale.md5sum)" ]]; then
+if [[ -f $XDG_CONFIG_HOME/user-dirs.dirs.md5sum && -f $XDG_CONFIG_HOME/user-dirs.locale.md5sum ]]; then
+  if [[ "$(md5sum < $REALHOME/.config/user-dirs.dirs)" != "$(cat $XDG_CONFIG_HOME/user-dirs.dirs.md5sum)" ||
+        "$(md5sum < $REALHOME/.config/user-dirs.locale)" != "$(cat $XDG_CONFIG_HOME/user-dirs.locale.md5sum)" ]]; then
     needs_update=true
   fi
+else
+  needs_update=true
 fi
 
 if [ "$SNAP_ARCH" == "amd64" ]; then
