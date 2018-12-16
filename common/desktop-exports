@@ -424,3 +424,13 @@ IBUS_CONFIG_PATH=$XDG_CONFIG_HOME/ibus
 mkdir -p $IBUS_CONFIG_PATH
 [ -d $IBUS_CONFIG_PATH/bus ] && rm -rf $IBUS_CONFIG_PATH/bus
 ln -sfn $REALHOME/.config/ibus/bus $IBUS_CONFIG_PATH
+
+# Make nimf runtime directory available inside the snap-specific
+# $XDG_RUNTIME_DIR
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+    real_nimf_runtime_dir="$XDG_RUNTIME_DIR/../nimf"
+    snap_nimf_runtime_dir="$XDG_RUNTIME_DIR/nimf"
+    if [ -d "$real_nimf_runtime_dir" ]; then
+        ln -sf "$real_nimf_runtime_dir" "$snap_nimf_runtime_dir"
+    fi
+fi
