@@ -74,6 +74,7 @@ export XLOCALEDIR=$RUNTIME/usr/share/X11/locale
 
 # Set XCursors path
 export XCURSOR_PATH=$RUNTIME/usr/share/icons
+prepend_dir XCURSOR_PATH $SNAP/data-dir/icons
 
 # Mesa Libs for OpenGL support
 append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/mesa
