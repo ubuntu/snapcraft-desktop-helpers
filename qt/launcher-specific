@@ -40,7 +40,9 @@ if [ "$USE_qt5" = true ]; then
   else
     # Should check if a X11 $DISPLAY variable is set and accessible
     export QT_QPA_PLATFORM=xcb
-    export QT_QPA_PLATFORMTHEME=appmenu-qt5
+    if ! [ -v QT_QPA_PLATFORMTHEME ] || [ -z "${QT_QPA_PLATFORMTHEME}" ]; then
+      export QT_QPA_PLATFORMTHEME=appmenu-qt5
+    fi
   fi
 
 else
