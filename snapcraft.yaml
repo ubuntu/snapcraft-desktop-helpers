@@ -269,8 +269,7 @@ parts:
     plugin: make
     make-parameters: ["FLAVOR=gtk3"]
     build-packages:
-      - build-essential
-      - libgtk-3-dev
+      - gcc
     override-build: |
       snapcraftctl build
       mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
