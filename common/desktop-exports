@@ -328,8 +328,7 @@ function compile_giomodules {
     rm -rf $GIO_MODULE_DIR
     mkdir -p $GIO_MODULE_DIR
     ln -s $1/gio/modules/*.so $GIO_MODULE_DIR
-    $1/glib-2.0/gio-querymodules $GIO_MODULE_DIR &
-    PIDS[$!]=gio-querymodules
+    $1/glib-2.0/gio-querymodules $GIO_MODULE_DIR
   fi
 }
 if [ $needs_update = true ]; then
