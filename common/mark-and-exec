@@ -4,6 +4,11 @@
 
 [ $needs_update = true ] && echo "SNAP_DESKTOP_LAST_REVISION=$SNAP_REVISION" > $SNAP_USER_DATA/.last_revision
 
+for i in ${!PIDS[@]}
+do
+  wait $i && continue || echo "${PIDS[$i]} exited abnormally with status $?"
+done
+
 if [ -n "$SNAP_DESKTOP_DEBUG" ]; then
   echo "desktop-launch elapsed time: " $(date +%s.%N --date="$START seconds ago") 
   echo "Now running: exec $@"
