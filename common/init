@@ -5,6 +5,16 @@
 START=$(date +%s.%N)
 
 declare -A PIDS
+function async_exec() {
+  $@ &
+  PIDS[$!]=$@
+}
+function wait_for_async_execs() {
+  for i in ${!PIDS[@]}
+  do
+    wait $i && continue || echo "ERROR: ${PIDS[$i]} exited abnormally with status $?"
+  done
+}
 
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP

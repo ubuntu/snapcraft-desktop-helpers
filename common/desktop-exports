@@ -294,8 +294,7 @@ if [ $needs_update = true ]; then
   # included by the system fontconfig configuration: namely the
   # etc/fonts/conf.d/50-user.conf file.
   mkdir -p $XDG_CONFIG_HOME/fontconfig
-  make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf &
-  PIDS[$!]=make_user_fontconfig
+  async_exec make_user_fontconfig > $XDG_CONFIG_HOME/fontconfig/fonts.conf
 
   # the themes symlink are needed for GTK 3.18 when the prefix isn't changed
   # GTK 3.20 looks into XDG_DATA_DIR which has connected themes.
@@ -315,8 +314,7 @@ if [ $needs_update = true ]; then
   if [ ! -f $RUNTIME/usr/share/mime/mime.cache ]; then
     if command -v update-mime-database >/dev/null; then
       cp --preserve=timestamps -dR $RUNTIME/usr/share/mime $XDG_DATA_HOME
-      update-mime-database $XDG_DATA_HOME/mime &
-      PIDS[$!]=update-mime-database
+      async_exec update-mime-database $XDG_DATA_HOME/mime
     fi
   fi
 fi
@@ -332,8 +330,7 @@ function compile_giomodules {
   fi
 }
 if [ $needs_update = true ]; then
-  compile_giomodules $RUNTIME/usr/lib/$ARCH &
-  PIDS[$!]=compile_giomodules
+  async_exec compile_giomodules $RUNTIME/usr/lib/$ARCH
 fi
 
 # Setup compiled gsettings schema
@@ -362,8 +359,7 @@ function compile_schemas {
   fi
 }
 if [ $needs_update = true ]; then
-  compile_schemas $RUNTIME/usr/lib/$ARCH/glib-2.0/glib-compile-schemas &
-  PIDS[$!]=compile_schemas
+  async_exec compile_schemas $RUNTIME/usr/lib/$ARCH/glib-2.0/glib-compile-schemas
 fi
 
 # Enable gsettings user changes
@@ -387,8 +383,7 @@ export GDK_PIXBUF_MODULEDIR=$RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/2.10.0/loaders
 if [ $needs_update = true ]; then
   rm -f $GDK_PIXBUF_MODULE_FILE
   if [ -f $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders ]; then
-    $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE &
-    PIDS[$!]=gdk-pixbuf-query-loaders
+    async_exec $RUNTIME/usr/lib/$ARCH/gdk-pixbuf-2.0/gdk-pixbuf-query-loaders > $GDK_PIXBUF_MODULE_FILE
   fi
 fi
 
@@ -404,11 +399,9 @@ if [ $needs_update = true ]; then
           mkdir -p "$theme_dir"
           ln -s $theme/* "$theme_dir"
           if [ -f $RUNTIME/usr/sbin/update-icon-caches ]; then
-            $RUNTIME/usr/sbin/update-icon-caches "$theme_dir" &
-            PIDS[$!]=update-icon-caches
+            async_exec $RUNTIME/usr/sbin/update-icon-caches "$theme_dir"
           elif [ -f $RUNTIME/usr/sbin/update-icon-cache.gtk2 ]; then
-            $RUNTIME/usr/sbin/update-icon-cache.gtk2 "$theme_dir" &
-            PIDS[$!]=update-icon-cache.gtk2
+            async_exec $RUNTIME/usr/sbin/update-icon-cache.gtk2 "$theme_dir"
           fi
         fi
       fi
