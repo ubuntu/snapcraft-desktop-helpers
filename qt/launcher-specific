@@ -57,4 +57,4 @@ fi
 append_dir GTK_PATH $RUNTIME/usr/lib/$ARCH/gtk-2.0
 
 # Fix locating the QtWebEngineProcess executable
-export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec
+export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec/QtWebEngineProcess
