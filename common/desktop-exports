@@ -60,6 +60,7 @@ if [ -z "$RUNTIME" ]; then
 else
   # add general paths not added by snapcraft due to runtime snap
   append_dir LD_LIBRARY_PATH $RUNTIME/lib/$ARCH
+  append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib
   append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH
   append_dir PATH $RUNTIME/usr/bin
   WITH_RUNTIME=yes
