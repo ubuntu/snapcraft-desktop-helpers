@@ -24,8 +24,10 @@ description: |
        - for graphical application:
          plugs: [x11 (or unity7 for appmenu integration)]. Think about adding
          opengl if you need hw acceleration.
-       - if your application needs access to sound:
-         plugs: [pulseaudio]
+       - for sound playback:
+         plugs: [audio-playback, pulseaudio]
+       - for sound playback and recording:
+         plugs: [audio-playback, audio-record, pulseaudio]
        - accessing to user's home directory:
          plugs: [home]
        - read/write to gsettings:
