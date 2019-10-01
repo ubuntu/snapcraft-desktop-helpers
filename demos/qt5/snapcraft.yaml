@@ -8,7 +8,7 @@ confinement: strict
 apps:
   qt5-application:
     command: desktop-launch application
-    plugs: [unity7, home]
+    plugs: [desktop, home]
 
 parts:
   application:
