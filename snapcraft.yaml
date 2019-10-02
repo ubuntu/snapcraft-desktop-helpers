@@ -2,15 +2,21 @@ name: desktop-helpers
 version: 1
 summary: Various technology desktop helpers for snapcraft
 description: |
+  Note: We are currently in the process of moving most of the functionality of the
+  desktop helpers to Snapcraft Extensions. The extensions are much easier to use
+  and contain many improvements. Please read the documentation on snapping
+  desktop applications to see what the best way is to create a snap for
+  your application: https://forum.snapcraft.io/t/desktop-applications/13034
+  .
   Helpers for gtk2, gtk3, qt4 and qt5 or gnome-platform and glib minimal launchers.
   It brings the necessary code and exports for binding and using those
   desktop technologies in a relocatable fashion, enabling binding with
   global desktop theme, icon theme, image caching, fonts, mimetype handlers
   application global menu and gsettings integration.
-  It also brings basics ubuntu dependency packages.
+  It also brings basic ubuntu dependency packages.
   .
   Usage:
-    1. add "after: [desktop-<technology>]" to your launcher:
+    1. copy the part of the toolkit you need to your snapcraft.yaml file:
        - gtk2, gtk3, qt4 and qt5 corresponds to their respective toolkit
          main dependencies and default choices.
        - gnome-platform is similar to gtk3 without the extra depends, it's
