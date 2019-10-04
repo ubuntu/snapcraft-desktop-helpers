@@ -1,21 +1,66 @@
 name: gtk3-demo
 version: "3.18"
 summary: Gtk3 launcher demo
-description: Use the gtk3 demo to show desktop launcher properties with all
-  libraries included.
+description: |
+  Use the gtk3 demo to show desktop launcher properties with all libraries included.
 grade: stable
 confinement: strict
+base: core18
 
 apps:
   gtk3-demo:
-    command: desktop-launch gtk3-demo
-    plugs: [desktop, desktop-legacy, wayland, unity7, gsettings, home]
+    command: bin/desktop-launch gtk3-demo
+    plugs: 
+      - desktop
+      - desktop-legacy
+      - wayland
+      - x11
+      - unity7
+      - gsettings # For desktop theme detection under Wayland session
+      - home
   gsettings:
-    command: desktop-launch gsettings
-    plugs: [gsettings]
+    command: bin/desktop-launch gsettings
+    plugs: 
+      - gsettings
 
 parts:
   gtk3-demo:
     plugin: nil
     stage-packages: [gtk-3-examples, libglib2.0-bin]
-    after: [desktop-gtk3]
+    after: [desktop-gnome-platform]
+
+  # This part installs the `desktop-launch` script which initialises desktop
+  # features such as fonts, themes and the XDG environment.
+  # 
+  # It is copied straight from the snapcraft desktop helpers project. Please
+  # periodically check the source for updates and copy the changes.
+  #    https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/snapcraft.yaml
+  # 
+  desktop-gnome-platform:
+    source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - gcc
+    override-build: |
+      snapcraftctl build
+      mkdir -pv $SNAPCRAFT_PART_INSTALL/gnome-platform
+
+plugs:
+  gnome-3-28-1804:
+    interface: content
+    target: $SNAP/gnome-platform
+    default-provider: gnome-3-28-1804
+  gtk-3-themes:
+    interface: content
+    target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  icon-themes:
+    interface: content
+    target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
