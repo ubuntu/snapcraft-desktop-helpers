@@ -16,6 +16,15 @@ function wait_for_async_execs() {
   done
 }
 
+# ensure_dir_exists calls `mkdir -p` if the given path is not a directory.
+# This speeds up execution time by avoiding unnecessary calls to mkdir.
+#
+# Usage: ensure_dir_exists <path> [<mkdir-options>]...
+#
+function ensure_dir_exists() {
+  [ -d "$1" ] ||  mkdir -p "$@"
+}
+
 # On Fedora $SNAP is under /var and there is some magic to map it to /snap.
 # # We need to handle that case and reset $SNAP
 SNAP=`echo $SNAP | sed -e "s|/var/lib/snapd||g"`
@@ -32,7 +41,7 @@ REALHOME=`getent passwd $UID | cut -d ':' -f 6`
 
 # Set config folder to local path
 export XDG_CONFIG_HOME=$SNAP_USER_DATA/.config
-mkdir -p $XDG_CONFIG_HOME -m 700
+ensure_dir_exists $XDG_CONFIG_HOME -m 700
 
 # If the user has modified their user-dirs settings, force an update
 if [[ -f $XDG_CONFIG_HOME/user-dirs.dirs.md5sum && -f $XDG_CONFIG_HOME/user-dirs.locale.md5sum ]]; then
