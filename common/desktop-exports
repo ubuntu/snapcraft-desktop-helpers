@@ -373,10 +373,9 @@ if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
   fi
 fi
 
-# Always copy the latest dconf file to $XDG_RUNTIME_DIR before running
-if [ -f $REALHOME/.config/dconf/user ]; then
+if [ -r $XDG_RUNTIME_DIR/../dconf/user ]; then
   ensure_dir_exists $XDG_RUNTIME_DIR/dconf
-  cp $REALHOME/.config/dconf/user $XDG_RUNTIME_DIR/dconf
+  ln -sf ../../dconf/user $XDG_RUNTIME_DIR/dconf/user
 fi
 
 # Testability support
