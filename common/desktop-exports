@@ -136,7 +136,7 @@ fi
 ensure_dir_exists $XDG_CACHE_HOME
 
 # Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
-[ -n "$XDG_RUNTIME_DIR" ] && ensure_dir_exists $XDG_RUNTIME_DIR -m 700
+ensure_dir_exists $XDG_RUNTIME_DIR -m 700
 
 # Ensure the app finds locale definitions (requires locales-all to be installed)
 append_dir LOCPATH $RUNTIME/usr/lib/locale
@@ -196,7 +196,7 @@ fi
 if [ $needs_xdg_links = true ]; then
   for ((i = 0; i < ${#XDG_SPECIAL_DIRS_PATHS[@]}; i++)); do
     b=$(realpath "${XDG_SPECIAL_DIRS_PATHS[$i]}" --relative-to="$HOME")
-    if [ -e $REALHOME/$b ]; then
+    if [[ "$b" != "." && -e $REALHOME/$b ]]; then
       [ -d $HOME/$b ] && rmdir $HOME/$b 2> /dev/null
       [ ! -e $HOME/$b ] && ln -s $REALHOME/$b $HOME/$b
     fi
@@ -371,6 +371,11 @@ if [ ! -f $DCONF_DEST_USER_DIR/user ]; then
     ensure_dir_exists $DCONF_DEST_USER_DIR
     ln -s $REALHOME/.config/dconf/user $DCONF_DEST_USER_DIR
   fi
+fi
+# symlink the runtime dconf file as well
+if [ -r $XDG_RUNTIME_DIR/../dconf/user ]; then
+  ensure_dir_exists $XDG_RUNTIME_DIR/dconf
+  ln -sf ../../dconf/user $XDG_RUNTIME_DIR/dconf/user
 fi
 
 # Testability support

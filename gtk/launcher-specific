@@ -23,7 +23,7 @@ GTK_IM_MODULE_DIR=$XDG_CACHE_HOME/immodules
 export GTK_IM_MODULE_FILE=$GTK_IM_MODULE_DIR/immodules.cache
 if [ $needs_update = true ]; then
   rm -rf $GTK_IM_MODULE_DIR
-  mkdir -p $GTK_IM_MODULE_DIR
+  ensure_dir_exists $GTK_IM_MODULE_DIR
   if [ "$USE_gtk3" = true ]; then
     ln -s $RUNTIME/usr/lib/$ARCH/gtk-3.0/3.0.0/immodules/*.so $GTK_IM_MODULE_DIR
     async_exec $RUNTIME/usr/lib/$ARCH/libgtk-3-0/gtk-query-immodules-3.0 > $GTK_IM_MODULE_FILE
