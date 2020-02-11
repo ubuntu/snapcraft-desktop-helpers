@@ -37,9 +37,9 @@ description: |
        - if your application needs hw acceleration:
          plugs: [opengl]
        - for sound playback:
-         plugs: [audio-playback, pulseaudio]
+         plugs: [audio-playback]
        - for sound playback and recording:
-         plugs: [audio-playback, audio-record, pulseaudio]
+         plugs: [audio-playback, audio-record]
        - accessing to user's home directory:
          plugs: [home]
        - read/write to gsettings:
