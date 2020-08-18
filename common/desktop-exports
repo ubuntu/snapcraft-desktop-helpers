@@ -102,6 +102,10 @@ append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/pulseaudio
 [ -d /var/lib/snapd/lib/glvnd/egl_vendor.d ] && \
     append_dir __EGL_VENDOR_LIBRARY_DIRS /var/lib/snapd/lib/glvnd/egl_vendor.d
 
+# EGL vendor files
+append_dir __EGL_VENDOR_LIBRARY_DIRS $RUNTIME/etc/glvnd/egl_vendor.d
+append_dir __EGL_VENDOR_LIBRARY_DIRS $RUNTIME/usr/share/glvnd/egl_vendor.d
+
 # Tell GStreamer where to find its plugins
 export GST_PLUGIN_PATH=$SNAP/usr/lib/$ARCH/gstreamer-1.0
 export GST_PLUGIN_SYSTEM_PATH=$RUNTIME/usr/lib/$ARCH/gstreamer-1.0
