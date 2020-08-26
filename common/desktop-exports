@@ -290,7 +290,8 @@ function make_user_fontconfig {
     echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
   fi
   
-  # use default font
+  # fix font render for modified fonts, that discussed on Snapcraft Forum:
+  # https://forum.snapcraft.io/t/snap-package-cannot-read-fonts-conf/16657
   echo '  <include ignore_missing="yes">/etc/fonts/conf.d</include>'
   echo "</fontconfig>"
 }
