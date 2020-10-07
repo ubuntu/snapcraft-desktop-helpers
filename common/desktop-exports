@@ -281,19 +281,19 @@ function make_user_fontconfig {
       echo "  <dir>${data_dirs_array[$i]}/fonts</dir>"
     fi
   done
+  # fix font render for modified fonts, that discussed on Snapcraft Forum:
+  # https://forum.snapcraft.io/t/snap-package-cannot-read-fonts-conf/16657
+  echo '  <include ignore_missing="yes">/etc/fonts/conf.d</include>'
   echo '  <include ignore_missing="yes">conf.d</include>'
+  
   # We need to include this default cachedir first so that caching
   # works: without it, fontconfig will try to write to the real user home
   # cachedir and be blocked by AppArmor.
   echo '  <cachedir prefix="xdg">fontconfig</cachedir>'
   if [ -d $REALHOME/.cache/fontconfig ]; then
     echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
-  fi
-  
-  # fix font render for modified fonts, that discussed on Snapcraft Forum:
-  # https://forum.snapcraft.io/t/snap-package-cannot-read-fonts-conf/16657
-  echo '  <include ignore_missing="yes">/etc/fonts/conf.d</include>'
-  echo "</fontconfig>"
+  fi 
+ echo "</fontconfig>"
 }
 
 if [ $needs_update = true ]; then
