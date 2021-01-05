@@ -131,7 +131,7 @@ if [[ -d $SNAP_USER_DATA/.cache && ! -e $XDG_CACHE_HOME ]]; then
   # the .cache directory used to be stored under $SNAP_USER_DATA, migrate it
   mv $SNAP_USER_DATA/.cache $SNAP_USER_COMMON/
 fi
-ensure_dir_exists $XDG_CACHE_HOME
+ensure_dir_exists $XDG_CACHE_HOME -m 700
 
 # Create $XDG_RUNTIME_DIR if not exists (to be removed when LP: #1656340 is fixed)
 ensure_dir_exists $XDG_RUNTIME_DIR -m 700
