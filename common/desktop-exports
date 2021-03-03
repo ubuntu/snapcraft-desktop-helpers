@@ -86,6 +86,14 @@ export LIBGL_DRIVERS_PATH=$RUNTIME/usr/lib/$ARCH/dri
 append_dir LD_LIBRARY_PATH $LIBGL_DRIVERS_PATH
 export LIBVA_DRIVERS_PATH=$RUNTIME/usr/lib/$ARCH/dri
 
+# Set where the VDPAU drivers are located
+export VDPAU_DRIVER_PATH="/usr/lib/$ARCH/vdpau/"
+if [ -e "/var/lib/snapd/lib/gl/vdpau/libvdpau_nvidia.so" ]; then
+  export VDPAU_DRIVER_PATH="/var/lib/snapd/lib/gl/vdpau"
+  # Prevent picking VA-API (Intel/AMD) over NVIDIA VDPAU; on PRIME systems for example
+  unset LIBVA_DRIVERS_PATH
+fi
+
 # Unity7 export (workaround for https://launchpad.net/bugs/1638405)
 append_dir LD_LIBRARY_PATH $RUNTIME/usr/lib/$ARCH/libunity
 
