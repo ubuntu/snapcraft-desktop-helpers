@@ -10,4 +10,4 @@ Go to the documentation on [snapping graphical applications](https://forum.snapc
 
 ## Need help?
 
-Please feel free to ask questions in the [forum](https://forum.snapcraft.io) or on [Rocketchat](https://rocket.ubuntu.com/channel/snapcraft) if you are having trouble.
+Please feel free to ask questions in the [forum](https://forum.snapcraft.io) if you are having trouble.
