@@ -1,0 +1,9 @@
+# Configuration for pre-commit: A framework for managing and maintaining multi-language pre-commit hooks.
+# https://pre-commit.com/
+repos:
+- repo: https://github.com/jumanjihouse/pre-commit-hooks
+  rev: 1.6.0
+  hooks:
+  - id: shellcheck
+    args:
+      - --shell bash
