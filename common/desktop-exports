@@ -293,7 +293,7 @@ function make_user_fontconfig {
   if [ -d $REALHOME/.cache/fontconfig ]; then
     echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
   fi 
- echo "</fontconfig>"
+  echo "</fontconfig>"
 }
 
 if [ $needs_update = true ]; then
