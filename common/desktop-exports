@@ -292,7 +292,7 @@ function make_user_fontconfig {
   echo '  <cachedir prefix="xdg">fontconfig</cachedir>'
   if [ -d $REALHOME/.cache/fontconfig ]; then
     echo "  <cachedir>$REALHOME/.cache/fontconfig</cachedir>"
-  fi 
+  fi
   echo "</fontconfig>"
 }
 
