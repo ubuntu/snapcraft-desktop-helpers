@@ -1,0 +1,50 @@
+name: test-desktop-helpers-gtk3
+version: git
+summary: Test for desktop helpers gtk3 launcher
+description: |
+  A test program for desktop helpers gtk3 launcher
+grade: devel
+confinement: strict
+
+apps:
+  test-gsettings:
+    command: bin/desktop-launch $SNAP/test-gsettings
+    plugs:
+      - gsettings
+      - desktop
+
+parts:
+  desktop-gtk3:
+    source: ../../../
+    source-subdir: gtk
+    plugin: make
+    make-parameters: ["FLAVOR=gtk3"]
+    build-packages:
+      - libgtk-3-dev
+    stage-packages:
+      - libxkbcommon0  # XKB_CONFIG_ROOT
+      - ttf-ubuntu-font-family
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libgtk-3-0
+      - libgdk-pixbuf2.0-0
+      - libglib2.0-bin
+      - libgtk-3-bin
+      - unity-gtk3-module
+      - libappindicator3-1
+      - locales-all
+      - xdg-user-dirs
+
+  test-gsettings:
+    after: [desktop-gtk3]
+    plugin: nil
+    source: .
+    install: |
+      gcc -o $SNAPCRAFT_PART_INSTALL/test-gsettings -O2 -Wall test-gsettings.c `pkg-config --cflags --libs gio-2.0`
+    build-packages:
+      - gcc
+      - libglib2.0-dev
+      - pkg-config
