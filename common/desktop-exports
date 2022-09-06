@@ -68,6 +68,7 @@ fi
 
 # XKB config
 export XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
+export QT_XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
 
 # Give XOpenIM a chance to locate locale data.
 # This is required for text input to work in SDL2 games.
