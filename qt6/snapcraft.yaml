@@ -1,0 +1,44 @@
+name: application
+version: 1
+summary: Qt Application Example
+description: A simple text editor
+confinement: devmode
+
+apps:
+  application:
+    command: desktop-launch application
+    plugs: [unity7, home]
+
+parts:
+  application:
+    source: src/
+    plugin: qmake
+    qt-version: qt6
+    after: [qt6]
+  qt6:
+    source: .
+    plugin: make
+    make-parameters: ["SRC_DIR=../src"]
+    build-packages:
+      - build-essential
+      - qt6-base-dev
+      - dpkg-dev
+      - software-properties-common
+    stage-packages:
+      - libxkbcommon0
+      - xkb-data
+      - fonts-ubuntu
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt6gui6
+      - libgdk-pixbuf2.0-0
+      - libqt6svg6 # for loading icon themes which are svg
+      - locales-all
+      - xdg-user-dirs
+      - libgtk2.0-0
+      - qt6-qpa-plugins
+      - qt6-wayland
+      #- fcitx-frontend-qt6
