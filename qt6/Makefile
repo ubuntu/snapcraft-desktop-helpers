@@ -31,7 +31,7 @@ desktop-launch:
 	@echo "$$QT6_CONF" > snappy-qt6.conf
 	@echo "USE_$(FLAVOR)=true" >> $(FLAVOR_FILE)
 
-install: $(DEST_LAUNCHER) $(DEST_CONFIGURE_HOOK)
+install: desktop-launch
 	install -D -m755 $(DEST_LAUNCHER) "$(DESTDIR)"/bin/$(DEST_LAUNCHER)
 	install -D -m644 snappy-qt6.conf \
 		"$(DESTDIR)"/etc/xdg/qtchooser/snappy-qt6.conf
