@@ -263,6 +263,35 @@ parts:
       - locales-all
       - xdg-user-dirs
       - fcitx-frontend-qt5
+  desktop-qt6:
+    source: .
+    source-subdir: qt6
+    source-depth : 1
+    plugin: make
+    #make-parameters: ["FLAVOR=qt6"]
+    build-packages:
+      - build-essential
+      - qt6-base-dev
+      - dpkg-dev
+      - software-properties-common
+    stage-packages:
+      - libxkbcommon0
+      - xkb-data
+      - fonts-ubuntu
+      - dmz-cursor-theme
+      - light-themes
+      - adwaita-icon-theme
+      - gnome-themes-standard
+      - shared-mime-info
+      - libqt6gui6
+      - libgdk-pixbuf2.0-0
+      - libqt6svg6 # for loading icon themes which are svg
+      - locales-all
+      - xdg-user-dirs
+      - libgtk2.0-0
+      - qt6-qpa-plugins
+      - qt6-wayland
+      #- fcitx-frontend-qt6
   desktop-glib-only:
     source: .
     source-subdir: glib-only
