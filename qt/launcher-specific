@@ -11,7 +11,7 @@ if [ "$USE_qt6" = true ]; then
   if [ -z "$QT_SELECT" ]; then
     export QT_SELECT=snappy-qt6
   fi
-elseif [ "$USE_qt5" = true ]; then
+elif [ "$USE_qt5" = true ]; then
   # QT_SELECT not exported by ubuntu app platform runtime
   if [ -z "$QT_SELECT" ]; then
     export QT_SELECT=snappy-qt5
