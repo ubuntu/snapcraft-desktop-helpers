@@ -28,8 +28,10 @@ export QTCOMPOSE=$RUNTIME/usr/share/X11/locale
 if [ "$USE_qt5" = true ] || [ "$USE_qt6" = true ]; then
   if [ "$USE_qt5" = true ]; then
     qt = qt5
+    export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec/QtWebEngineProcess
   else
     qt = qt6
+    export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/qt6/libexec/QtWebEngineProcess
   fi
   prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/${qt}/plugins
   prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/${qt}/qml
@@ -67,4 +69,4 @@ fi
 append_dir GTK_PATH $RUNTIME/usr/lib/$ARCH/gtk-2.0
 
 # Fix locating the QtWebEngineProcess executable
-export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/${qt}/libexec/QtWebEngineProcess
+# See above
