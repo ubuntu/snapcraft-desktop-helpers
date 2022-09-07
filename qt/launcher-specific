@@ -27,10 +27,10 @@ export QTCOMPOSE=$RUNTIME/usr/share/X11/locale
 # Qt Libs, Modules and helpers
 if [ "$USE_qt5" = true ] || [ "$USE_qt6" = true ]; then
   if [ "$USE_qt5" = true ]; then
-    qt = qt5
+    qt = "qt5"
     export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec/QtWebEngineProcess
   else
-    qt = qt6
+    qt = "qt6"
     export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/qt6/libexec/QtWebEngineProcess
   fi
   prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/${qt}/plugins
