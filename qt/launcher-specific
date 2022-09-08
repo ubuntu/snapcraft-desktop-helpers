@@ -33,16 +33,16 @@ if [ "$USE_qt5" = true ] || [ "$USE_qt6" = true ]; then
     qt = "qt6"
     export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/qt6/libexec/QtWebEngineProcess
   fi
-  prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/${qt}/plugins
-  prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/${qt}/qml
+  prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/$qt/plugins
+  prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/$qt/qml
   prepend_dir QML2_IMPORT_PATH $RUNTIME/lib/$ARCH
   # Try to use qtubuntu-print plugin, if not found Qt will fallback to the first found (usually cups plugin)
   export QT_PRINTER_MODULE=qtubuntu-print
   if [ "$WITH_RUNTIME" = yes ]; then
-    prepend_dir QML2_IMPORT_PATH $SNAP/usr/lib/$ARCH/${qt}/qml
+    prepend_dir QML2_IMPORT_PATH $SNAP/usr/lib/$ARCH/$qt/qml
     prepend_dir QML2_IMPORT_PATH $SNAP/lib/$ARCH
   fi
-  prepend_dir PATH $RUNTIME/usr/lib/$ARCH/${qt}/bin
+  prepend_dir PATH $RUNTIME/usr/lib/$ARCH/$qt/bin
 
   if [ "$wayland_available" = true ]; then
     export QT_QPA_PLATFORM=wayland-egl
