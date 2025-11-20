@@ -1,3 +1,9 @@
+# DEPRECATED -- Use gnome or kde-neon extension
+
+The snapcraft desktop helpers are no longer support please use one of the following snapcraft extensions
+ * [GNOME (for GTK or apps that require typical desktop support)](https://documentation.ubuntu.com/snapcraft/stable/reference/extensions/gnome-extension/)
+ * [KDE (for KDE or Qt)](https://documentation.ubuntu.com/snapcraft/stable/reference/extensions/kde-neon-extensions/)
+
 # Snapcraft Desktop Helpers
 
 The snapcraft desktop helpers project contains a number of tools to help you create snaps for desktop applications. For example, several environment variables and compatibility symlinks are setup in the [desktop-launch wrapper](https://github.com/ubuntu/snapcraft-desktop-helpers/blob/master/common/desktop-exports) to help ensure the snap can find needed files.
