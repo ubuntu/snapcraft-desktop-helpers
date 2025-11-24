@@ -68,6 +68,7 @@ fi
 
 # XKB config
 export XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
+export QT_XKB_CONFIG_ROOT=$RUNTIME/usr/share/X11/xkb
 
 # Give XOpenIM a chance to locate locale data.
 # This is required for text input to work in SDL2 games.
@@ -439,7 +440,7 @@ fi
 
 # GTK theme and behavior modifier
 # Those can impact the theme engine used by Qt as well
-gtk_configs=(gtk-3.0/settings.ini gtk-3.0/bookmarks gtk-2.0/gtkfilechooser.ini)
+gtk_configs=(gtk-3.0/settings.ini gtk-3.0/bookmarks gtk-3.0/gtkfilechooser.ini)
 for f in ${gtk_configs[@]}; do
   dest="$XDG_CONFIG_HOME/$f"
   if [ ! -L "$dest" ]; then

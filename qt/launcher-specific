@@ -6,7 +6,12 @@
 . $SNAP/flavor-select
 
 export QTCHOOSER_NO_GLOBAL_DIR=1
-if [ "$USE_qt5" = true ]; then
+if [ "$USE_qt6" = true ]; then
+  # QT_SELECT not exported by ubuntu app platform runtime
+  if [ -z "$QT_SELECT" ]; then
+    export QT_SELECT=snappy-qt6
+  fi
+elif [ "$USE_qt5" = true ]; then
   # QT_SELECT not exported by ubuntu app platform runtime
   if [ -z "$QT_SELECT" ]; then
     export QT_SELECT=snappy-qt5
@@ -20,18 +25,32 @@ fi
 export QTCOMPOSE=$RUNTIME/usr/share/X11/locale
 
 # Qt Libs, Modules and helpers
-if [ "$USE_qt5" = true ]; then
-  prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/qt5/plugins
-  prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/qt5/qml
-  prepend_dir QML2_IMPORT_PATH $RUNTIME/lib/$ARCH
-  # Try to use qtubuntu-print plugin, if not found Qt will fallback to the first found (usually cups plugin)
-  export QT_PRINTER_MODULE=qtubuntu-print
-  if [ "$WITH_RUNTIME" = yes ]; then
-    prepend_dir QML2_IMPORT_PATH $SNAP/usr/lib/$ARCH/qt5/qml
-    prepend_dir QML2_IMPORT_PATH $SNAP/lib/$ARCH
+if [ "$USE_qt5" = true ] || [ "$USE_qt6" = true ]; then
+  if [ "$USE_qt5" = true ]; then
+    export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec/QtWebEngineProcess
+    prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/qt5/plugins
+    prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/qt5/qml
+    prepend_dir QML2_IMPORT_PATH $RUNTIME/lib/$ARCH
+    # Try to use qtubuntu-print plugin, if not found Qt will fallback to the first found (usually cups plugin)
+    export QT_PRINTER_MODULE=qtubuntu-print
+    if [ "$WITH_RUNTIME" = yes ]; then
+      prepend_dir QML2_IMPORT_PATH $SNAP/usr/lib/$ARCH/qt5/qml
+      prepend_dir QML2_IMPORT_PATH $SNAP/lib/$ARCH
+    fi
+    prepend_dir PATH $RUNTIME/usr/lib/$ARCH/qt5/bin
+  else
+    export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/qt6/libexec/QtWebEngineProcess
+    prepend_dir QT_PLUGIN_PATH $RUNTIME/usr/lib/$ARCH/qt6/plugins
+    prepend_dir QML2_IMPORT_PATH $RUNTIME/usr/lib/$ARCH/qt6/qml
+    prepend_dir QML2_IMPORT_PATH $RUNTIME/lib/$ARCH
+    # Try to use qtubuntu-print plugin, if not found Qt will fallback to the first found (usually cups plugin)
+    export QT_PRINTER_MODULE=qtubuntu-print
+    if [ "$WITH_RUNTIME" = yes ]; then
+      prepend_dir QML2_IMPORT_PATH $SNAP/usr/lib/$ARCH/qt6/qml
+      prepend_dir QML2_IMPORT_PATH $SNAP/lib/$ARCH
+    fi
+    prepend_dir PATH $RUNTIME/usr/lib/$ARCH/qt6/bin
   fi
-  prepend_dir PATH $RUNTIME/usr/lib/$ARCH/qt5/bin
-
   if [ "$wayland_available" = true ]; then
     export QT_QPA_PLATFORM=wayland-egl
     # Does not hurt to specify these as well, just in case
@@ -57,4 +76,4 @@ fi
 append_dir GTK_PATH $RUNTIME/usr/lib/$ARCH/gtk-2.0
 
 # Fix locating the QtWebEngineProcess executable
-export QTWEBENGINEPROCESS_PATH=$RUNTIME/usr/lib/$ARCH/qt5/libexec/QtWebEngineProcess
+# See above
