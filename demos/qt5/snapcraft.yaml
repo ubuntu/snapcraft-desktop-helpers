@@ -13,7 +13,7 @@ apps:
       # Use GTK3 cursor theme, icon theme and open/save file dialogs.
       QT_QPA_PLATFORMTHEME: gtk3    
     command: desktop-launch application
-    plugs: [unity7, home]
+    plugs: [desktop, home]
 
 parts:
   application:
